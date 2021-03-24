@@ -24,7 +24,7 @@ public class Vehicle {
 	private String brand;
 	
 	@ManyToMany(mappedBy = "vehicle_owned")
-	Set<Driver> owners;
+	private Set<Driver> owners;
 	
 	@OneToMany
 	private Set<Reservation> reservations;

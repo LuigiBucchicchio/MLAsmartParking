@@ -11,7 +11,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
 import com.spmproject.smartparking.vehicle.Vehicle;
-
 import lombok.Data;
 
 @Entity
@@ -35,7 +34,7 @@ public class Driver {
 			joinColumns = @JoinColumn(name = "id"), 
 			inverseJoinColumns = @JoinColumn(name = "vehiclePlate")
 			)
-	Set<Vehicle> vehicle_owned;
+	private Set<Vehicle> vehicle_owned;
 
 	private String email;
 
