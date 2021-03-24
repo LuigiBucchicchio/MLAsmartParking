@@ -15,7 +15,7 @@ public class DriverController {
 	@RequestMapping(path="/driver")
 	public class MainController {
 	  @Autowired
-	  private DriverRepository userRepository;
+	  private DriverRepository driverRepository;
 
 	  @PostMapping(path="/add")
 	  public @ResponseBody String addNewUser (@RequestParam String name
@@ -28,13 +28,14 @@ public class DriverController {
 	    n.setEmail(email);
 	    n.setPhoneNumber(phoneNumber);
 	    n.setPassword(password);
-	    userRepository.save(n);
+	    n.setVehicle_owned(null);
+	    driverRepository.save(n);
 	    return "Saved";
 	  }
 
 	  @GetMapping(path="/all")
 	  public @ResponseBody Iterable<Driver> getAllUsers() {
-	    return userRepository.findAll();
+	    return driverRepository.findAll();
 	  }
 	}
 }
