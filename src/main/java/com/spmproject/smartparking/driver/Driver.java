@@ -12,9 +12,11 @@ import javax.persistence.ManyToMany;
 
 import com.spmproject.smartparking.vehicle.Vehicle;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@NoArgsConstructor
 public class Driver {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -24,9 +26,11 @@ public class Driver {
 
 	private String surname;
 
-	private String phoneNumber;
+	private String email;
 
 	private String password;
+
+	private String phoneNumber;
 
 	@ManyToMany
 	@JoinTable(
@@ -36,6 +40,11 @@ public class Driver {
 			)
 	private Set<Vehicle> vehicle_owned;
 
-	private String email;
-
+	public Driver(String name, String surname, String email, String password, String phoneNumber) {
+		this.name = name;
+		this.surname = surname;
+		this.email = email;
+		this.password = password;
+		this.phoneNumber = phoneNumber;
+	}
 }
