@@ -37,7 +37,7 @@ public class ParkingPlace {
     private String address;
 
     @ManyToOne
-    @JoinColumn(name = "municipality_id", nullable = false)
+    @JoinColumn(name = "municipality_id", referencedColumnName = "id", nullable = false)
     private Municipality municipality;
 
 }
