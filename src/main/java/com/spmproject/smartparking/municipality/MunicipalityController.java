@@ -1,14 +1,9 @@
 package com.spmproject.smartparking.municipality;
 
-
-import com.spmproject.smartparking.driver.Driver;
-import com.spmproject.smartparking.security.ApplicationUserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.lang.reflect.Array;
-import java.util.Arrays;
 import java.util.List;
 
 import static com.spmproject.smartparking.security.ApplicationUserRole.*;
@@ -26,8 +21,8 @@ public class MunicipalityController {
 
     @PreAuthorize("hasAuthority('municipality:read')")
     @GetMapping
-    public List<Municipality> getMunicipalities() {
-        return municipalityService.getMunicipalities();
+    public List<Municipality> getAllMunicipalities() {
+        return municipalityService.getAllMunicipalities();
     }
 
     @PreAuthorize("hasAuthority('municipality:write')")

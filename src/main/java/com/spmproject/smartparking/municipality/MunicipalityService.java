@@ -15,7 +15,7 @@ public class MunicipalityService {
         this.municipalityRepository = municipalityRepository;
     }
 
-    public List<Municipality> getMunicipalities() {
+    public List<Municipality> getAllMunicipalities() {
        return municipalityRepository.findAll();
     }
 
