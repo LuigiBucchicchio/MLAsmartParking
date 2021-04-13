@@ -1,5 +1,5 @@
 package com.spmproject.smartparking.auth;
-
+/*
 import com.google.common.collect.Lists;
 import com.spmproject.smartparking.security.ApplicationUserRole;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,3 +72,5 @@ public class FakeApplicationUserDaoService implements ApplicationUserDao {
        return applicationUsers;
     }
 }
+
+ */

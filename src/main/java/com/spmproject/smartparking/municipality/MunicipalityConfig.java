@@ -1,10 +1,14 @@
 package com.spmproject.smartparking.municipality;
 
+import com.spmproject.smartparking.auth.User;
+import com.spmproject.smartparking.auth.UserRepository;
 import com.spmproject.smartparking.driver.Driver;
 import com.spmproject.smartparking.driver.DriverRepository;
+import com.spmproject.smartparking.security.ApplicationUserRole;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.List;
 
@@ -12,7 +16,7 @@ import java.util.List;
 public class MunicipalityConfig {
 
     @Bean
-    CommandLineRunner commandLineRunner(MunicipalityRepository municipalityRepository, DriverRepository driverRepository) {
+    CommandLineRunner commandLineRunner(MunicipalityRepository municipalityRepository, DriverRepository driverRepository, UserRepository userRepository) {
         return args -> {
             Municipality grottammare =
                     new Municipality(
@@ -52,6 +56,31 @@ public class MunicipalityConfig {
                     "iNumeriArabiNonLiUso"
             );
             driverRepository.saveAll(List.of(valerio, michela, edipo));
+
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+
+            User bianchi = new User(
+                    12375678910L,
+                    "driver",
+                    "driver@gmail.com",
+                    "driver",
+                    passwordEncoder.encode("pass"),
+                    "jkd",
+                    ApplicationUserRole.ROLE_DRIVER
+            );
+
+            User rapsodia = new User(
+                    12345678910L,
+                    "admin",
+                    "admin@gmail.com",
+                    "admin",
+                    passwordEncoder.encode("pass"),
+                    "jkd",
+                    ApplicationUserRole.ROLE_ADMIN
+            );
+
+            userRepository.saveAll(List.of(bianchi, rapsodia));
         };
     }
 }
