@@ -21,6 +21,7 @@ public class ApplicationUserService implements UserDetailsService {
     @Transactional
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         System.out.println("Email sent is "+email);
+
         User user = userRepository.findByEmail(email);
         if (user == null) {
             System.out.println("Utente non trovato");

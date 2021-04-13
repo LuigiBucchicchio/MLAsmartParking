@@ -67,7 +67,7 @@ public class MunicipalityConfig {
                     "driver",
                     passwordEncoder.encode("pass"),
                     "jkd",
-                    ApplicationUserRole.ROLE_DRIVER
+                    ApplicationUserRole.DRIVER
             );
 
             User rapsodia = new User(
@@ -77,7 +77,7 @@ public class MunicipalityConfig {
                     "admin",
                     passwordEncoder.encode("pass"),
                     "jkd",
-                    ApplicationUserRole.ROLE_ADMIN
+                    ApplicationUserRole.ADMIN
             );
 
             userRepository.saveAll(List.of(bianchi, rapsodia));

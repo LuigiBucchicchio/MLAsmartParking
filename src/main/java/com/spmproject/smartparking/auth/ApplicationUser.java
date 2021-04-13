@@ -12,10 +12,10 @@ public class ApplicationUser implements UserDetails {
     private String email;
     private String username;
     private String password;
-    private Collection<? extends GrantedAuthority> grantedAuthorities;
+    private Set<? extends GrantedAuthority> grantedAuthorities;
 
 
-    public ApplicationUser(User user, Collection<? extends GrantedAuthority> grantedAuthorities) {
+    public ApplicationUser(User user, Set<? extends GrantedAuthority> grantedAuthorities) {
         this.email = user.getEmail();
         this.username = user.getUsername();
         this.password = user.getPassword();
@@ -24,10 +24,7 @@ public class ApplicationUser implements UserDetails {
     }
 
     public static ApplicationUser build(User user) {
-
-        List<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
-        grantedAuthorities.add(new SimpleGrantedAuthority(user.getRole().name()));
-
+        Set<SimpleGrantedAuthority> grantedAuthorities = user.getRole().getGrantedAuthorities();
         return new ApplicationUser(
                 user,
                 grantedAuthorities

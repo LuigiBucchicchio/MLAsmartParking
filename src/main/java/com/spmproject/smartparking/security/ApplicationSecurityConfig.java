@@ -38,7 +38,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/", "index", "/css/*", "/js/*").permitAll()
-                .antMatchers("/driver/**").hasAnyRole(ROLE_DRIVER.name(), ROLE_ADMIN.name())
+                .antMatchers("/driver/**").hasAnyRole(DRIVER.name(), ADMIN.name())
                 .anyRequest()
                 .authenticated()
                 .and()

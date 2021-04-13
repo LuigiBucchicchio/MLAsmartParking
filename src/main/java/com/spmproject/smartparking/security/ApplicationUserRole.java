@@ -10,17 +10,17 @@ import java.util.stream.Collectors;
 import static com.spmproject.smartparking.security.ApplicationUserPermission.*;
 
 public enum ApplicationUserRole {
-    ROLE_DRIVER(Sets.newHashSet(
+    DRIVER(Sets.newHashSet(
             PARKING_SPOT_READ,
             PARKING_PLACE_READ
     )),
-    ROLE_POLICEMAN(Sets.newHashSet(
+    POLICEMAN(Sets.newHashSet(
             DRIVER_READ,
             PARKING_PLACE_READ,
             PARKING_PLACE_READ,
             POLICEMAN_READ
             )),
-    ROLE_MUNICIPALITY(Sets.newHashSet(
+    MUNICIPALITY(Sets.newHashSet(
             DRIVER_READ,
             DRIVER_WRITE,
             PARKING_SPOT_READ,
@@ -31,7 +31,7 @@ public enum ApplicationUserRole {
             POLICEMAN_WRITE,
             MUNICIPALITY_READ
             )),
-    ROLE_ADMIN(Sets.newHashSet(
+    ADMIN(Sets.newHashSet(
             DRIVER_READ,
             DRIVER_WRITE,
             PARKING_SPOT_READ,
