@@ -35,24 +35,24 @@ public class PolicemanController {
 	  }
 
 	  @PutMapping("/policeman/{id}")
-	  Optional<Policeman> replacePoliceman(@RequestBody Policeman newPoliceman, @PathVariable Long id){
-	  Optional<Policeman> p = policemanRepository.findById(id);
+	  Policeman replacePoliceman(@RequestBody Policeman newPoliceman, @PathVariable Long id){
+	  Policeman p = policemanRepository.findById(id).orElseThrow(() -> new RuntimeException());
 	  
-	  if(!(p.get().getName().equals(newPoliceman.getName())))
-	  p.get().setName(newPoliceman.getName());
+	  if(!(p.getName().equals(newPoliceman.getName())))
+	  p.setName(newPoliceman.getName());
 	  
-	  if(!(p.get().getEmail().equals(newPoliceman.getEmail())))
-	  p.get().setEmail(newPoliceman.getEmail());
+	  if(!(p.getEmail().equals(newPoliceman.getEmail())))
+	  p.setEmail(newPoliceman.getEmail());
 	  
-	  if(!(p.get().getPhoneNumber().equals(newPoliceman.getPhoneNumber())))
-	  p.get().setPhoneNumber(newPoliceman.getPhoneNumber());
+	  if(!(p.getPhoneNumber().equals(newPoliceman.getPhoneNumber())))
+	  p.setPhoneNumber(newPoliceman.getPhoneNumber());
 	  
-	  if(!(p.get().getSurname().equals(newPoliceman.getSurname())))
-	  p.get().setSurname(newPoliceman.getSurname());
+	  if(!(p.getSurname().equals(newPoliceman.getSurname())))
+	  p.setSurname(newPoliceman.getSurname());
 	  
 	  BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-	  if(!(passwordEncoder.matches(newPoliceman.getPassword(), p.get().getPassword())))
-	  p.get().setPassword(passwordEncoder.encode(newPoliceman.getPassword()));
+	  if(!(passwordEncoder.matches(newPoliceman.getPassword(), p.getPassword())))
+	  p.setPassword(passwordEncoder.encode(newPoliceman.getPassword()));
 	  return p;
 	  }
 
