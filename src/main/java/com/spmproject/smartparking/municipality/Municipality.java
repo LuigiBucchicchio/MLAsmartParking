@@ -1,16 +1,11 @@
 package com.spmproject.smartparking.municipality;
-
-
+import com.spmproject.smartparking.policeman.Policeman;
 import com.spmproject.smartparking.parkingPlace.ParkingPlace;
 import lombok.*;
-
-
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
-
 import java.util.Set;
-
 import static javax.persistence.GenerationType.SEQUENCE;
 
 @Entity(name = "Municipality")
@@ -53,6 +48,9 @@ public class Municipality {
 
     @OneToMany
     private Set<ParkingPlace> parkingPlace;
+    
+    @OneToMany
+    private Set<Policeman> policemen;
 /*
     @ManyToMany
     @JoinTable(
