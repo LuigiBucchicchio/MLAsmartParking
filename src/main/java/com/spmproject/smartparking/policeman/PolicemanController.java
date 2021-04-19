@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,7 +25,7 @@ public class PolicemanController {
 	    return (List<Policeman>) policemanRepository.findAll();
 	  }
 
-	  @PostMapping("/policeman")
+	  @PostMapping("/policeman/add")
 	  Policeman newPoliceman(@RequestParam String name
 		      , @RequestParam String surname, @RequestParam String phoneNumber , @RequestParam String email
 		      , @RequestParam String password) {
@@ -46,29 +45,32 @@ public class PolicemanController {
 	  }
 
 	  @PutMapping("/policeman/{id}")
-	  Policeman replacePoliceman(@RequestBody Policeman newPoliceman, @PathVariable Long id){
+	  Policeman replacePoliceman(@RequestParam String name
+		      , @RequestParam String surname, @RequestParam String phoneNumber , @RequestParam String email
+		      , @RequestParam String password, @PathVariable Long id){
 	  Policeman p = policemanRepository.findById(id).orElseThrow(() -> new ItemNotFoundException(id));
 	  
-	  if(!(p.getName().equals(newPoliceman.getName())))
-	  p.setName(newPoliceman.getName());
+	  if(!(p.getName().equals(name)))
+	  p.setName(name);
 	  
-	  if(!(p.getEmail().equals(newPoliceman.getEmail())))
-	  p.setEmail(newPoliceman.getEmail());
+	  if(!(p.getEmail().equals(email)))
+	  p.setEmail(email);
 	  
-	  if(!(p.getPhoneNumber().equals(newPoliceman.getPhoneNumber())))
-	  p.setPhoneNumber(newPoliceman.getPhoneNumber());
+	  if(!(p.getPhoneNumber().equals(phoneNumber)))
+	  p.setPhoneNumber(phoneNumber);
 	  
-	  if(!(p.getSurname().equals(newPoliceman.getSurname())))
-	  p.setSurname(newPoliceman.getSurname());
+	  if(!(p.getSurname().equals(surname)))
+	  p.setSurname(surname);
 	  
 	  BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-	  if(!(passwordEncoder.matches(newPoliceman.getPassword(), p.getPassword())))
-	  p.setPassword(passwordEncoder.encode(newPoliceman.getPassword()));
+	  if(!(passwordEncoder.matches(password, p.getPassword())))
+	  p.setPassword(passwordEncoder.encode(password));
 	  return p;
 	  }
 
 	  @DeleteMapping("/policeman/{id}")
 	  void deletePoliceman(@PathVariable Long id) {
+		policemanRepository.findById(id).orElseThrow(() -> new ItemNotFoundException(id));
 	    policemanRepository.deleteById(id);
 	  }
 	}
