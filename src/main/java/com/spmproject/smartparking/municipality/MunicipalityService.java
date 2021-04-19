@@ -3,6 +3,8 @@ package com.spmproject.smartparking.municipality;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.spmproject.smartparking.ItemNotFoundException;
+
 import java.util.List;
 
 @Service
@@ -19,8 +21,8 @@ public class MunicipalityService {
        return municipalityRepository.findAll();
     }
 
-    public void getMunicipality() {
-        //return municipalityRepository.findById(getMunicipality().getId());
+    public Municipality getMunicipality(long id) {
+        return municipalityRepository.findById(id).orElseThrow(()-> new ItemNotFoundException(id));
     }
 
     public void addNewMunicipality(Municipality municipality) {

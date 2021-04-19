@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,14 +24,16 @@ public class VehicleController {
 	@Autowired
 	private VehicleRepository vehicleRepository;
 	private DriverRepository driverRepository;
-
+ 
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/vehicle/all")
-	List<Vehicle> all() {
+	public List<Vehicle> all() {
 		return (List<Vehicle>) vehicleRepository.findAll();
 	}
 
+	@PreAuthorize("hasRole('ROLE_ADMIN','ROLE_DRIVER')")
 	@PostMapping("/vehicle/add")
-	Vehicle newVehicle(@RequestParam String vehiclePlate
+	public Vehicle newVehicle(@RequestParam String vehiclePlate
 			, @RequestParam String type, @RequestParam String brand , @RequestParam long driverID) {
 		Vehicle v= new Vehicle();
 		v.setVehiclePlate(vehiclePlate);
@@ -48,13 +51,15 @@ public class VehicleController {
 		return vehicleRepository.save(v);
 	}
 
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/vehicle/{vehiclePlate}")
-	Vehicle one(@PathVariable String vehiclePlate) {
+	public Vehicle one(@PathVariable String vehiclePlate) {
 		return vehicleRepository.findById(vehiclePlate).orElseThrow(() -> new ItemNotFoundException(vehiclePlate));
 	}
 
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PutMapping("/vehicle/{vehiclePlate}")
-	Vehicle replaceVehicle(@RequestParam String vehiclePlate
+	public Vehicle replaceVehicle(@RequestParam String vehiclePlate
 			, @RequestParam String type, @RequestParam String brand , @RequestParam long driverID){
 		Vehicle v = vehicleRepository.findById(vehiclePlate).orElseThrow(() -> new ItemNotFoundException(vehiclePlate));
 
@@ -76,8 +81,9 @@ public class VehicleController {
 		return v;
 	}
 
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@DeleteMapping("/vehicle/{vehiclePlate}")
-	void deleteVehicle(@PathVariable String vehiclePlate) {
+	public void deleteVehicle(@PathVariable String vehiclePlate) {
 		vehicleRepository.findById(vehiclePlate).orElseThrow(() -> new ItemNotFoundException(vehiclePlate));
 		vehicleRepository.deleteById(vehiclePlate);
 	}

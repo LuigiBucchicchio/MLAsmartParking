@@ -59,6 +59,7 @@ public enum ApplicationUserRole {
                 .map(permission -> new SimpleGrantedAuthority(permission.getPermission()))
                 .collect(Collectors.toSet());
         permissions.add(new SimpleGrantedAuthority("ROLE_" + this.name()));
+        
 
         return permissions;
     }
