@@ -15,13 +15,13 @@ The project is organized with the available tools of github. The [milestones](ht
 
 ### Team <a name="team"/>
 Who | Role | Email | 
----- | ---- | ---- | --- |
+---- | ---- | ---- |
 Luigi Buchicchio|  Scrum Master  | <luigi.buchicchio@studenti.unicam.it>
 Miriam Petrocchi || <miriam.petrocchi@studenti.unicam.it> 
  
 ### UNICAM <a name="team_unicam"/>
 Who | Role | Email |
----- | ---- | ---- | --- |
+---- | ---- | ---- |
 Prof. Dr.Andrea Polini | Superviser | <andrea.polini@unicam.it> |
 Fabrizio Fornari| Superviser | <fabrizio.fornari@unicam.it> |
 
