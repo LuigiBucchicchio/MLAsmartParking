@@ -14,7 +14,7 @@ public class ParkingSpotController {
 	private ParkingSpotRepository parkingSpotRepository;
 	
 	    @PreAuthorize("hasRole('ROLE_ADMIN')")
-	    @GetMapping(path ="/all")
+	    @GetMapping("parking-spot/all")
 	    public List<ParkingSpot> getAllParkingSpot() {
 	        return (List<ParkingSpot>) parkingSpotRepository.findAll();
 	    }
