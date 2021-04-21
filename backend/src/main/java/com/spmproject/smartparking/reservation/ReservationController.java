@@ -60,6 +60,7 @@ public class ReservationController {
 	@PutMapping("/reservation/{id}")
 	public Reservation replaceReservation(@RequestParam Timestamp startingTime, @RequestParam Timestamp endingTime
 			, @RequestParam long parkingSpotID, @RequestParam String vehiclePlate, @PathVariable Long id){
+		
 		Reservation reservation= reservationRepository.findById(id).orElseThrow(()-> new ItemNotFoundException(id));
 		Vehicle vehicleReserved = vehicleRepository.findById(vehiclePlate).orElseThrow(()-> new ItemNotFoundException(vehiclePlate));
 		ParkingSpot spotReserved = parkingSpotRepository.findById(parkingSpotID).orElseThrow(()-> new ItemNotFoundException(parkingSpotID));

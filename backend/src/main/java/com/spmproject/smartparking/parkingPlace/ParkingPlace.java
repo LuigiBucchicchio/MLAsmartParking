@@ -32,6 +32,8 @@ public class ParkingPlace {
 
     @Column(name = "spots_number", nullable = false)
     private int spotsNumber;
+    
+    //private int levelsNumber;
 
     @Column(nullable = false)
     private String address;
