@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import java.util.Set;
 
@@ -29,19 +30,23 @@ public class User {
     @Column(
             updatable = false
     )
+    @GeneratedValue(strategy=GenerationType.AUTO)
     @Id
     private Long id;
 
     private String name;
 
+
+    @NotNull
     @Column(name = "email")
-    @Email(message = "*Please provide a valid Email")
+    @Email(regexp = ".+@.+\\..+", message = "*Please provide a valid Email")
     @NotEmpty(message = "*Please provide an email")
     private String email;
 
     private String username;
 
-    @NotEmpty(message = "*Please provide your password")
+    @NotNull
+    @NotEmpty(message = "*Please provide a Password")
     private String password;
 
     @Column(name = "phone_number", nullable = false)

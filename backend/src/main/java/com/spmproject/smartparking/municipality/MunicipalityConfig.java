@@ -17,12 +17,15 @@ public class MunicipalityConfig {
 
     @Bean
     CommandLineRunner commandLineRunner(MunicipalityRepository municipalityRepository, DriverRepository driverRepository, UserRepository userRepository) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
         return args -> {
             Municipality grottammare =
                     new Municipality(
                             "Comune Grottammare",
                             "grottammare@citta.it",
                             "PaeseAlto",
+                            passwordEncoder.encode("pass"),
                             "33224455667"
                     );
             Municipality termoli =
@@ -30,6 +33,7 @@ public class MunicipalityConfig {
                             "Comune Termoli",
                             "termoli@citta.it",
                             "susharo",
+                            passwordEncoder.encode("pass"),
                             "334455667"
                     );
             municipalityRepository.saveAll(List.of(grottammare, termoli));
@@ -38,6 +42,7 @@ public class MunicipalityConfig {
                     "Valerio",
                     "Lundini",
                     "valerio.lundini@gmail.com",
+                    "noMaFalloUnUtente",
                     "eraMeglioIlLibro",
                     "332244566"
             );
@@ -45,20 +50,19 @@ public class MunicipalityConfig {
                     "Michela",
                     "Giraud",
                     "michela.giraud@gmail.com",
+                    "ilMignottonePazzo",
                     "ilSalottoConMichela",
                     "334455667"
             );
             Driver edipo = new Driver(
                     "Edipo",
                     "Re",
+                    "festaDellaMammaTuttiGiorni",
                     "edipo.re@libero.it",
                     "ahEraMamma",
                     "iNumeriArabiNonLiUso"
             );
             driverRepository.saveAll(List.of(valerio, michela, edipo));
-
-            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-
 
             User bianchi = new User(
                     12375678910L,

@@ -11,35 +11,29 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import com.spmproject.smartparking.auth.User;
 import com.spmproject.smartparking.parkingPlace.ParkingPlace;
 
+import com.spmproject.smartparking.security.ApplicationUserRole;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-public class Policeman {
-
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private long id;
-	
-	private String name;
+@NoArgsConstructor
+public class Policeman extends User {
 
 	private String surname;
 
-	@NotNull
-    @NotEmpty(message = "*Please provide an Email")
-	@Email(regexp = ".+@.+\\..+", message = "*Please provide a valid Email")
-	private String email;
- 
-    @NotNull
-    @NotEmpty(message = "*Please provide a Password")
-	private String password;
-
-	private String phoneNumber;
-	
 	@OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "assignedParkingPlaceID", referencedColumnName = "id")
+	@JoinColumn(name = "assignedParkingPlaceID", referencedColumnName = "id")
 	private ParkingPlace assignedParkingPlace;
-	
+
+
+
+	Policeman(String name, String surname, String email, String username, String password, String phoneNumber) {
+		super(name, email, username, password, phoneNumber, ApplicationUserRole.POLICEMAN);
+		this.surname = surname;
+	}
+
 }
