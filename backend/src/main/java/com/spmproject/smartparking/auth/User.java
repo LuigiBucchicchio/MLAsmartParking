@@ -10,9 +10,6 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
-import java.util.Set;
-
-import static javax.persistence.GenerationType.SEQUENCE;
 
 @Data
 @Builder
@@ -30,6 +27,7 @@ public class User {
             updatable = false
     )
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String name;
