@@ -13,6 +13,8 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import com.spmproject.smartparking.auth.User;
+import com.spmproject.smartparking.security.ApplicationUserRole;
 import com.spmproject.smartparking.vehicle.Vehicle;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,25 +22,9 @@ import lombok.NoArgsConstructor;
 @Entity
 @Data
 @NoArgsConstructor
-public class Driver {
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private long id;
-
-	private String name;
+public class Driver extends User {
 
 	private String surname;
-
-	@NotNull
-    @NotEmpty(message = "*Please provide an Email")
-	@Email(regexp = ".+@.+\\..+", message = "*Please provide a valid Email")
-	private String email;
- 
-    @NotNull
-    @NotEmpty(message = "*Please provide a Password")
-	private String password;
-
-	private String phoneNumber;
 
 	@ManyToMany
 	@JoinTable(
@@ -48,11 +34,8 @@ public class Driver {
 			)
 	private Set<Vehicle> vehicle_owned;
 
-	public Driver(String name, String surname, String email, String password, String phoneNumber) {
-		this.name = name;
+	public Driver(String name, String surname, String email, String username, String password, String phoneNumber) {
+		super(name, email, username, password, phoneNumber, ApplicationUserRole.DRIVER);
 		this.surname = surname;
-		this.email = email;
-		this.password = password;
-		this.phoneNumber = phoneNumber;
 	}
 }
