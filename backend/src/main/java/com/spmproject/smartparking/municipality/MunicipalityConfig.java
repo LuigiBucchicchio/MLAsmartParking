@@ -20,6 +20,9 @@ public class MunicipalityConfig {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
         return args -> {
+        	
+        	if(municipalityRepository.count()==((long)0)) {
+        	
             Municipality grottammare =
                     new Municipality(
                             "Comune Grottammare",
@@ -37,7 +40,10 @@ public class MunicipalityConfig {
                             "334455667"
                     );
             municipalityRepository.saveAll(List.of(grottammare, termoli));
-
+            
+        	}
+ 
+        	if(driverRepository.count()==((long)0)) {
             Driver valerio = new Driver(
                     "Valerio",
                     "Lundini",
@@ -64,7 +70,10 @@ public class MunicipalityConfig {
             );
             driverRepository.saveAll(List.of(valerio, michela, edipo));
 
+        	}
 
+        	if(userRepository.count()==((long)0)) {
+        	
             User bianchi = new User(
                     12375678910L,
                     "driver",
@@ -85,7 +94,7 @@ public class MunicipalityConfig {
                     ApplicationUserRole.ADMIN
             );
 		            userRepository.saveAll(List.of(bianchi, rapsodia));
-			
+        	}
         };
 
             
