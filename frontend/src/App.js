@@ -5,6 +5,7 @@ import axios from 'axios';
 import Header from './components/Layout/Header'
 import Parking from './components/Parking/Parking'
 import './App.css';
+import ParkingComponent from './components/Parking/ParkingComponent';
 
 
 const api = axios.create({
@@ -16,6 +17,7 @@ function App() {
     <Fragment>
       <Header/>
       <Parking/>
+      <ParkingComponent/>
     </Fragment>
     
   );
