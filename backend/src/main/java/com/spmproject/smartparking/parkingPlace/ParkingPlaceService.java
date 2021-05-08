@@ -7,18 +7,18 @@ import java.util.List;
 
 @Service
 public class ParkingPlaceService {
-    private final ParkingPlaceRepository parkingPlaceRepository;
+	private final ParkingPlaceRepository parkingPlaceRepository;
 
-    @Autowired
-    public ParkingPlaceService(ParkingPlaceRepository parkingPlaceRepository) {
-        this.parkingPlaceRepository = parkingPlaceRepository;
-    }
+	@Autowired
+	public ParkingPlaceService(ParkingPlaceRepository parkingPlaceRepository) {
+		this.parkingPlaceRepository = parkingPlaceRepository;
+	}
 
-    public List<ParkingPlace> getAllParkingPlaces() {
-        return parkingPlaceRepository.findAll();
-    }
-    
-    public ParkingPlace addNewParkingPlace(ParkingPlace p) {
-    	return this.parkingPlaceRepository.save(p);
-    }
+	public List<ParkingPlace> getAllParkingPlaces() {
+		return parkingPlaceRepository.findAll();
+	}
+
+	public ParkingPlace addNewParkingPlace(ParkingPlace p) {
+		return this.parkingPlaceRepository.save(p);
+	}
 }

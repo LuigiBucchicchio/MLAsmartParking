@@ -18,45 +18,45 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @Entity
 @Table(
-        name = "users",
-        uniqueConstraints = {
-                @UniqueConstraint(name = "user_email_unique", columnNames = "email")
-        })
+		name = "users",
+		uniqueConstraints = {
+				@UniqueConstraint(name = "user_email_unique", columnNames = "email")
+		})
 public class User {
 
-    @Column(
-            updatable = false
-    )
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+	@Column(
+			updatable = false
+			)
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
 
-    private String name;
+	private String name;
 
 
-    @NotNull
-    @Column(name = "email")
-    @Email(regexp = ".+@.+\\..+", message = "*Please provide a valid Email")
-    @NotEmpty(message = "*Please provide an email")
-    private String email;
+	@NotNull
+	@Column(name = "email")
+	@Email(regexp = ".+@.+\\..+", message = "*Please provide a valid Email")
+	@NotEmpty(message = "*Please provide an email")
+	private String email;
 
-    private String username;
+	private String username;
 
-    @NotNull
-    @NotEmpty(message = "*Please provide a Password")
-    private String password;
+	@NotNull
+	@NotEmpty(message = "*Please provide a Password")
+	private String password;
 
-    @Column(name = "phone_number", nullable = false)
-    private String phoneNumber;
+	@Column(name = "phone_number", nullable = false)
+	private String phoneNumber;
 
-    private ApplicationUserRole role;
+	private ApplicationUserRole role;
 
-    public User(String name, @Email(message = "*Please provide a valid Email") @NotEmpty(message = "*Please provide an email") String email, String username, @NotEmpty(message = "*Please provide your password") String password, String phoneNumber, ApplicationUserRole role) {
-        this.name = name;
-        this.email = email;
-        this.username = username;
-        this.password = password;
-        this.phoneNumber = phoneNumber;
-        this.role = role;
-    }
+	public User(String name, @Email(message = "*Please provide a valid Email") @NotEmpty(message = "*Please provide an email") String email, String username, @NotEmpty(message = "*Please provide your password") String password, String phoneNumber, ApplicationUserRole role) {
+		this.name = name;
+		this.email = email;
+		this.username = username;
+		this.password = password;
+		this.phoneNumber = phoneNumber;
+		this.role = role;
+	}
 }

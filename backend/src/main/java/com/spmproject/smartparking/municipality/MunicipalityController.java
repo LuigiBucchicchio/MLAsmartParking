@@ -5,26 +5,27 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping(path = "municipality")
 public class MunicipalityController {
 
-    private final MunicipalityService municipalityService;
+	private final MunicipalityService municipalityService;
 
-    @Autowired
-    public MunicipalityController(MunicipalityService municipalityService) {
-        this.municipalityService = municipalityService;
-    }
+	@Autowired
+	public MunicipalityController(MunicipalityService municipalityService) {
+		this.municipalityService = municipalityService;
+	}
 
-    @PreAuthorize("hasAuthority('municipality:read')")
-    @GetMapping
-    public List<Municipality> getAllMunicipalities() {
-        return municipalityService.getAllMunicipalities();
-    }
+	@PreAuthorize("hasAuthority('municipality:read')")
+	@GetMapping("/all")
+	public List<Municipality> getAllMunicipalities() {
+		return municipalityService.getAllMunicipalities();
+	}
 
-    @PreAuthorize("hasAuthority('municipality:write')")
-    @PostMapping
-    public void registerNewMunicipality(@RequestBody Municipality municipality) {
-        municipalityService.addNewMunicipality(municipality);
-    }
+	@PreAuthorize("hasAuthority('municipality:write')")
+	@PostMapping("/add")
+	public void registerNewMunicipality(@RequestBody Municipality municipality) {
+		municipalityService.addNewMunicipality(municipality);
+	}
 }

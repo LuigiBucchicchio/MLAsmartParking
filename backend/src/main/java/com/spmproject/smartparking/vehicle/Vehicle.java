@@ -15,17 +15,17 @@ import lombok.Data;
 @Entity
 @Data
 public class Vehicle {
-	
+
 	@Id
 	private String vehiclePlate;
-	
+
 	private Enum<VehicleType> type; 
-	
+
 	private String brand;
-	
+
 	@ManyToMany(mappedBy = "vehicle_owned")
 	private Set<Driver> owners;
-	
+
 	@OneToMany
 	private Set<Reservation> reservations;
 }

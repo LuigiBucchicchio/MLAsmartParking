@@ -10,23 +10,23 @@ import java.util.List;
 @Service
 public class MunicipalityService {
 
-    private final MunicipalityRepository municipalityRepository;
+	private final MunicipalityRepository municipalityRepository;
 
-    @Autowired
-    public MunicipalityService(MunicipalityRepository municipalityRepository) {
-        this.municipalityRepository = municipalityRepository;
-    }
+	@Autowired
+	public MunicipalityService(MunicipalityRepository municipalityRepository) {
+		this.municipalityRepository = municipalityRepository;
+	}
 
-    public List<Municipality> getAllMunicipalities() {
-       return municipalityRepository.findAll();
-    }
+	public List<Municipality> getAllMunicipalities() {
+		return municipalityRepository.findAll();
+	}
 
-    public Municipality getMunicipality(long id) {
-        return municipalityRepository.findById(id).orElseThrow(()-> new ItemNotFoundException(id));
-    }
+	public Municipality getMunicipality(long id) {
+		return municipalityRepository.findById(id).orElseThrow(()-> new ItemNotFoundException(id));
+	}
 
-    public void addNewMunicipality(Municipality municipality) {
-        System.out.println(municipality);
-    }
+	public void addNewMunicipality(Municipality municipality) {
+		System.out.println(municipality);
+	}
 }
 

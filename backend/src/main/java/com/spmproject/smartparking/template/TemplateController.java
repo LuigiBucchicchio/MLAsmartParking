@@ -12,22 +12,22 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/")
 public class TemplateController {
 
-    @GetMapping("login")
-    public String getLoginView() {
-        return "login";
-    }
+	@GetMapping("login")
+	public String getLoginView() {
+		return "login";
+	}
 
-    @GetMapping("home")
-    public String homeView(HttpServletRequest request) {
-        if (request.isUserInRole("ROLE_DRIVER"))
-            return "homeDriver";
-        else if (request.isUserInRole("ROLE_POLICEMAN"))
-            return "homePoliceman";
-        else if (request.isUserInRole("ROLE_MUNICIPALITY"))
-            return  "homeMunicipality";
-        else if (request.isUserInRole("ROLE_ADMIN"))
-            return "homeAdmin";
-        else
-            return "noAuth";
-    }
+	@GetMapping("home")
+	public String homeView(HttpServletRequest request) {
+		if (request.isUserInRole("ROLE_DRIVER"))
+			return "homeDriver";
+		else if (request.isUserInRole("ROLE_POLICEMAN"))
+			return "homePoliceman";
+		else if (request.isUserInRole("ROLE_MUNICIPALITY"))
+			return  "homeMunicipality";
+		else if (request.isUserInRole("ROLE_ADMIN"))
+			return "homeAdmin";
+		else
+			return "noAuth";
+	}
 }

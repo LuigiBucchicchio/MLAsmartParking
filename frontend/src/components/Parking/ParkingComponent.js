@@ -1,42 +1,44 @@
 import React from 'react';
-import ParkingService from '../services/ParkingService';
+import axios from 'axios';
+const PARKING_REST_API_URL = "/parking-place/all";
 
 class ParkingComponent extends React.Component {
 
-    constructor (){
-        super(props)
+    constructor(props) {
+        super(props);
         this.state = {
-            parkingplaces:[]
+            parkingplaces: []
         }
     }
 
-    componentDidMount(){
-        ParkingService.getParkingPlaces().then((response) => {
+    componentDidMount() {
+        //get all parkingPlaces
+        axios.get(PARKING_REST_API_URL).then((response) => {
             this.setState({ parkingplaces: response.data })
         })
     }
-    render (){
+    render() {
+        //ritorna in formato tabellare
         return (
             <div>
-                <h1 className = "text-center"> Parking Places List</h1>
-                <table className = "table table-striped">
+                <table className="table table-hover table-dark">
                     <thead>
                         <tr>
-                            <td> ParkingPlace ID </td>
-                            <td> ParkingPlace spotsNumber</td>
-                            <td> ParkingPlace address</td>
+                            <th scope="col">ParkingPlace ID</th>
+                            <th scope="col">ParkingPlace spotsNumber</th>
+                            <th scope="col">ParkingPlace address</th>
                         </tr>
                     </thead>
                     <tbody>
                         {
                             this.state.parkingplaces.map(
                                 parkingplace =>
-                                <tr key= {parkingplace.id}>
-                                    <td> {parkingplace.id}</td>
-                                    <td> {parkingplace.spotsNumber}</td>
-                                    <td> {parkingplace.address}</td>
+                                    <tr key={parkingplace.id}>
+                                        <td> {parkingplace.id}</td>
+                                        <td> {parkingplace.spotsNumber}</td>
+                                        <td> {parkingplace.address}</td>
 
-                                </tr>
+                                    </tr>
                             )
                         }
                     </tbody>

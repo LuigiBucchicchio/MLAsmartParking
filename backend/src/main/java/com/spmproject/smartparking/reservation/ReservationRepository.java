@@ -1,7 +1,7 @@
 package com.spmproject.smartparking.reservation;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ReservationRepository extends CrudRepository<Reservation, Long>{
+public interface ReservationRepository extends JpaRepository<Reservation, Long>{
 
 }
