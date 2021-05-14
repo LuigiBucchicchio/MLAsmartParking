@@ -2,7 +2,7 @@ import {Fragment, useState } from 'react';
 import axios from 'axios';
 
 import Home from './components/Home/Home'
-import Login from './components/Login/Login'
+import Login from './components/Auth/Login'
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
