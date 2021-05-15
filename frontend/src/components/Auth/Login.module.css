@@ -1,9 +1,9 @@
-body{
+.body{
 	margin:0;
 	color:#6a6f8c;
 	background:#aaa;
 	font:600 16px/18px 'Open Sans',sans-serif;
-	margin-top: 3%;
+	padding: 2% 0;
 }
 *,:after,:before{box-sizing:border-box}
 .clearfix:after,.clearfix:before{content:'';display:table}
