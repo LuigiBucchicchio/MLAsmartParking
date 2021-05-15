@@ -7,8 +7,8 @@ const Login = (props) => {
     
     const { register, handleSubmit } = useForm();
 
-    const onSubmit = d => {
-        alert(JSON.stringify(d));
+    const onSubmit = data => {
+        props.login(data)
     }
 
     return (
@@ -44,11 +44,11 @@ const Login = (props) => {
                             </div>
                             <div className={classes.group}>
                                 <label htmlFor="pass"  className={classes.label}>Email Address</label>
-                                <input ctype="text"  className={classes.input}  {...register("email")}  />
+                                <input ctype="text"  className={classes.input}  {...register("emailreg")}  />
                             </div>
                             <div className={classes.group}>
                                 <label htmlFor="pass" className={classes.label}>Password</label>
-                                <input type="password" className={classes.input} data-type="password"  {...register("password")} />
+                                <input type="password" className={classes.input} data-type="password"  {...register("passwordpass")} />
                             </div>
                             <div className={classes.group}>
                                 <label htmlFor="pass" className={classes.label}>Repeat Password</label>

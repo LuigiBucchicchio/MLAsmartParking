@@ -14,11 +14,18 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [error, setError] = useState("");
 
-  const loginHandler = (email, password) => {
-    console.log("login handler")
-    // We should of course check email and password
-    // But it's just a dummy/ demo anyways
+  const loginHandler = (data) => {
+    axios.post('http://localhost:8080/login', {
+      email    : data.email,
+      password : data.password
+    })
+  .then(user => {
+    console.log(user)
     setIsLoggedIn(true);
+  })
+  .catch(err => {
+    console.log(err)
+  })
   };
 
   const logoutHandler = () => {
