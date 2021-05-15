@@ -3,20 +3,18 @@ import axios from 'axios'
 
 const MUNICIPALITY_REST_API_URL = process.env.API_URL+'/municipality';
 
-const MunicipalityService = () => {
+export default axios.create({
+  baseURL: process.env.MUNICIPALITY_REST_API_URL,
+  responseType: "json"
+});
 
-    const [municipality, getMunicipalities] = useState('');
-   
-    //da levare solo per test
-    const getAllMunicipalities = () => {
-        axios.get(`${MUNICIPALITY_REST_API_URL}`)
-        .then((res) => {
-            const allMunicipalities = res.data//municipalities.allMunicipalities
-        })
-        .catch(err => console.log(`Error: ${err}`))
-    }
 
-    return getAllMunicipalities
-}
+       
+// axios.get(`${MUNICIPALITY_REST_API_URL}`)
+//             .then(res => {
+//                 console.log(res)
+//                 const persons = res.data;
+//                 this.setState({ persons });
+//             })
+//}
 
-export default MunicipalityService;
