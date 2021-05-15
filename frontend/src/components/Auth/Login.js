@@ -7,6 +7,7 @@ const Login = (props) => {
 
     const submitHandler = e => {
         e.preventDefault();
+        console.log(details.email)
 
         props.login(details);
     }
@@ -22,16 +23,16 @@ const Login = (props) => {
                     <form onSubmit={submitHandler} className={classes.loginForm}>
                         <div className={classes.signInHtm} >
                             <div className={classes.group} >
-                                <label htmlFor="name">Name:</label>
+                                <label htmlFor="name" className={classes.label}>Name:</label>
                                 <input type="text" name="name" id="name" onChange={e => setDetails} />
                             </div>
                             <div className={classes.group} >
-                                <label htmlFor="email">Email:</label>
-                                <input type="email" name="email" id="email" />
+                                <label htmlFor="email" className={classes.label}>Email:</label>
+                                <input type="email" name="email" id="email" onChange={e => setDetails}/>
                             </div>
                             <div className={classes.group} >
-                                <label htmlFor="password">Password:</label>
-                                <input type="password" name="password" id="password" />
+                                <label htmlFor="password" className={classes.label}>Password:</label>
+                                <input type="password" name="password" id="password" onChange={e => setDetails}/>
                             </div>
                             <div className={classes.group}>
                                 <input type="submit" className={classes.button} value="Sign In" />
@@ -39,26 +40,26 @@ const Login = (props) => {
                         </div>
                         <div className={classes.signUpHtm}>
                             <div className={classes.group}>
-                                <label for="user" class="label">Username</label>
-                                <input id="user" type="text" class="input" />
+                                <label for="user" className={classes.label}>Username</label>
+                                <input id="user" type="text" className={classes.input} />
                             </div>
                             <div className={classes.group}>
-                                <label for="pass" class="label">Password</label>
-                                <input id="pass" type="password" class="input" data-type="password" />
+                                <label for="pass" className={classes.label}>Password</label>
+                                <input id="pass" type="password" className={classes.input} data-type="password" />
                             </div>
                             <div className={classes.group}>
-                                <label for="pass" class="label">Repeat Password</label>
-                                <input id="pass" type="password" class="input" data-type="password" />
+                                <label for="pass" className={classes.label}>Repeat Password</label>
+                                <input id="pass" type="password" className={classes.input} data-type="password" />
                             </div>
                             <div className={classes.group}>
-                                <label for="pass" class="label">Email Address</label>
-                                <input id="pass" type="text" class="input" />
+                                <label for="pass"  className={classes.label}>Email Address</label>
+                                <input id="pass" type="text"  className={classes.input} />
                             </div>
                             <div className={classes.group}>
-                                <input type="submit" class="button" value="Sign Up" />
+                                <input type="submit" className={classes.button} value="Sign Up" />
                             </div>
-                            <div class="hr"></div>
-                            <div class="foot-lnk">
+                            <div  className={classes.hr}></div>
+                            <div className={classes.footLnk}>
                                 <label for="tab-1">Already Member?</label>
                             </div>
                         </div>

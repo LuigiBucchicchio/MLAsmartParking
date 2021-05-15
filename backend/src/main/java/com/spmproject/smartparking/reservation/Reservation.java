@@ -19,14 +19,14 @@ public class Reservation {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long id;
-	
+
 	private Timestamp startingTime;
-	
+
 	private Timestamp endingTime;
 
 	@ManyToOne
 	private ParkingSpot parkingSpot;
-	
+
 	@ManyToOne
 	private Vehicle vehicle;
 }

@@ -1,7 +1,7 @@
 package com.spmproject.smartparking.driver;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface DriverRepository  extends CrudRepository<Driver, Long> {
+public interface DriverRepository  extends JpaRepository<Driver, Long> {
 
 }

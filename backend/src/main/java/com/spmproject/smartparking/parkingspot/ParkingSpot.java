@@ -18,13 +18,13 @@ public class ParkingSpot {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long id;
-	
+
 	private long parkingPlaceID;
-	
+
 	private int progressiveNumber;
-	
+
 	private int level;
 
 	@OneToMany
-    private Set<Reservation> reservations;
+	private Set<Reservation> reservations;
 }

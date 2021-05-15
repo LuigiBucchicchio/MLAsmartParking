@@ -2,24 +2,20 @@ package com.spmproject.smartparking.policeman;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
 import com.spmproject.smartparking.auth.User;
 import com.spmproject.smartparking.parkingPlace.ParkingPlace;
 
 import com.spmproject.smartparking.security.ApplicationUserRole;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@EqualsAndHashCode(callSuper=true)
 @NoArgsConstructor
 public class Policeman extends User {
 

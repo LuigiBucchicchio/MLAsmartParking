@@ -14,32 +14,32 @@ import static javax.persistence.GenerationType.SEQUENCE;
 @Table(name = "parking_place")
 public class ParkingPlace {
 
-    @SequenceGenerator(
-            name = "parking_place_sequence",
-            sequenceName = "parking_place_sequence",
-            allocationSize = 1
-    )
-    @GeneratedValue(
-            strategy = SEQUENCE,
-            generator = "parking_place_sequence"
-    )
-    @Column(
-            name = "id",
-            updatable = false
-    )
-    @Id
-    private Long id;
+	@SequenceGenerator(
+			name = "parking_place_sequence",
+			sequenceName = "parking_place_sequence",
+			allocationSize = 1
+			)
+	@GeneratedValue(
+			strategy = SEQUENCE,
+			generator = "parking_place_sequence"
+			)
+	@Column(
+			name = "id",
+			updatable = false
+			)
+	@Id
+	private Long id;
 
-    @Column(name = "spots_number", nullable = false)
-    private int spotsNumber;
-    
-    //private int levelsNumber;
+	@Column(name = "spots_number", nullable = false)
+	private int spotsNumber;
 
-    @Column(nullable = false)
-    private String address;
+	//private int levelsNumber;
 
-    @ManyToOne
-    @JoinColumn(name = "municipality_id", referencedColumnName = "id", nullable = false)
-    private Municipality municipality;
+	@Column(nullable = false)
+	private String address;
+
+	@ManyToOne
+	@JoinColumn(name = "municipality_id", referencedColumnName = "id", nullable = false)
+	private Municipality municipality;
 
 }

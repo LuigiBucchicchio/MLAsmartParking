@@ -6,6 +6,7 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,25 +15,32 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.spmproject.smartparking.ItemNotFoundException;
 import com.spmproject.smartparking.driver.Driver;
-import com.spmproject.smartparking.driver.DriverRepository;
+import com.spmproject.smartparking.driver.DriverService;
 import com.spmproject.smartparking.reservation.Reservation;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 public class VehicleController {
+
+	private VehicleService vehicleService;
+	private DriverService driverService;
+
 	@Autowired
-	private VehicleRepository vehicleRepository;
-	private DriverRepository driverRepository;
- 
+	public VehicleController(VehicleService vehicleService, DriverService driverService) {
+		this.driverService=driverService;
+		this.vehicleService=vehicleService;
+	}
+
+
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@GetMapping("/vehicle/all")
+	@GetMapping("vehicle/all")
 	public List<Vehicle> all() {
-		return (List<Vehicle>) vehicleRepository.findAll();
+		return vehicleService.getAllVehicles();
 	}
 
 	@PreAuthorize("hasRole('ROLE_ADMIN','ROLE_DRIVER')")
-	@PostMapping("/vehicle/add")
+	@PostMapping("vehicle/add")
 	public Vehicle newVehicle(@RequestParam String vehiclePlate
 			, @RequestParam String type, @RequestParam String brand , @RequestParam long driverID) {
 		Vehicle v= new Vehicle();
@@ -42,31 +50,31 @@ public class VehicleController {
 		VehicleType vehicleType=typeMap(type);
 		v.setType(vehicleType);
 
-		Driver d = driverRepository.findById(driverID).orElseThrow(() -> new ItemNotFoundException(driverID));
+		Driver d = driverService.one(driverID);
 		Set<Driver> driverSet = new HashSet<Driver>();
 		driverSet.add(d);
 		v.setOwners(driverSet);
 		v.setReservations(new HashSet<Reservation>());
 		d.getVehicle_owned().add(v);
-		return vehicleRepository.save(v);
+		return vehicleService.addNewVehicle(v);
 	}
 
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@GetMapping("/vehicle/{vehiclePlate}")
+	@GetMapping("vehicle/{vehiclePlate}")
 	public Vehicle one(@PathVariable String vehiclePlate) {
-		return vehicleRepository.findById(vehiclePlate).orElseThrow(() -> new ItemNotFoundException(vehiclePlate));
+		return vehicleService.one(vehiclePlate);
 	}
 
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@PutMapping("/vehicle/{vehiclePlate}")
+	@PutMapping("vehicle/{vehiclePlate}")
 	public Vehicle replaceVehicle(@RequestParam String vehiclePlate
 			, @RequestParam String type, @RequestParam String brand , @RequestParam long driverID){
-		Vehicle v = vehicleRepository.findById(vehiclePlate).orElseThrow(() -> new ItemNotFoundException(vehiclePlate));
+		Vehicle v = vehicleService.one(vehiclePlate);
 
 		if(!(v.getBrand().equals(brand)))
 			v.setBrand(brand);
 
-		Driver d = driverRepository.findById(driverID).orElseThrow(() -> new ItemNotFoundException(driverID));
+		Driver d = driverService.one(driverID);
 
 		if(!v.getOwners().contains(d)) {
 			v.getOwners().add(d);
@@ -82,10 +90,10 @@ public class VehicleController {
 	}
 
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@DeleteMapping("/vehicle/{vehiclePlate}")
+	@DeleteMapping("vehicle/{vehiclePlate}")
 	public void deleteVehicle(@PathVariable String vehiclePlate) {
-		vehicleRepository.findById(vehiclePlate).orElseThrow(() -> new ItemNotFoundException(vehiclePlate));
-		vehicleRepository.deleteById(vehiclePlate);
+		vehicleService.one(vehiclePlate);
+		vehicleService.deleteById(vehiclePlate);
 	}
 
 	//map string type to the corresponding VehicleType enum
