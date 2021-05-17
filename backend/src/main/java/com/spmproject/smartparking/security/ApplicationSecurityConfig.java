@@ -1,6 +1,9 @@
 package com.spmproject.smartparking.security;
 
 import com.spmproject.smartparking.auth.ApplicationUserService;
+import com.spmproject.smartparking.jwt.JwtConfig;
+import com.spmproject.smartparking.jwt.JwtTokenVeirfier;
+import com.spmproject.smartparking.jwt.JwtUsernamePasswordAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,11 +13,14 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import javax.crypto.SecretKey;
 
 import static com.spmproject.smartparking.security.ApplicationUserRole.*;
 
@@ -25,43 +31,35 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
 	private final ApplicationUserService applicationUserService;
+	private final SecretKey secretKey;
+	private final JwtConfig jwtConfig;
 
 
-	@Autowired
-	public ApplicationSecurityConfig(ApplicationUserService applicationUserService) {
-
+	public ApplicationSecurityConfig(ApplicationUserService applicationUserService,
+									 SecretKey secretKey,
+									 JwtConfig jwtConfig) {
 		this.applicationUserService = applicationUserService;
+		this.secretKey = secretKey;
+		this.jwtConfig = jwtConfig;
 	}
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
-		//.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-		//.and()
+				//.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+				//.and()
+				.csrf().disable()
 				.cors().configurationSource(corsConfigurationSource())
 				.and()
-		.csrf().disable()
-		.authorizeRequests()
-		.antMatchers("/", "index", "/css/*", "/js/*", "/municipality/all").permitAll()
-		.antMatchers("/driver/**").hasAnyRole(DRIVER.name(), ADMIN.name())
-		.anyRequest()
-		.authenticated()
-		.and()
-		.formLogin()
-		.loginPage("/login").permitAll()
-		.defaultSuccessUrl("/home")
-		.passwordParameter("password")
-		.usernameParameter("email")
-		.and()
-		.rememberMe() // 2 weeks by default
-		.rememberMeParameter("remember-me")
-		.and()
-		.logout()
-		.logoutUrl("/logout")
-		.clearAuthentication(true)
-		.invalidateHttpSession(true)
-		.deleteCookies("JSESSIONID", "remember-me")
-		.logoutSuccessUrl("/login")
+				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+				.and()
+				.addFilter(new JwtUsernamePasswordAuthenticationFilter(authenticationManager(), jwtConfig, secretKey))
+				.addFilterAfter(new JwtTokenVeirfier(secretKey, jwtConfig), JwtUsernamePasswordAuthenticationFilter.class)
+				.authorizeRequests()
+				.antMatchers("/", "index", "/css/*", "/js/*", "/municipality/all").permitAll()
+				.antMatchers("/driver/**").hasAnyRole(DRIVER.name(), ADMIN.name())
+				.anyRequest()
+				.authenticated()
 		;
 	}
 

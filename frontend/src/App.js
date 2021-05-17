@@ -16,7 +16,7 @@ function App() {
 
   const loginHandler = (data) => {
     axios.post('http://localhost:8080/login', {
-      email    : data.email,
+      username    : data.email,
       password : data.password
     })
   .then(user => {
