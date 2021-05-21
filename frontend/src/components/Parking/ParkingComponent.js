@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-const PARKING_REST_API_URL = "/parking-place/all";
+const PARKING_REST_API_URL = "http://localhost:8080//parking-place/all";
 
 class ParkingComponent extends React.Component {
 
@@ -11,9 +11,16 @@ class ParkingComponent extends React.Component {
         }
     }
 
+    // componentDidMount() {
+    //     //get all parkingPlaces
+    //     axios.get(PARKING_REST_API_URL).then((response) => {
+    //         this.setState({ parkingplaces: response.data })
+    //     })
+    // }
+
     componentDidMount() {
         //get all parkingPlaces
-        axios.get(PARKING_REST_API_URL).then((response) => {
+        axios.get("http://localhost:8080/municipality/all").then((response) => {
             this.setState({ parkingplaces: response.data })
         })
     }

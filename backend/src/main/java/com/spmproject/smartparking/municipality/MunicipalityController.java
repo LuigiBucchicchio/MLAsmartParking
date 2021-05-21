@@ -17,7 +17,7 @@ public class MunicipalityController {
 		this.municipalityService = municipalityService;
 	}
 
-	@PreAuthorize("hasAuthority('municipality:read')")
+	//@PreAuthorize("hasAuthority('municipality:read')")
 	@GetMapping("/all")
 	public List<Municipality> getAllMunicipalities() {
 		return municipalityService.getAllMunicipalities();
