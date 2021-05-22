@@ -22,10 +22,6 @@ const Login = (props) => {
                     <form onSubmit={handleSubmit(onSubmit)} className={classes.loginForm}>
                         <div className={classes.signInHtm} >
                             <div className={classes.group} >
-                                <label htmlFor="name" className={classes.label}>Name:</label>
-                                <input type="text" {...register("name")}/>
-                            </div>
-                            <div className={classes.group} >
                                 <label htmlFor="email" className={classes.label}>Email:</label>
                                 <input type="email" {...register("email")}/>
                             </div>
@@ -38,13 +34,17 @@ const Login = (props) => {
                             </div>
                         </div>
                         <div className={classes.signUpHtm}>
-                            <div className={classes.group}>
-                                <label htmlFor="user" className={classes.label}>Username</label>
-                                <input type="text" className={classes.input}  {...register("username")} />
+                        <div className={classes.group} >
+                                <label htmlFor="name" className={classes.label}>Name:</label>
+                                <input type="text" {...register("name")}/>
                             </div>
                             <div className={classes.group}>
                                 <label htmlFor="pass"  className={classes.label}>Email Address</label>
                                 <input ctype="text"  className={classes.input}  {...register("emailreg")}  />
+                            </div>
+                            <div className={classes.group}>
+                                <label htmlFor="user" className={classes.label}>Username</label>
+                                <input type="text" className={classes.input}  {...register("username")} />
                             </div>
                             <div className={classes.group}>
                                 <label htmlFor="pass" className={classes.label}>Password</label>
@@ -54,7 +54,10 @@ const Login = (props) => {
                                 <label htmlFor="pass" className={classes.label}>Repeat Password</label>
                                 <input type="password" className={classes.input} data-type="password" />
                             </div>
-                        
+                            <div className={classes.group}>
+                                <label htmlFor="pass" className={classes.label}>Repeat Password</label>
+                                <input type="tel" className={classes.input} data-type="password" />
+                            </div>
                             <div className={classes.group}>
                                 <input type="submit" className={classes.button} value="Sign Up" />
                             </div>
