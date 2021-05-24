@@ -3,6 +3,9 @@ package com.spmproject.smartparking.parkingPlace;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.spmproject.smartparking.ItemNotFoundException;
+import com.spmproject.smartparking.municipality.MunicipalityRepository;
+
 import java.util.List;
 
 @Service

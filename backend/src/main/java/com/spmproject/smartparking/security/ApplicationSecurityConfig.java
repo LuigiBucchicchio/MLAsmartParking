@@ -12,6 +12,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import static com.spmproject.smartparking.security.ApplicationUserRole.*;
 
@@ -36,6 +39,8 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 		//.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
 		//.and()
 		.csrf().disable()
+		.cors().configurationSource(corsConfigurationSource())
+		.and()
 		.authorizeRequests()
 		.antMatchers("/", "index", "/css/*", "/js/*").permitAll()
 		.antMatchers("/driver/**").hasAnyRole(DRIVER.name(), ADMIN.name())
@@ -58,6 +63,13 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 		.deleteCookies("JSESSIONID", "remember-me")
 		.logoutSuccessUrl("/login")
 		;
+	}
+	
+	@Bean
+	CorsConfigurationSource corsConfigurationSource() {
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
+		return source;
 	}
 
 	@Override

@@ -2,6 +2,8 @@ package com.spmproject.smartparking.parkingPlace;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +20,7 @@ import com.spmproject.smartparking.reservation.Reservation;
 import java.util.HashSet;
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "", allowedHeaders = "")
 @RestController
 @RequestMapping(path = "parking-place")
 public class ParkingPlaceController {
@@ -35,24 +37,34 @@ public class ParkingPlaceController {
 		this.parkingSpotService = parkingSpotService;
 	}
 
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	//@PreAuthorize("hasAuthority('parkingPlace:read')")
 	@GetMapping("/all")
 	public List<ParkingPlace> getAllParkingPlaces() {
 		return parkingPlaceService.getAllParkingPlaces();
 	}
 
-	@PreAuthorize("hasRole('ROLE_ADMIN','ROLE_DRIVER')")
+	//@PreAuthorize("hasAuthority('parkingPlace:write')")
 	@PostMapping("/add")
 	public ParkingPlace newParkingPlace(@RequestParam int spotsNumber
-			, @RequestParam String address, @RequestParam long municipalityID) {
+			, @RequestParam String address) {
 		ParkingPlace p= new ParkingPlace();
-		Municipality m= municipalityService.getMunicipality(municipalityID);
+		
+		//try to get Municipality from context
+		String username="";
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		if (principal instanceof UserDetails) {
+		  username = ((UserDetails)principal).getUsername();
+		} else {
+		  username = principal.toString();
+		}
+		
+		Municipality m= municipalityService.getMunicipality(username);
 		p.setAddress(address);
 		p.setSpotsNumber(spotsNumber);
 		for(int i=0;i<spotsNumber;i++) {
 			ParkingSpot s = new ParkingSpot();
 			s.setLevel(0);
-			s.setParkingPlaceID(p.getId());
+			s.setParkingPlaceID(p.getParkingPlaceID());
 			s.setProgressiveNumber(i+1);
 			s.setReservations(new HashSet<Reservation>());
 			parkingSpotService.addNewParkingSpot(s);

@@ -1,15 +1,12 @@
 import {Fragment} from 'react';
-import axios from 'axios';
 import Header from './components/Layout/Header'
 import Parking from './components/Parking/Parking'
 import './App.css';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ParkingComponent from './components/Parking/ParkingComponent';
+import MunicipalityComponent from './components/Municipality/MunicipalityComponent';
 
-const api = axios.create({
-  baseURL: 'http://localhost:8080'
-})
 
 function App() {
   return (
