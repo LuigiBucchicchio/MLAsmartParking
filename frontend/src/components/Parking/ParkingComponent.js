@@ -10,6 +10,13 @@ class ParkingComponent extends React.Component {
         }
       }
 
+    // componentDidMount() {
+    //     //get all parkingPlaces
+    //     axios.get(PARKING_REST_API_URL).then((response) => {
+    //         this.setState({ parkingplaces: response.data })
+    //     })
+    // }
+
     componentDidMount() {
         //this.setState( {parkingplaces : []});
         ParkingService.getParkingPlaces().then((response) => {

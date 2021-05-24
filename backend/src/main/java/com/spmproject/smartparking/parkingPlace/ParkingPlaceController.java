@@ -37,7 +37,7 @@ public class ParkingPlaceController {
 		this.parkingSpotService = parkingSpotService;
 	}
 
-	//@PreAuthorize("hasAuthority('parkingPlace:read')")
+	//@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/all")
 	public List<ParkingPlace> getAllParkingPlaces() {
 		return parkingPlaceService.getAllParkingPlaces();
