@@ -18,15 +18,13 @@ class ParkingComponent extends React.Component {
     // }
 
     componentDidMount() {
-        //this.setState( {parkingplaces : []});
         ParkingService.getParkingPlaces().then((response) => {
             this.setState({ parkingplaces : response.data})
-        });
+        }); 
       }
 
     render() {
         //ritorna in formato tabellare
-        var pp = new Array(this.state.parkingplaces);
         return (
             <div>
                 <table className="table table-hover table-dark">
@@ -39,7 +37,7 @@ class ParkingComponent extends React.Component {
                     </thead>
                     <tbody>
                         {
-                            pp.map( 
+                            this.state.parkingplaces.map( 
                                 parkingplace  =>
                                     <tr key={parkingplace.parkingPlaceID}>
                                         <td> {parkingplace.parkingPlaceID}</td>
