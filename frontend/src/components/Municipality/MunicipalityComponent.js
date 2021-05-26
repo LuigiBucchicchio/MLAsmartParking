@@ -1,6 +1,5 @@
 import React from 'react';
-import axios from 'axios';
-const ADDPLACE_REST_API_URL = "http://localhost:8080/parking-place/add";
+import MunicipalityService from './MunicipalityService';
 
 class MunicipalityComponent extends React.Component {
 
@@ -10,39 +9,37 @@ class MunicipalityComponent extends React.Component {
             spotsnumber: '',
             address: ''
         }
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-  handleChange(event) { 
-         this.setState({spotsnumber: event.target.spotsnumber,
-        address: event.target.address,});
-          }
+    spotsNumberChange = (event) => {
+      this.setState({spotsnumber: event.target.value});
+    }
 
-  handleSubmit(event) {
-    axios.post(ADDPLACE_REST_API_URL, {
-        spotsNumber: this.state.spotsnumber,
-        address: this.state.address
-      })
-      .then(function (response) {
-        console.log(response);
-      })
+    addressChange = (event) => {
+      this.setState({address: event.target.value});
+    }
+
+  handleSubmit = (event) => {
+    MunicipalityService.newParkingPlace(this.state.spotsnumber,this.state.address).then(response=> console.log("repsonse", response.status))
     event.preventDefault();
   }
 
 render() {
     return ( 
       <form onSubmit={this.handleSubmit}>
-          <label>
-          Spots Number:
-           <input type="number" min="1" spotsnumber={this.state.spotsnumber} onChange={this.handleChange} />
-          </label>
-          <label>
-          Address:
-           <input type="text" address={this.state.address} onChange={this.handleChange} />
-          </label>
+        <h1>Spots Number : {this.state.spotsnumber}</h1>
+        <input
+          type='number'
+          min ='1'
+          onChange={this.spotsNumberChange}
+        />
+        <h1>Address : {this.state.address}</h1>
+        <input
+          type='text'
+          onChange={this.addressChange}
+        />
         <input type="submit" value="Submit" />
-      </form>
+        </form>
     );
   }
 

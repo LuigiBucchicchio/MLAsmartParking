@@ -7,11 +7,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.spmproject.smartparking.municipality.Municipality;
 import com.spmproject.smartparking.municipality.MunicipalityService;
 import com.spmproject.smartparking.parkingspot.ParkingSpot;
@@ -44,11 +46,12 @@ public class ParkingPlaceController {
 	public List<ParkingPlace> getAllParkingPlaces() {
 		return parkingPlaceService.getAllParkingPlaces();
 	}
-
+	
 	//@PreAuthorize("hasAuthority('parkingPlace:write')")
 	@PostMapping("/add")
-	public ParkingPlace newParkingPlace(@RequestParam int spotsNumber
-			, @RequestParam String address) {
+	public ParkingPlace newParkingPlace(@RequestBody ParkingPlacePayload payload) {
+		int spotsNumber= payload.getSpotsNumber();
+		String address = payload.getAddress();
 		ParkingPlace p= new ParkingPlace();
 		
 		//try to get Municipality from context

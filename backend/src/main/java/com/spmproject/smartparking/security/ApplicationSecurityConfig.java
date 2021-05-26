@@ -42,7 +42,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 		.cors().configurationSource(corsConfigurationSource())
 		.and()
 		.authorizeRequests()
-		.antMatchers("/", "index", "/css/*", "/js/*", "/parking-place/all", "/municipality/all").permitAll()
+		.antMatchers("/", "index", "/css/*", "/js/*", "/parking-place/all", "/municipality/all", "/parking-place/add").permitAll()
 		.antMatchers("/driver/**").hasAnyRole(DRIVER.name(), ADMIN.name())
 		.anyRequest()
 		.authenticated()
