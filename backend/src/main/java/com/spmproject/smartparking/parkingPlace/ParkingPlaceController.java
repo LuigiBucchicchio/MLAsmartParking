@@ -50,22 +50,29 @@ public class ParkingPlaceController {
 	//@PreAuthorize("hasAuthority('parkingPlace:write')")
 	@PostMapping("/add")
 	public ParkingPlace newParkingPlace(@RequestBody ParkingPlacePayload payload) {
+		
 		int spotsNumber= payload.getSpotsNumber();
 		String address = payload.getAddress();
 		ParkingPlace p= new ParkingPlace();
 		
-		//try to get Municipality from context
-		String username="";
+		/*try to get Municipality from context
+		 String username="";
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		if (principal instanceof UserDetails) {
 		  username = ((UserDetails)principal).getUsername();
 		} else {
 		  username = principal.toString();
 		}
-		
 		Municipality m= municipalityService.getMunicipality(username);
+		*/
+		
+		Municipality m= municipalityService.getMunicipality((long)1);
+		System.out.println(m.toString());
 		p.setAddress(address);
 		p.setSpotsNumber(spotsNumber);
+		p.setMunicipality(m);
+		ParkingPlace saved = parkingPlaceService.addNewParkingPlace(p);
+		System.out.println(saved.toString());
 		for(int i=0;i<spotsNumber;i++) {
 			ParkingSpot s = new ParkingSpot();
 			s.setLevel(0);
@@ -74,8 +81,7 @@ public class ParkingPlaceController {
 			s.setReservations(new HashSet<Reservation>());
 			parkingSpotService.addNewParkingSpot(s);
 		}
-		p.setMunicipality(m);
-		return parkingPlaceService.addNewParkingPlace(p);
+		return saved;
 	}
 
 }

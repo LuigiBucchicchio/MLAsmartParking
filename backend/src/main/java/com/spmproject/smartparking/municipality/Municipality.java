@@ -7,6 +7,7 @@ import javax.persistence.*;
 @Entity
 @Data
 @EqualsAndHashCode(callSuper=true)
+@ToString(callSuper=true)
 @NoArgsConstructor
 @Table
 public class Municipality extends User
