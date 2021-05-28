@@ -20,7 +20,7 @@ class MunicipalityComponent extends React.Component {
     }
 
   handleSubmit = (event) => {
-    MunicipalityService.newParkingPlace(this.state.spotsnumber,this.state.address).then(response=> console.log("repsonse", response.status))
+    MunicipalityService.newParkingPlace(this.state.spotsnumber,this.state.address).then(response=> console.log("response", response.status))
     event.preventDefault();
   }
 

@@ -2,10 +2,11 @@ package com.spmproject.smartparking.municipality;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
-@CrossOrigin(origins = "", allowedHeaders = "")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping(path = "municipality")
 public class MunicipalityController {
@@ -23,9 +24,19 @@ public class MunicipalityController {
 		return municipalityService.getAllMunicipalities();
 	}
 
-	@PreAuthorize("hasAuthority('municipality:write')")
+	//@PreAuthorize("hasAuthority('municipality:write')")
 	@PostMapping("/add")
-	public void registerNewMunicipality(@RequestBody Municipality municipality) {
-		municipalityService.addNewMunicipality(municipality);
+	public void registerNewMunicipality(@RequestBody MunicipalityPayload payload) {
+		
+		Municipality m= new Municipality();
+		m.setName(payload.getName());
+		m.setUsername(payload.getUsername());
+		m.setEmail(payload.getEmail());
+		m.setPhoneNumber(payload.getPhoneNumber());
+
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		m.setPassword(passwordEncoder.encode(payload.getPassword()));
+
+		municipalityService.addNewMunicipality(m);
 	}
 }

@@ -11,11 +11,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
+@RequestMapping(path = "policeman")
 public class PolicemanController {
 
 	private PolicemanService policemanService;
@@ -24,64 +26,64 @@ public class PolicemanController {
 		this.policemanService=policemanService;
 	}
 
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@GetMapping("policeman/all")
+	//@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@GetMapping("/all")
 	public List<Policeman> all() {
 		return policemanService.getAllPolicemen();
 	}
 
-	@PreAuthorize("hasRole('ROLE_ADMIN','ROLE_POLICEMAN')")
-	@PostMapping("policeman/add")
-	public Policeman newPoliceman(@RequestParam String name
-			, @RequestParam String surname, @RequestParam String username, @RequestParam String phoneNumber, @RequestParam String email
-			, @RequestParam String password) {
+	//@PreAuthorize("hasRole('ROLE_ADMIN','ROLE_POLICEMAN')")
+	@PostMapping("/add")
+	public Policeman newPoliceman(@RequestBody PolicemanPayload payload) {
+		
 		Policeman p = new Policeman();
-		p.setName(name);
-		p.setEmail(email);
-		p.setPhoneNumber(phoneNumber);
-		p.setUsername(username);
-		p.setSurname(surname);
+		p.setName(payload.getName());
+		p.setSurname(payload.getSurname());
+		p.setEmail(payload.getEmail());
+		p.setUsername(payload.getUsername());
+		p.setPhoneNumber(payload.getPhoneNumber());
+		
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-		p.setPassword(passwordEncoder.encode(password));
-		return policemanService.addNewPoliceman(p);
+		p.setPassword(passwordEncoder.encode(payload.getPassword()));
+		Policeman saved=policemanService.addNewPoliceman(p);
+		return saved;
 	}
 
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@GetMapping("policeman/{id}")
+	//@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@GetMapping("/{id}")
 	public Policeman one(@PathVariable Long id) {
 		return policemanService.One(id);
 	}
 
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@PutMapping("policeman/{id}")
-	public Policeman replacePoliceman(@RequestParam String name
-			, @RequestParam String surname, @RequestParam String phoneNumber, @RequestParam String email, @RequestParam String username
-			, @RequestParam String password, @PathVariable Long id) {
+	//@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PutMapping("/{id}")
+	public Policeman replacePoliceman(@RequestBody PolicemanPayload payload, @PathVariable Long id) {
 		Policeman p = policemanService.One(id);
 
-		if (!(p.getName().equals(name)))
-			p.setName(name);
+		if (!(p.getName().equals(payload.getName())))
+			p.setName(payload.getName());
 
-		if (!(p.getEmail().equals(email)))
-			p.setEmail(email);
+		if (!(p.getEmail().equals(payload.getEmail())))
+			p.setEmail(payload.getEmail());
 
-		if (!(p.getUsername().equals(username)))
-			p.setUsername(username);
+		if (!(p.getUsername().equals(payload.getUsername())))
+			p.setUsername(payload.getUsername());
 
-		if (!(p.getPhoneNumber().equals(phoneNumber)))
-			p.setPhoneNumber(phoneNumber);
+		if (!(p.getPhoneNumber().equals(payload.getPhoneNumber())))
+			p.setPhoneNumber(payload.getPhoneNumber());
 
-		if (!(p.getSurname().equals(surname)))
-			p.setSurname(surname);
+		if (!(p.getSurname().equals(payload.getSurname())))
+			p.setSurname(payload.getSurname());
 
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-		if (!(passwordEncoder.matches(password, p.getPassword())))
-			p.setPassword(passwordEncoder.encode(password));
-		return p;
+		if (!(passwordEncoder.matches(payload.getPassword(), p.getPassword())))
+			p.setPassword(passwordEncoder.encode(payload.getPassword()));
+		
+		return policemanService.update(p);
 	}
 
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@DeleteMapping("policeman/{id}")
+	//@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@DeleteMapping("/{id}")
 	public void deletePoliceman(@PathVariable Long id) {
 		policemanService.One(id);
 		policemanService.deleteById(id);

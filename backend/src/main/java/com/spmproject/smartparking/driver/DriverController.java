@@ -1,20 +1,18 @@
 package com.spmproject.smartparking.driver;
 
-import java.util.HashSet;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.spmproject.smartparking.vehicle.Vehicle;
-
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping(path="driver")
 public class DriverController {
@@ -26,23 +24,25 @@ public class DriverController {
 		this.driverService=driverService;
 	}
 
-	@PreAuthorize("hasRole('ROLE_ADMIN','ROLE_DRIVER')")
+	//@PreAuthorize("hasRole('ROLE_ADMIN','ROLE_DRIVER')")
 	@PostMapping("/add")
-	public String addNewDriver (@RequestParam String name
-			, @RequestParam String surname, @RequestParam String phoneNumber , @RequestParam String email
-			, @RequestParam String password) {
-
+	public String addNewDriver (@RequestBody DriverPayload payload) {
+		
 		Driver n = new Driver();
-		n.setName(name);
-		n.setSurname(surname);
-		n.setEmail(email);
-		n.setPhoneNumber(phoneNumber);
-		n.setPassword(password);
-		n.setVehicle_owned(new HashSet<Vehicle>());
-		return driverService.addNewDriver(n).toString();
+		n.setName(payload.getName());
+		n.setSurname(payload.getSurname());
+		n.setEmail(payload.getEmail());
+		n.setUsername(payload.getUsername());
+		n.setPhoneNumber(payload.getPhoneNumber());
+		
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		n.setPassword(passwordEncoder.encode(payload.getPassword()));
+		
+		Driver saved= driverService.addNewDriver(n);
+		return saved.toString();
 	}
 
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	//@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/all")
 	public List<Driver> getAllDrivers() {
 		return driverService.getAllDrivers();

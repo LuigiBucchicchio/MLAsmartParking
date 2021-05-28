@@ -1,7 +1,6 @@
 package com.spmproject.smartparking.parkingPlace;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -9,11 +8,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.spmproject.smartparking.municipality.Municipality;
 import com.spmproject.smartparking.municipality.MunicipalityService;
 import com.spmproject.smartparking.parkingspot.ParkingSpot;
@@ -23,7 +20,7 @@ import com.spmproject.smartparking.reservation.Reservation;
 import java.util.HashSet;
 import java.util.List;
 
-@CrossOrigin(origins = "", allowedHeaders = "")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping(path = "parking-place")
 public class ParkingPlaceController {
@@ -67,12 +64,10 @@ public class ParkingPlaceController {
 		*/
 		
 		Municipality m= municipalityService.getMunicipality((long)1);
-		System.out.println(m.toString());
 		p.setAddress(address);
 		p.setSpotsNumber(spotsNumber);
 		p.setMunicipality(m);
 		ParkingPlace saved = parkingPlaceService.addNewParkingPlace(p);
-		System.out.println(saved.toString());
 		for(int i=0;i<spotsNumber;i++) {
 			ParkingSpot s = new ParkingSpot();
 			s.setLevel(0);

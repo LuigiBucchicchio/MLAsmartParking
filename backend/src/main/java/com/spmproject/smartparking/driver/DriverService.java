@@ -27,4 +27,8 @@ public class DriverService {
 	public Driver one(long driverID) {
 		return driverRepository.findById(driverID).orElseThrow(() -> new ItemNotFoundException(driverID));
 	}
+
+	public Driver update(Driver d) {
+		return driverRepository.save(d);
+	}
 }
