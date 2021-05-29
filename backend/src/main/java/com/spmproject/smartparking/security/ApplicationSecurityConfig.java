@@ -2,7 +2,7 @@ package com.spmproject.smartparking.security;
 
 import com.spmproject.smartparking.auth.ApplicationUserService;
 import com.spmproject.smartparking.jwt.JwtConfig;
-import com.spmproject.smartparking.jwt.JwtTokenVeirfier;
+import com.spmproject.smartparking.jwt.JwtTokenVerifier;
 import com.spmproject.smartparking.jwt.JwtUsernamePasswordAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -54,9 +54,9 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 				.and()
 				.addFilter(new JwtUsernamePasswordAuthenticationFilter(authenticationManager(), jwtConfig, secretKey))
-				.addFilterAfter(new JwtTokenVeirfier(secretKey, jwtConfig), JwtUsernamePasswordAuthenticationFilter.class)
+				.addFilterAfter(new JwtTokenVerifier(secretKey, jwtConfig), JwtUsernamePasswordAuthenticationFilter.class)
 				.authorizeRequests()
-				.antMatchers("/", "index", "/css/*", "/js/*", "/municipality/all").permitAll()
+				.antMatchers("/", "index", "/css/*", "/js/*", "/municipality/all", "/driver/add").permitAll()
 				.antMatchers("/driver/**").hasAnyRole(DRIVER.name(), ADMIN.name())
 				.anyRequest()
 				.authenticated()
@@ -66,7 +66,19 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Bean
 	CorsConfigurationSource corsConfigurationSource() {
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-		source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
+		CorsConfiguration config = new CorsConfiguration();
+
+		config.addExposedHeader("Authorization");
+		config.addAllowedMethod("OPTIONS");
+		config.addAllowedMethod("HEAD");
+		config.addAllowedMethod("GET");
+		config.addAllowedMethod("PUT");
+		config.addAllowedMethod("POST");
+		config.addAllowedMethod("DELETE");
+		config.addAllowedMethod("PATCH");
+		//source.registerCorsConfiguration("/**", config);
+
+		source.registerCorsConfiguration("/**", config.applyPermitDefaultValues());
 		return source;
 	}
 
@@ -79,6 +91,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
+
 	@Bean
 	@Override
 	public AuthenticationManager authenticationManagerBean() throws Exception {

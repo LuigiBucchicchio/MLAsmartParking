@@ -44,11 +44,14 @@ public class JwtUsernamePasswordAuthenticationFilter extends UsernamePasswordAut
             UsernameAndPasswordAuthenticationRequest authenticationRequest = new ObjectMapper()
                     .readValue(request.getInputStream(), UsernameAndPasswordAuthenticationRequest.class);
 
+            System.out.println("Auth Request " + authenticationRequest);
             Authentication authentication = new UsernamePasswordAuthenticationToken(
                     authenticationRequest.getUsername(),
                     authenticationRequest.getPassword()
             );
            Authentication authenticate = authenticationManager.authenticate(authentication);
+
+            System.out.println("authenticate " + authenticate);
            return authenticate;
             
         } catch (IOException e) {
@@ -63,7 +66,8 @@ public class JwtUsernamePasswordAuthenticationFilter extends UsernamePasswordAut
                                             Authentication authResult) throws IOException, ServletException {
 
 
-        String token = Jwts.builder()
+        String token = Jwts
+                .builder()
                 .setSubject(authResult.getName())
                 .claim("authorities", authResult.getAuthorities())
                 .setIssuedAt(new Date())
@@ -71,7 +75,9 @@ public class JwtUsernamePasswordAuthenticationFilter extends UsernamePasswordAut
                 .signWith(secretKey)
                 .compact();
 
+        System.out.println("Token " + token);
 
        response.addHeader(jwtConfig.getAuthorizationHeader(), jwtConfig.getTokenPrefix() + token);
+
     }
 }

@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.annotation.Nullable;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -46,6 +47,9 @@ public class User {
 	@NotEmpty(message = "*Please provide a Password")
 	private String password;
 
+	@Nullable
+	private String token;
+
 	@Column(name = "phone_number", nullable = false)
 	private String phoneNumber;
 
@@ -56,6 +60,7 @@ public class User {
 		this.email = email;
 		this.username = username;
 		this.password = password;
+		this.token = "";
 		this.phoneNumber = phoneNumber;
 		this.role = role;
 	}

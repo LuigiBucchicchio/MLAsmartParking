@@ -86,7 +86,7 @@ a{color:inherit;text-decoration:none}
 	background:rgba(255,255,255,.1);
 }
 .loginForm .group input[data-type="password"]{
-	text-security:circle;
+	/*text-security:circle;*/
 	-webkit-text-security:circle;
 }
 .loginForm .group .label{

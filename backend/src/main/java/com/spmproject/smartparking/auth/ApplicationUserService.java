@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.UUID;
 
 //to fetch users from the db
 @Service
@@ -25,6 +26,9 @@ public class ApplicationUserService implements UserDetailsService {
             System.out.println("Utente non trovato");
             throw new UsernameNotFoundException(email);
         }
+        String token = UUID.randomUUID().toString();
+        user.setToken(token);
+        userRepository.save(user);
 
         System.out.println("L'utente trovato è "+user);
         return ApplicationUser.build(user);
