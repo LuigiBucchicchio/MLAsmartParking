@@ -4,6 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import com.spmproject.smartparking.policeman.Policeman;
+
+import java.util.HashSet;
 import java.util.List;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -29,6 +33,7 @@ public class MunicipalityController {
 	public void registerNewMunicipality(@RequestBody MunicipalityPayload payload) {
 		
 		Municipality m= new Municipality();
+		m.setPolicemenList(new HashSet<Policeman>());
 		m.setName(payload.getName());
 		m.setUsername(payload.getUsername());
 		m.setEmail(payload.getEmail());

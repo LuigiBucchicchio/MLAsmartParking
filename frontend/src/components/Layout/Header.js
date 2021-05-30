@@ -1,5 +1,4 @@
 import { Fragment } from 'react';
-import Maps from './Map.jsx';
 import { Link } from 'react-router-dom';
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
@@ -43,7 +42,7 @@ const Header = props => {
                     </Row>
                     </Container>
                     </Navbar>
-            <Maps />
+            
         </>
     )
 

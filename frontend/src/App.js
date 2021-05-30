@@ -8,7 +8,7 @@ import MunicipalityComponent from './components/Municipality/MunicipalityCompone
 import DriverComponent from './components/Driver/DriverComponent'
 import PolicemanComponent from './components/Policeman/PolicemanComponent'
 import AdminComponent from './components/Admin/AdminComponent'
-import LoginComponent from './components/Login/LoginComponent'
+import HomeComponent from './components/Home/HomeComponent'
 
 
 function App() {
@@ -17,7 +17,7 @@ function App() {
       <BrowserRouter>
       <Header />
         <div>
-          <Route path="/" component={LoginComponent} exact />
+          <Route path="/" component={HomeComponent} exact />
           <Route path="/municipality" component={MunicipalityComponent} />
           <Route path="/driver" component={DriverComponent} />
           <Route path="/policeman" component={PolicemanComponent} />

@@ -15,15 +15,24 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.spmproject.smartparking.municipality.MunicipalityService;
+import com.spmproject.smartparking.parkingPlace.ParkingPlace;
+import com.spmproject.smartparking.parkingPlace.ParkingPlaceService;
+
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping(path = "policeman")
 public class PolicemanController {
 
 	private PolicemanService policemanService;
+	private ParkingPlaceService parkingPlaceService;
+	private MunicipalityService municipalityService;
 	@Autowired
-	public PolicemanController(PolicemanService policemanService) {
+	public PolicemanController(PolicemanService policemanService,
+			ParkingPlaceService parkingPlaceService, MunicipalityService municipalityService) {
 		this.policemanService=policemanService;
+		this.parkingPlaceService=parkingPlaceService;
+		this.municipalityService=municipalityService;
 	}
 
 	//@PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -37,6 +46,10 @@ public class PolicemanController {
 	public Policeman newPoliceman(@RequestBody PolicemanPayload payload) {
 		
 		Policeman p = new Policeman();
+		
+		// can we get it from context?
+		p.setMunicipality(municipalityService.getMunicipality((long)1));
+		
 		p.setName(payload.getName());
 		p.setSurname(payload.getSurname());
 		p.setEmail(payload.getEmail());
@@ -81,6 +94,15 @@ public class PolicemanController {
 		
 		return policemanService.update(p);
 	}
+	
+	//@PreAuthorize("hasRole('ROLE_ADMIN')")
+		@PutMapping("/{id}/{parkingPlaceID}/assign")
+		public Policeman assignPoliceman(@PathVariable Long id, @PathVariable Long parkingPlaceID) {
+			Policeman p = policemanService.One(id);
+			ParkingPlace pp= parkingPlaceService.one(parkingPlaceID);
+            p.setAssignedParkingPlace(pp);
+			return policemanService.update(p);
+		}
 
 	//@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@DeleteMapping("/{id}")

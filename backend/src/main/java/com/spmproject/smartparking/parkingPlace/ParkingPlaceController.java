@@ -52,7 +52,7 @@ public class ParkingPlaceController {
 		String address = payload.getAddress();
 		ParkingPlace p= new ParkingPlace();
 		
-		/*try to get Municipality from context
+		/*
 		 String username="";
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		if (principal instanceof UserDetails) {

@@ -1,5 +1,7 @@
 package com.spmproject.smartparking.reservation;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,17 +43,24 @@ public class ReservationController {
 	}
 
 	//@PreAuthorize("hasRole('ROLE_ADMIN','ROLE_POLICEMAN')")
-	@PostMapping("reservation/{parkingSpotID}/add")
-	public Reservation newReservation(@RequestBody ReservationPayload payload, @PathVariable Long parkingSpotID) {
+	@PostMapping("reservation/{parkingPlaceID}/add")
+	public Reservation newReservation(@RequestBody ReservationPayload payload, @PathVariable Long parkingPlaceID) {
+		
+		
+	    List<ParkingSpot> listaMistica = parkingSpotService.getFreeParkingSpotFromPlace(true,parkingPlaceID);
+	    Collections.shuffle(listaMistica);
+	    ParkingSpot spottino = listaMistica.get(0);
 		
 		Vehicle vehicleReserved = vehicleService.one(payload.getVehiclePlate());
-		ParkingSpot spotReserved = parkingSpotService.one(parkingSpotID);
+		
 		Reservation reservation= new Reservation();
 		
 		reservation.setStartingTime(payload.getStartingTime());
 		reservation.setEndingTime(payload.getEndingTime());
 		reservation.setVehicle(vehicleReserved);
-		reservation.setParkingSpot(spotReserved);
+		reservation.setParkingSpot(spottino);
+		spottino.setFree(false);
+		parkingSpotService.addNewParkingSpot(spottino);
 		return reservationService.addNewReservation(reservation);
 	}
 

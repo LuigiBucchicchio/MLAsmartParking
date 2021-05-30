@@ -14,6 +14,9 @@ public class SmartparkingApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(SmartparkingApplication.class, args);
+		
+		// si potrebbe far partire un thread che controlla che alcuni spot diventino liberi
+		//nel tempo
 	}
 
 //	public WebMvcConfigurer corsConfigurer() {

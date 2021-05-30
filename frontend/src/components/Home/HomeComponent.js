@@ -1,6 +1,7 @@
 import React from 'react';
+import Map from '../Layout/Map'
 
-class LoginComponent extends React.Component {
+class HomeComponent extends React.Component {
 
     constructor(props) {
         super(props);
@@ -11,10 +12,12 @@ class LoginComponent extends React.Component {
 
     render(){
         return(
-            <h1>Hi Unregistred User!</h1>
+            <>
+            <Map />
+            </>
         )
     }
 
 
 }
-export default LoginComponent
+export default HomeComponent

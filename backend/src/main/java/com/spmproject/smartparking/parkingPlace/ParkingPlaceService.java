@@ -29,4 +29,10 @@ public class ParkingPlaceService {
 		this.parkingPlaceRepository.delete(found);
 		return found;
 	}
+	
+	public ParkingPlace one(Long id) {
+		ParkingPlace found = null;
+		found = this.parkingPlaceRepository.findById(id).orElseThrow(() -> new ItemNotFoundException(id));
+	    return found;
+	}
 }
