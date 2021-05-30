@@ -1,24 +1,51 @@
-import {Fragment} from 'react';
-import axios from 'axios';
-import Header from './components/Layout/Header'
-import Parking from './components/Parking/Parking'
-import './App.css';
+import axios from "axios";
+import { Route, Switch } from "react-router-dom";
 
-import 'bootstrap/dist/css/bootstrap.min.css';
-import ParkingComponent from './components/Parking/ParkingComponent';
+import Home from "./components/Home/Home";
+import Login from "./components/Auth/Login";
+
+import "./App.css";
+import useToken from './components/Auth/useToken';
+const BASE_URL = "http://localhost:8080";
 
 const api = axios.create({
-  baseURL: 'http://localhost:8080'
-})
+  baseURL: BASE_URL,
+});
+
 
 function App() {
-  return (
-    <Fragment>
-      <Header/>
-      <Parking/>
-      <ParkingComponent/>
-    </Fragment>
+  const { token, setToken, removeToken } = useToken();
+
+  const loginHandler = (data) => {
+    axios
+      .post(`${BASE_URL}/login`, {
+        username: data.email,
+        password: data.password,
+      })
+      .then((user) => {
+        setToken(user.headers.authorization);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const logoutHandler = () => {
+    console.log("inside logout handler");
+    removeToken();
     
+  };
+
+  if (!token) {
+    return <Login login={loginHandler}/>;
+  }
+
+  return (
+    <Switch>
+      <Route path="/">
+        <Home logout={logoutHandler} />
+      </Route>
+    </Switch>
   );
 }
 

@@ -1,6 +1,9 @@
 package com.spmproject.smartparking.security;
 
 import com.spmproject.smartparking.auth.ApplicationUserService;
+import com.spmproject.smartparking.jwt.JwtConfig;
+import com.spmproject.smartparking.jwt.JwtTokenVerifier;
+import com.spmproject.smartparking.jwt.JwtUsernamePasswordAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,8 +13,14 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import javax.crypto.SecretKey;
 
 import static com.spmproject.smartparking.security.ApplicationUserRole.*;
 
@@ -22,42 +31,55 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
 	private final ApplicationUserService applicationUserService;
+	private final SecretKey secretKey;
+	private final JwtConfig jwtConfig;
 
 
-	@Autowired
-	public ApplicationSecurityConfig(ApplicationUserService applicationUserService) {
-
+	public ApplicationSecurityConfig(ApplicationUserService applicationUserService,
+									 SecretKey secretKey,
+									 JwtConfig jwtConfig) {
 		this.applicationUserService = applicationUserService;
+		this.secretKey = secretKey;
+		this.jwtConfig = jwtConfig;
 	}
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
-		//.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-		//.and()
-		.csrf().disable()
-		.authorizeRequests()
-		.antMatchers("/", "index", "/css/*", "/js/*", "/parking-place/all", "/municipality/all").permitAll()
-		.antMatchers("/driver/**").hasAnyRole(DRIVER.name(), ADMIN.name())
-		.anyRequest()
-		.authenticated()
-		.and()
-		.formLogin()
-		.loginPage("/login").permitAll()
-		.defaultSuccessUrl("/home")
-		.passwordParameter("password")
-		.usernameParameter("email")
-		.and()
-		.rememberMe() // 2 weeks by default
-		.rememberMeParameter("remember-me")
-		.and()
-		.logout()
-		.logoutUrl("/logout")
-		.clearAuthentication(true)
-		.invalidateHttpSession(true)
-		.deleteCookies("JSESSIONID", "remember-me")
-		.logoutSuccessUrl("/login")
+				//.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+				//.and()
+				.csrf().disable()
+				.cors().configurationSource(corsConfigurationSource())
+				.and()
+				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+				.and()
+				.addFilter(new JwtUsernamePasswordAuthenticationFilter(authenticationManager(), jwtConfig, secretKey))
+				.addFilterAfter(new JwtTokenVerifier(secretKey, jwtConfig), JwtUsernamePasswordAuthenticationFilter.class)
+				.authorizeRequests()
+				.antMatchers("/", "index", "/css/*", "/js/*", "/municipality/all", "/driver/add").permitAll()
+				.antMatchers("/driver/**").hasAnyRole(DRIVER.name(), ADMIN.name())
+				.anyRequest()
+				.authenticated()
 		;
+	}
+
+	@Bean
+	CorsConfigurationSource corsConfigurationSource() {
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		CorsConfiguration config = new CorsConfiguration();
+
+		config.addExposedHeader("Authorization");
+		config.addAllowedMethod("OPTIONS");
+		config.addAllowedMethod("HEAD");
+		config.addAllowedMethod("GET");
+		config.addAllowedMethod("PUT");
+		config.addAllowedMethod("POST");
+		config.addAllowedMethod("DELETE");
+		config.addAllowedMethod("PATCH");
+		//source.registerCorsConfiguration("/**", config);
+
+		source.registerCorsConfiguration("/**", config.applyPermitDefaultValues());
+		return source;
 	}
 
 	@Override
@@ -69,6 +91,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
+
 	@Bean
 	@Override
 	public AuthenticationManager authenticationManagerBean() throws Exception {

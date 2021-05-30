@@ -9,8 +9,9 @@ const Header = props => {
         <Fragment>
         <header className={classes.header}>
             <h1>MLA Smart Parking</h1>  
+            <button onClick={props.logout}>Logout</button>
         </header>
-        <Maps/>
+        {/*<Maps/>*/}
     </Fragment>
     )
 

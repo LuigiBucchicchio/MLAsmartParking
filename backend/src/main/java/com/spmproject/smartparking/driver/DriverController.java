@@ -4,13 +4,11 @@ import java.util.HashSet;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.spmproject.smartparking.vehicle.Vehicle;
 
@@ -26,18 +24,30 @@ public class DriverController {
 		this.driverService=driverService;
 	}
 
-	@PreAuthorize("hasRole('ROLE_ADMIN','ROLE_DRIVER')")
+	@PostMapping("/register")
+	public ResponseEntity registerUser(@RequestBody Driver newUser) {
+		List<Driver> drivers = driverService.getAllDrivers();
+		System.out.println("New user: " + newUser.toString());
+		for (Driver driver : drivers) {
+			System.out.println("Registered user: " + newUser.toString());
+			if (driver.equals(newUser)) {
+				System.out.println("User Already exists!");
+				return new ResponseEntity(HttpStatus.CONFLICT);
+			}
+		}
+		driverService.addNewDriver(newUser);
+		return new ResponseEntity(HttpStatus.OK);
+	}
+
 	@PostMapping("/add")
-	public String addNewDriver (@RequestParam String name
-			, @RequestParam String surname, @RequestParam String phoneNumber , @RequestParam String email
-			, @RequestParam String password) {
+	public String addNewDriver (@RequestBody Driver driver) {
 
 		Driver n = new Driver();
-		n.setName(name);
-		n.setSurname(surname);
-		n.setEmail(email);
-		n.setPhoneNumber(phoneNumber);
-		n.setPassword(password);
+		n.setName(driver.getName());
+		n.setSurname(driver.getSurname());
+		n.setEmail(driver.getEmail());
+		n.setPhoneNumber(driver.getPhoneNumber());
+		n.setPassword(driver.getPassword());
 		n.setVehicle_owned(new HashSet<Vehicle>());
 		return driverService.addNewDriver(n).toString();
 	}

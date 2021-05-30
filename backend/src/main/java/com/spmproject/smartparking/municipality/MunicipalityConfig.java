@@ -49,7 +49,7 @@ public class MunicipalityConfig {
 						"Lundini",
 						"valerio.lundini@gmail.com",
 						"noMaFalloUnUtente",
-						"eraMeglioIlLibro",
+						passwordEncoder.encode("eraMeglioIlLibro"),
 						"332244566"
 						);
 				Driver michela = new Driver(
@@ -57,7 +57,7 @@ public class MunicipalityConfig {
 						"Giraud",
 						"michela.giraud@gmail.com",
 						"ilMignottonePazzo",
-						"ilSalottoConMichela",
+						passwordEncoder.encode("ilSalottoConMichela"),
 						"334455667"
 						);
 				Driver edipo = new Driver(
@@ -80,6 +80,7 @@ public class MunicipalityConfig {
 						"driver@gmail.com",
 						"driver",
 						passwordEncoder.encode("pass"),
+						"",
 						"jkd",
 						ApplicationUserRole.DRIVER
 						);
@@ -90,6 +91,7 @@ public class MunicipalityConfig {
 						"admin@gmail.com",
 						"admin",
 						passwordEncoder.encode("pass"),
+						"",
 						"jkd",
 						ApplicationUserRole.ADMIN
 						);
