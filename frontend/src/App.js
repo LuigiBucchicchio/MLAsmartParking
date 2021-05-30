@@ -4,28 +4,28 @@ import { Router, Route, Switch, Redirect } from "react-router-dom";
 
 import Home from "./components/Home/Home";
 import Login from "./components/Auth/Login";
+
 import "./App.css";
-import "bootstrap/dist/css/bootstrap.min.css";
-import SignInForm from "./components/Auth/SignInForm";
+import AuthService from "./components/services/AuthService";
+import useToken from './components/Auth/useToken';
+const BASE_URL = "http://localhost:8080";
 
 const api = axios.create({
-  baseURL: "http://localhost:8080",
+  baseURL: BASE_URL,
 });
 
+
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [error, setError] = useState("");
+  const { token, setToken } = useToken();
 
   const loginHandler = (data) => {
     axios
-      .post("http://localhost:8080/login", {
+      .post(`${BASE_URL}/login`, {
         username: data.email,
         password: data.password,
       })
       .then((user) => {
-        console.log("Stemo qua");
-        console.log(user);
-        setIsLoggedIn(true);
+        setToken(user.headers.authorization);
       })
       .catch((err) => {
         console.log(err);
@@ -34,13 +34,10 @@ function App() {
 
   const logoutHandler = () => {
     console.log("inside logout handler");
-    setIsLoggedIn(false);
   };
 
-  const [token, setToken] = useState();
-
-  if(!token) {
-    return <SignInForm setToken={setToken} />
+  if (!token) {
+    return <Login login={loginHandler}/>;
   }
 
   return (

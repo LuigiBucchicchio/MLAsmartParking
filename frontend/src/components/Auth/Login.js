@@ -2,8 +2,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 import classes from "./Login.module.css";
-import SignInForm from "./SignInForm";
-import SignUpForm from "./SignUpForm";
+
 
 const Login = (props) => {
   const { register, handleSubmit } = useForm();
