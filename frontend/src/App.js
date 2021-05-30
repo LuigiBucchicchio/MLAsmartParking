@@ -1,12 +1,10 @@
-import { Fragment, useState } from "react";
 import axios from "axios";
-import { Router, Route, Switch, Redirect } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 
 import Home from "./components/Home/Home";
 import Login from "./components/Auth/Login";
 
 import "./App.css";
-import AuthService from "./components/services/AuthService";
 import useToken from './components/Auth/useToken';
 const BASE_URL = "http://localhost:8080";
 
@@ -16,7 +14,7 @@ const api = axios.create({
 
 
 function App() {
-  const { token, setToken } = useToken();
+  const { token, setToken, removeToken } = useToken();
 
   const loginHandler = (data) => {
     axios
@@ -34,6 +32,8 @@ function App() {
 
   const logoutHandler = () => {
     console.log("inside logout handler");
+    removeToken();
+    
   };
 
   if (!token) {

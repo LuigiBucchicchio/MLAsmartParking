@@ -22,9 +22,9 @@ const Login = (props) => {
             type="radio"
             name="tab"
             className={classes.signIn}
-            checked={checked}
+            defaultChecked={checked}
           />
-          <label for="tab-1" className={classes.tab}>
+          <label htmlFor="tab-1" className={classes.tab}>
             Sign In
           </label>
           <input
@@ -33,7 +33,7 @@ const Login = (props) => {
             name="tab"
             className={classes.signUp}
           />
-          <label for="tab-2" className={classes.tab}>
+          <label htmlFor="tab-2" className={classes.tab}>
             Sign Up
           </label>
           <form onSubmit={handleSubmit(onSubmit)} className={classes.loginForm}>
