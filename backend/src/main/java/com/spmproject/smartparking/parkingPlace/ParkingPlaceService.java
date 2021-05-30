@@ -3,6 +3,8 @@ package com.spmproject.smartparking.parkingPlace;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.spmproject.smartparking.ItemNotFoundException;
+
 import java.util.List;
 
 @Service
@@ -20,5 +22,17 @@ public class ParkingPlaceService {
 
 	public ParkingPlace addNewParkingPlace(ParkingPlace p) {
 		return this.parkingPlaceRepository.save(p);
+	}
+	
+	public ParkingPlace removeParkingPlace(Long id) {
+		ParkingPlace found = this.parkingPlaceRepository.findById(id).orElseThrow(() -> new ItemNotFoundException(id));
+		this.parkingPlaceRepository.delete(found);
+		return found;
+	}
+	
+	public ParkingPlace one(Long id) {
+		ParkingPlace found = null;
+		found = this.parkingPlaceRepository.findById(id).orElseThrow(() -> new ItemNotFoundException(id));
+	    return found;
 	}
 }

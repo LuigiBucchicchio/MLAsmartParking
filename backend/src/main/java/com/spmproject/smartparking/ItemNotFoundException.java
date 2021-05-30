@@ -6,6 +6,6 @@ public class ItemNotFoundException extends RuntimeException{
 		super("Could not find the item with id: " + id);
 	}
 	public ItemNotFoundException (String id) {
-		super("Could not find the item with id: " + id);
+		super("Could not find the item with id or username: " + id);
 	}
 }

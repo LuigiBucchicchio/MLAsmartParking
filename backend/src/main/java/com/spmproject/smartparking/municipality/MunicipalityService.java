@@ -28,5 +28,9 @@ public class MunicipalityService {
 	public void addNewMunicipality(Municipality municipality) {
 		System.out.println(municipality);
 	}
+	
+	public Municipality getMunicipality(String username) {
+		return municipalityRepository.findByUsername(username).orElseThrow(()-> new ItemNotFoundException(username));
+	}
 }
 

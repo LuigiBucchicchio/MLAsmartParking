@@ -24,6 +24,8 @@ public class ParkingSpot {
 	private int progressiveNumber;
 
 	private int level;
+	
+	private boolean isFree;
 
 	@OneToMany
 	private Set<Reservation> reservations;
