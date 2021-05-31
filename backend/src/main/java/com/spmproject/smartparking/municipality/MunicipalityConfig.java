@@ -1,9 +1,12 @@
 package com.spmproject.smartparking.municipality;
 
+import com.spmproject.smartparking.ItemNotFoundException;
 import com.spmproject.smartparking.auth.User;
 import com.spmproject.smartparking.auth.UserRepository;
 import com.spmproject.smartparking.driver.Driver;
 import com.spmproject.smartparking.driver.DriverRepository;
+import com.spmproject.smartparking.parkingPlace.ParkingPlace;
+import com.spmproject.smartparking.parkingPlace.ParkingPlaceRepository;
 import com.spmproject.smartparking.security.ApplicationUserRole;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -16,7 +19,7 @@ import java.util.List;
 public class MunicipalityConfig {
 
 	@Bean
-	CommandLineRunner commandLineRunner(MunicipalityRepository municipalityRepository, DriverRepository driverRepository, UserRepository userRepository) {
+	CommandLineRunner commandLineRunner(MunicipalityRepository municipalityRepository, DriverRepository driverRepository, UserRepository userRepository, ParkingPlaceRepository parkingPlaceRepository) {
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
 		return args -> {
@@ -70,6 +73,13 @@ public class MunicipalityConfig {
 						);
 				driverRepository.saveAll(List.of(valerio, michela, edipo));
 
+			}
+			if(parkingPlaceRepository.count()==((long)0)) {
+				ParkingPlace parcheggioTermoli = new ParkingPlace();
+				parcheggioTermoli.setAddress("via saverio cannarsa, 7");
+				parcheggioTermoli.setSpotsNumber(11);
+				parcheggioTermoli.setMunicipality(municipalityRepository.findById((long)2).orElseThrow(() -> new ItemNotFoundException((long)2)));
+				parkingPlaceRepository.save(parcheggioTermoli);
 			}
 
 			if(userRepository.count()==((long)0)) {

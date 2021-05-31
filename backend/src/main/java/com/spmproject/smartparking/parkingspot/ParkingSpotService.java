@@ -6,9 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.spmproject.smartparking.ItemNotFoundException;
+import com.spmproject.smartparking.parkingPlace.ParkingPlace;
 
 @Service
 public class ParkingSpotService {
+	
 
 	private final ParkingSpotRepository parkingSpotRepository;
 
@@ -27,6 +29,14 @@ public class ParkingSpotService {
 
 	public ParkingSpot one(long parkingSpotID) {
 		return parkingSpotRepository.findById(parkingSpotID).orElseThrow(()-> new ItemNotFoundException(parkingSpotID));
+	}
+
+	public List<ParkingSpot> getParkingSpotsFromPlace(Long parkingPlaceID) {
+		return parkingSpotRepository.findByParkingPlaceID(parkingPlaceID);
+	}
+	
+	public List<ParkingSpot> getFreeParkingSpotFromPlace(boolean isFree, Long parkingPlaceID) {
+		return parkingSpotRepository.findByIsFreeAndParkingPlaceID(isFree, parkingPlaceID);
 	}
 
 }

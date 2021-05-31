@@ -28,7 +28,7 @@ public class ParkingPlace {
 			updatable = false
 			)
 	@Id
-	private Long id;
+	private Long parkingPlaceID;
 
 	@Column(name = "spots_number", nullable = false)
 	private int spotsNumber;

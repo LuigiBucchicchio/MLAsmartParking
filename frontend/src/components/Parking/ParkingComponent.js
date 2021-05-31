@@ -1,22 +1,28 @@
 import React from 'react';
-import axios from 'axios';
-const PARKING_REST_API_URL = "/parking-place/all";
+import ParkingService from './ParkingService';
 
 class ParkingComponent extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            parkingplaces: []
+          parkingplaces: []
         }
-    }
+      }
+
+    // componentDidMount() {
+    //     //get all parkingPlaces
+    //     axios.get(PARKING_REST_API_URL).then((response) => {
+    //         this.setState({ parkingplaces: response.data })
+    //     })
+    // }
 
     componentDidMount() {
-        //get all parkingPlaces
-        axios.get(PARKING_REST_API_URL).then((response) => {
-            this.setState({ parkingplaces: response.data })
-        })
-    }
+        ParkingService.getParkingPlaces().then((response) => {
+            this.setState({ parkingplaces : response.data})
+        }); 
+      }
+
     render() {
         //ritorna in formato tabellare
         return (
@@ -31,10 +37,10 @@ class ParkingComponent extends React.Component {
                     </thead>
                     <tbody>
                         {
-                            this.state.parkingplaces.map(
-                                parkingplace =>
-                                    <tr key={parkingplace.id}>
-                                        <td> {parkingplace.id}</td>
+                            this.state.parkingplaces.map( 
+                                parkingplace  =>
+                                    <tr key={parkingplace.parkingPlaceID}>
+                                        <td> {parkingplace.parkingPlaceID}</td>
                                         <td> {parkingplace.spotsNumber}</td>
                                         <td> {parkingplace.address}</td>
 

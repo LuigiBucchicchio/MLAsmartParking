@@ -31,4 +31,8 @@ public class VehicleService {
 	public void deleteById(String vehiclePlate) {
 		vehicleRepository.deleteById(vehiclePlate);
 	}
+
+	public Vehicle update(Vehicle v) {
+		return vehicleRepository.save(v);
+	}
 }

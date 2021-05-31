@@ -31,4 +31,8 @@ public class PolicemanService {
 	public void deleteById(Long id) {
 		policemanRepository.deleteById(id);
 	}
+
+	public Policeman update(Policeman p) {
+		return policemanRepository.save(p);
+	}
 }
