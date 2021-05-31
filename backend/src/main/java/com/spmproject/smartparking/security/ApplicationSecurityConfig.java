@@ -62,13 +62,6 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 				.authenticated()
 		;
 	}
-	
-	@Bean
-	CorsConfigurationSource corsConfigurationSource() {
-		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-		source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
-		return source;
-	}
 
 	@Bean
 	CorsConfigurationSource corsConfigurationSource() {

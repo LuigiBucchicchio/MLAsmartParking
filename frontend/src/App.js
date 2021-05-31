@@ -1,22 +1,18 @@
-import axios from "axios";
-import { Route, Switch } from "react-router-dom";
-
-import Home from "./components/Home/Home";
-import Login from "./components/Auth/Login";
 import {Fragment} from 'react';
-import Header from './components/Layout/Header'
-//import Parking from './components/Parking/Parking'
-import './App.css';
+import axios from "axios";
 import {BrowserRouter, Route} from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
+
+import useToken from './components/Auth/useToken';
 import MunicipalityComponent from './components/Municipality/MunicipalityComponent';
 import DriverComponent from './components/Driver/DriverComponent'
 import PolicemanComponent from './components/Policeman/PolicemanComponent'
 import AdminComponent from './components/Admin/AdminComponent'
 import HomeComponent from './components/Home/HomeComponent'
+import Login from "./components/Auth/Login";
+import Header from './components/Layout/Header'
+import './App.css';
 
-import "./App.css";
-import useToken from './components/Auth/useToken';
 const BASE_URL = "http://localhost:8080";
 
 const api = axios.create({
@@ -28,6 +24,7 @@ function App() {
   const { token, setToken, removeToken } = useToken();
 
   const loginHandler = (data) => {
+    console.log("axios call")
     axios
       .post(`${BASE_URL}/login`, {
         username: data.email,
