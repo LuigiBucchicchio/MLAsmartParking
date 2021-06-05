@@ -1,6 +1,8 @@
 package com.spmproject.smartparking.municipality;
 
+import com.spmproject.smartparking.driver.Driver;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.spmproject.smartparking.ItemNotFoundException;
@@ -9,8 +11,8 @@ import java.util.List;
 
 @Service
 public class MunicipalityService {
-
 	private final MunicipalityRepository municipalityRepository;
+	BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
 	@Autowired
 	public MunicipalityService(MunicipalityRepository municipalityRepository) {
@@ -25,8 +27,21 @@ public class MunicipalityService {
 		return municipalityRepository.findById(id).orElseThrow(()-> new ItemNotFoundException(id));
 	}
 
-	public void addNewMunicipality(Municipality municipality) {
-		System.out.println(municipality);
+	public Boolean existingMunicipality(String email) {
+		return municipalityRepository.existsByEmail(email);
+	}
+
+	public Municipality addNewMunicipality(Municipality m) {
+		System.out.println("E proveoce");
+		Municipality municipality = new Municipality(
+				m.getName(),
+				m.getEmail(),
+				m.getUsername(),
+				passwordEncoder.encode(m.getPassword()),
+				m.getPhoneNumber()
+		);
+
+		return this.municipalityRepository.save(municipality);
 	}
 	
 	public Municipality getMunicipality(String username) {

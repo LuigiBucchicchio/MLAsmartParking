@@ -3,7 +3,6 @@ import { useState } from "react";
 export default function useToken() {
   const getToken = () => {
     console.log("check get Item")
-
     const tokenString = localStorage.getItem("token");
     console.log(tokenString)
     return tokenString;
@@ -14,7 +13,6 @@ export default function useToken() {
   const saveToken = userToken => {
     console.log("call save Token")
     localStorage.setItem("token", userToken);
-    console.log("save token " + userToken)
     setToken(userToken);
   };
 

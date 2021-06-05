@@ -1,15 +1,14 @@
-import { Fragment } from 'react';
-import { Link } from 'react-router-dom';
-import Navbar from 'react-bootstrap/Navbar'
-import Nav from 'react-bootstrap/Nav'
-import NavDropdown from 'react-bootstrap/NavDropdown'
-import { Col, Container, Row } from 'react-bootstrap';
+import { Fragment } from "react";
+import { Link } from "react-router-dom";
+import Navbar from "react-bootstrap/Navbar";
+import Nav from "react-bootstrap/Nav";
+import NavDropdown from "react-bootstrap/NavDropdown";
+import { Col, Container, Row } from "react-bootstrap";
 
-const Header = props => {
-
-    return (
-        <> 
-        <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+const Header = (props) => {
+  return (
+    <>
+      <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
         <Container fluid>
         <Row>
                     <Nav fill className="ml-auto">
@@ -18,8 +17,8 @@ const Header = props => {
                             <Nav.Link as={Link} to="/"> <img
                                 alt=""
                                 src="https://react-bootstrap.github.io/logo.svg"
-                                width="30"
                                 height="30"
+                                width="30"
                                 className="d-inline-block align-top"
                             />{' '}  MLA Smart Parking</Nav.Link>
                         </Nav.Item>
@@ -43,14 +42,16 @@ const Header = props => {
                             <Nav.Link as={Link} to="/profile">Profile Page</Nav.Link>
                         </Nav.Item>
                         </Col>
-                    </Nav>
-                    </Row>
-                    </Container>
-                    </Navbar>
-            
-        </>
-    )
+              <Col sm={4}>
+              <Nav.Item onClick={props.logout}>Logout</Nav.Item>
+              </Col>
+            </Nav>
 
+          </Row>
+        </Container>
+      </Navbar>
+    </>
+  );
 };
 
 export default Header;

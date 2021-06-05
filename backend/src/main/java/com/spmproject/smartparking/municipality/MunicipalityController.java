@@ -1,6 +1,8 @@
 package com.spmproject.smartparking.municipality;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -30,18 +32,20 @@ public class MunicipalityController {
 
 	//@PreAuthorize("hasAuthority('municipality:write')")
 	@PostMapping("/add")
-	public void registerNewMunicipality(@RequestBody MunicipalityPayload payload) {
-		
-		Municipality m= new Municipality();
-		m.setPolicemenList(new HashSet<Policeman>());
-		m.setName(payload.getName());
-		m.setUsername(payload.getUsername());
-		m.setEmail(payload.getEmail());
-		m.setPhoneNumber(payload.getPhoneNumber());
+	public ResponseEntity registerNewMunicipality(@RequestBody MunicipalityPayload payload) {
+		if (!municipalityService.existingMunicipality(payload.getEmail())) {
+			Municipality m = new Municipality();
+			m.setPolicemenList(new HashSet<Policeman>());
+			m.setName(payload.getName());
+			m.setUsername(payload.getUsername());
+			m.setEmail(payload.getEmail());
+			m.setPhoneNumber(payload.getPhoneNumber());
+			m.setPassword(payload.getPassword());
 
-		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-		m.setPassword(passwordEncoder.encode(payload.getPassword()));
-
-		municipalityService.addNewMunicipality(m);
+			municipalityService.addNewMunicipality(m);
+			return new ResponseEntity(HttpStatus.OK);
+		} else {
+			return new ResponseEntity(HttpStatus.CONFLICT);
+		}
 	}
 }

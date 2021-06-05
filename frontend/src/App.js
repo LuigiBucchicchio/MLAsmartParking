@@ -1,7 +1,7 @@
 import {Fragment} from 'react';
-import axios from "axios";
 import {BrowserRouter, Route} from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { useState } from "react";
 
 import useToken from './components/Auth/useToken';
 import MunicipalityComponent from './components/Municipality/MunicipalityComponent';
@@ -9,7 +9,7 @@ import DriverComponent from './components/Driver/DriverComponent'
 import PolicemanComponent from './components/Policeman/PolicemanComponent'
 import AdminComponent from './components/Admin/AdminComponent'
 import HomeComponent from './components/Home/HomeComponent'
-import Login from "./components/Auth/Login";
+import Auth from "./components/Auth/Auth";
 import Header from './components/Layout/Header'
 import './App.css';
 import ListParkingPlacesComponent from './components/Parking/ListParkingPlacesComponent';
@@ -20,30 +20,15 @@ import ListPolicemenComponent from './components/Policeman/ListPolicemenComponen
 import ListMunicipalitiesComponent from './components/Municipality/ListMunicipalitiesComponent';
 import ListDriversComponent from './components/Driver/ListDriversComponent';
 
-const BASE_URL = "http://localhost:8080";
-
-const api = axios.create({
-  baseURL: BASE_URL,
-});
-
-
 function App() {
-  const { token, setToken, removeToken } = useToken();
 
-  const loginHandler = (data) => {
-    console.log("axios call")
-    axios
-      .post(`${BASE_URL}/login`, {
-        username: data.email,
-        password: data.password,
-      })
-      .then((user) => {
-        setToken(user.headers.authorization);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  const [tkn, setTkn] = useState(false);
+  const { removeToken } = useToken();
+
+  const setTokenHandler = (data) => {
+    console.log("inside setTokenHandler")
+    setTkn(data)
+  }
 
   const logoutHandler = () => {
     console.log("inside logout handler");
@@ -51,8 +36,8 @@ function App() {
     
   };
 
-  if (!token) {
-    return <Login login={loginHandler}/>;
+  if (!tkn) {
+    return <Auth auth={setTokenHandler}/>;
   }
 
   return (
@@ -60,7 +45,7 @@ function App() {
       <BrowserRouter>
       <Header />
         <div className='bg' >
-          <Route path="/" component={HomeComponent} exact />
+          <Route path="/"/> <HomeComponent logout={logoutHandler} /><Route/>
           <Route path="/municipality" component={MunicipalityComponent} />
           <Route path="/driver" component={DriverComponent} />
           <Route path="/policeman" component={PolicemanComponent} />
