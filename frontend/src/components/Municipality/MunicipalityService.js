@@ -2,6 +2,10 @@ import axios from 'axios'
 
 const PARKINGPLACES_POST_ONE_URL = 'http://localhost:8080/parking-place/add';
 
+const config = {
+    headers: { Authorization: localStorage.getItem("token") }
+};
+
 class MunicipalityService {
 
     newParkingPlace(spotsNumber,address){
@@ -9,7 +13,7 @@ class MunicipalityService {
         "address": address }
 
         console.log(json);
-        return axios.post(PARKINGPLACES_POST_ONE_URL, json)
+        return axios.post(PARKINGPLACES_POST_ONE_URL, json, config)
     }
 }
 

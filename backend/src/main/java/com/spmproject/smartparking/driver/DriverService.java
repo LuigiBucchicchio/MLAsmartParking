@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.spmproject.smartparking.ItemNotFoundException;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DriverService {
@@ -19,6 +20,10 @@ public class DriverService {
 		this.driverRepository = driverRepository;
 	}
 
+	// search for a driver by email
+	public Boolean existingDriver(String email) {
+		return driverRepository.existsByEmail(email);
+	}
 	public List<Driver> getAllDrivers() {
 		return driverRepository.findAll();
 	}
