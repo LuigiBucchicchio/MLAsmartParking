@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-
 import GoogleMapReact from 'google-map-react';
 
 const AnyReactComponent = ({ text }) => <div>{text}</div>;
@@ -16,7 +15,7 @@ class SimpleMap extends Component {
   render() {
     return (
       // Important! Always set the container height explicitly
-      <div style={{ height: '60vh', width: '100%' }}>
+      <div style={{ height: '60vh', width: '100%'}}>
         <GoogleMapReact
           //chiave di sviluppo associata all'account luigi.bucchicchio@studenti.unicam.it
           bootstrapURLKeys={{ key: 'AIzaSyADZURjC9KcEyYS_hpFeS6Gyo7aMim3eF4' }}

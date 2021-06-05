@@ -1,0 +1,52 @@
+.container {
+    justify-content: center;
+     height: 80vh;
+     text-align: center;
+ }
+
+ .card {
+    width: 500px;
+    padding: 10px;
+    border-radius: 20px;
+    background: #fff;
+    border: none;
+    height: 350px;
+    position: relative
+}
+
+body {
+    background: #eee
+}
+
+.mobile-text {
+    color: #989696b8;
+    font-size: 15px
+}
+
+.form-control {
+    margin-right: 12px
+}
+
+.form-control:focus {
+    color: #495057;
+    background-color: #fff;
+    border-color: #ff8880;
+    outline: 0;
+    box-shadow: none
+}
+
+.cursor {
+    cursor: pointer
+}
+
+.title {
+    font-family: sans-serif;
+    font-size: 30px;
+    font-weight: 600;
+  }
+
+  .subtitle {
+    font-family: sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+  }

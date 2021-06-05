@@ -1,6 +1,5 @@
 import React from 'react';
 import { Fragment } from 'react';
-import ParkingComponent from '../Parking/ParkingComponent';
 
 class PolicemanComponent extends React.Component {
 
@@ -15,7 +14,6 @@ class PolicemanComponent extends React.Component {
         return(
             <Fragment>
                 <h1>Hi Policeman!</h1>
-                <ParkingComponent />
             </Fragment>
         )
     }

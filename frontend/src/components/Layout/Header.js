@@ -38,6 +38,11 @@ const Header = props => {
                             <Nav.Link as={Link} to="/admin">Admin Page</Nav.Link>
                         </Nav.Item>
                         </Col>
+                        <Col sm={4}>
+                        <Nav.Item>
+                            <Nav.Link as={Link} to="/profile">Profile Page</Nav.Link>
+                        </Nav.Item>
+                        </Col>
                     </Nav>
                     </Row>
                     </Container>

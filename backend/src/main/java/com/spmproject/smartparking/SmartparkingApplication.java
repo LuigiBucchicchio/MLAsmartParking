@@ -2,6 +2,10 @@ package com.spmproject.smartparking;
 
 import com.spmproject.smartparking.municipality.Municipality;
 import com.spmproject.smartparking.municipality.MunicipalityRepository;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ForkJoinPool;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -15,8 +19,7 @@ public class SmartparkingApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SmartparkingApplication.class, args);
 		
-		// si potrebbe far partire un thread che controlla che alcuni spot diventino liberi
-		//nel tempo
+		
 	}
 
 //	public WebMvcConfigurer corsConfigurer() {

@@ -12,6 +12,13 @@ import HomeComponent from './components/Home/HomeComponent'
 import Login from "./components/Auth/Login";
 import Header from './components/Layout/Header'
 import './App.css';
+import ListParkingPlacesComponent from './components/Parking/ListParkingPlacesComponent';
+import AddParkingPlaceComponent from './components/Parking/AddParkingPlaceComponent';
+import ProfileComponent from './components/Profile/ProfileComponent';
+import AssignPolicemanComponent from './components/Policeman/AssignPolicemanComponent';
+import ListPolicemenComponent from './components/Policeman/ListPolicemenComponent';
+import ListMunicipalitiesComponent from './components/Municipality/ListMunicipalitiesComponent';
+import ListDriversComponent from './components/Driver/ListDriversComponent';
 
 const BASE_URL = "http://localhost:8080";
 
@@ -52,12 +59,19 @@ function App() {
     <Fragment>
       <BrowserRouter>
       <Header />
-        <div>
+        <div className='bg' >
           <Route path="/" component={HomeComponent} exact />
           <Route path="/municipality" component={MunicipalityComponent} />
           <Route path="/driver" component={DriverComponent} />
           <Route path="/policeman" component={PolicemanComponent} />
           <Route path="/admin" component={AdminComponent} />
+          <Route path="/listParkingPlaces" component={ListParkingPlacesComponent} />
+          <Route path="/addParkingPlace" component={AddParkingPlaceComponent} />
+          <Route path="/profile" component={ProfileComponent} />
+          <Route path="/assignPoliceman" component={AssignPolicemanComponent} />
+          <Route path="/listPolicemen" component={ListPolicemenComponent} />
+          <Route path="/listMunicipalities" component={ListMunicipalitiesComponent} />
+          <Route path="/listDrivers" component={ListDriversComponent} />
         </div>
       </BrowserRouter>
     </Fragment>

@@ -1,5 +1,6 @@
 import React from 'react';
-import Map from '../Layout/Map'
+import Map from '../Layout/Map';
+import './Home.css';
 
 class HomeComponent extends React.Component {
 
@@ -13,8 +14,11 @@ class HomeComponent extends React.Component {
     render(){
         return(
             <>
+            <div className= "container">
             <Map />
+            </div>
             </>
+            
         )
     }
 

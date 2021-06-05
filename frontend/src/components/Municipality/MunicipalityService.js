@@ -1,16 +1,18 @@
 import axios from 'axios'
 
-const PARKINGPLACES_POST_ONE_URL = 'http://localhost:8080/parking-place/add';
+const MUNICIPALITY_GET_ALL_URL = 'http://localhost:8080/municipality/all';
+
+const config = {
+    headers: {Authorization: localStorage.getItem("token") }
+};
+
 
 class MunicipalityService {
 
-    newParkingPlace(spotsNumber,address){
-        const json = { "spotsNumber": spotsNumber,
-        "address": address }
+    getMunicipalities(){
+        return  axios.get(MUNICIPALITY_GET_ALL_URL,config)
+     }
 
-        console.log(json);
-        return axios.post(PARKINGPLACES_POST_ONE_URL, json)
-    }
 }
 
 export default new MunicipalityService()
