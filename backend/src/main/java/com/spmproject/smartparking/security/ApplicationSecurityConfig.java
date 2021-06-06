@@ -78,8 +78,9 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 		config.addAllowedMethod("DELETE");
 		config.addAllowedMethod("PATCH");
 		//source.registerCorsConfiguration("/**", config);
+		CorsConfiguration config2 = new CorsConfiguration().applyPermitDefaultValues();
 
-		source.registerCorsConfiguration("/**", config.applyPermitDefaultValues());
+		source.registerCorsConfiguration("/**", config2.applyPermitDefaultValues());
 		return source;
 	}
 

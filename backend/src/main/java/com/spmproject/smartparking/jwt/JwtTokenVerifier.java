@@ -41,7 +41,7 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
         String authorizationHeader = request.getHeader(jwtConfig.getAuthorizationHeader());
 
-        System.out.println("authorizationHeader is: " + authorizationHeader);
+        System.out.println("request is: " + request);
 
         if (Strings.isNullOrEmpty(authorizationHeader) || !authorizationHeader.startsWith(jwtConfig.getTokenPrefix())) {
             filterChain.doFilter(request, response);
@@ -66,6 +66,7 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
 
             Authentication authentication = new UsernamePasswordAuthenticationToken(
                     username,
+
                     null,
                     simpleGrantedAuthoritySet
             );
