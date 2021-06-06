@@ -1,0 +1,133 @@
+.body {
+  margin: 0;
+  color: #6a6f8c;
+  background: #aaa;
+  font: 600 16px/18px "Open Sans", sans-serif;
+  padding: 1% 0;
+}
+
+.loginWrap {
+  width: 100%;
+  margin: auto;
+  max-width: 525px;
+  min-height: 670px;
+  position: relative;
+  background: rgba(214, 48, 48, 0.9);
+  box-shadow: 0 12px 15px 0 rgba(0, 0, 0, 0.24),
+    0 17px 50px 0 rgba(0, 0, 0, 0.19);
+}
+.loginHtml {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  padding: 50px ;
+  background-size: contain;
+  background: url(../../assets/loginLogo.png) no-repeat center;
+}
+
+.loginHtml .signIn,
+.loginHtml .signUp,
+.loginForm .group .check {
+  display: none;
+}
+.loginHtml .tab,
+.loginForm .group .label,
+.loginForm .group .button,
+.admin {
+  text-transform: uppercase;
+}
+.loginHtml .tab {
+  font-size: 20px;
+  margin-right: 15px;
+  padding-bottom: 5px;
+  margin: 0 15px 10px 0;
+  display: inline-block;
+  border-bottom: 2px solid transparent;
+}
+.loginHtml .signIn:checked + .tab,
+.loginHtml .signUp:checked + .tab {
+  color: #fff;
+  border-color: #1c34ea;
+}
+.loginForm {
+  min-height: 345px;
+  position: relative;
+  perspective: 1000px;
+  transform-style: preserve-3d;
+}
+.loginForm .group {
+  margin-bottom: 15px;
+}
+.loginForm .group label,
+.loginForm .group input,
+.loginForm .group button,
+.admin {
+  width: 100%;
+  color: #fff;
+  display: block;
+}
+
+.admin {
+	color: #000;
+}
+.loginForm .group input,
+.loginForm .group button {
+  border: none;
+  padding: 15px 20px;
+  border-radius: 25px;
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.admin {
+  border: none;
+  padding: 10px 20px;
+  border-radius: 25px;
+  background: rgba(255, 255, 255, 0.6);
+}
+.select {
+  height: 40px;
+}
+.selectSelected {
+  border: none;
+  position: absolute;
+  right: 0px;
+  width: 200px;
+  padding: 10px 20px;
+  border-radius: 25px;
+  background: rgba(255, 255, 255, 0.6);
+  
+}
+
+.loginForm .group input[data-type="password"] {
+  /*text-security:circle;*/
+  -webkit-text-security: circle;
+}
+.loginForm .group .label {
+  color: #aaa;
+  font-size: 12px;
+}
+.admin {
+  background: #aaa;
+}
+.loginForm .group .button {
+	background: #0e1651;
+  }
+
+.loginForm .group .check:checked + label {
+  color: #fff;
+}
+.loginHtml .signIn:checked + .tab + .signUp + .tab + .loginForm .signInHtm {
+  transform: rotate(0);
+}
+.loginHtml .signUp:checked + .tab + .loginForm .signUpHtm {
+  transform: rotate(0);
+}
+
+.hr {
+  height: 2px;
+  margin: 10px 0;
+  background: rgba(255, 255, 255, 0.2);
+}
+.footLnk {
+  text-align: center;
+}
