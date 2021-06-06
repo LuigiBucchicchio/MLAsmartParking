@@ -25,11 +25,13 @@ import './App.css';
 function App() {
 
   const [tkn, setTkn] = useState(false);
+  const [role, setRole] = useState("");
   const { removeToken } = useToken();
 
-  const setTokenHandler = (data) => {
-    console.log("inside setTokenHandler")
-    setTkn(data)
+  const setTokenHandler = (token, role) => {
+    console.log("role ")
+    setRole(role)
+    setTkn(token)
   }
 
   const logoutHandler = () => {

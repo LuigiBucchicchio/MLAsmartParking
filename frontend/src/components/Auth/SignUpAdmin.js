@@ -34,7 +34,7 @@ const SignUpAdmin = (props) => {
           })
           .then((user) => {
             setToken(user.headers.authorization);
-            props.tkn(true);
+            props.tkn(true, user.data.role);
           })
           .catch((err) => {
             console.log("login error");

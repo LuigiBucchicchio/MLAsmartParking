@@ -20,9 +20,8 @@ const SignIn = (props) => {
         password: data.password,
       })
       .then((user) => {
-        console.log(user.data)
         setToken(user.headers.authorization);
-        props.tkn(true);
+        props.tkn(true, user.data.role);
       })
       .catch((err) => {
         console.log("orrore");
