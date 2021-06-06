@@ -1,6 +1,9 @@
 package com.spmproject.smartparking.parkingPlace;
 
+import com.spmproject.smartparking.auth.User;
+import com.spmproject.smartparking.auth.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -17,8 +20,10 @@ import com.spmproject.smartparking.parkingspot.ParkingSpot;
 import com.spmproject.smartparking.parkingspot.ParkingSpotService;
 import com.spmproject.smartparking.reservation.Reservation;
 
+import javax.swing.text.html.Option;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
@@ -28,6 +33,8 @@ public class ParkingPlaceController {
 	private final ParkingPlaceService parkingPlaceService;
 	private final MunicipalityService municipalityService;
 	private final ParkingSpotService parkingSpotService;
+	@Autowired
+	UserRepository userRepository;
 
 	@Autowired
 	public ParkingPlaceController(ParkingPlaceService parkingPlaceService,MunicipalityService municipalityService
@@ -78,5 +85,15 @@ public class ParkingPlaceController {
 		}
 		return saved;
 	}
+
+	@GetMapping("/")
+	public List<ParkingPlace> getAllMunicipalityParkingPlaces(Authentication authentication) {
+		System.out.println(authentication.getName());
+		Optional<User> user = userRepository.findByUsername(authentication.getName());
+
+
+		return parkingPlaceService.getAllParkingPlaces();
+	}
+
 
 }

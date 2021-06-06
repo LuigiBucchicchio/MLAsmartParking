@@ -32,7 +32,6 @@ public class MunicipalityService {
 	}
 
 	public Municipality addNewMunicipality(Municipality m) {
-		System.out.println("E proveoce");
 		Municipality municipality = new Municipality(
 				m.getName(),
 				m.getEmail(),

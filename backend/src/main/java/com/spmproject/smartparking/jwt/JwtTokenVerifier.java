@@ -41,7 +41,7 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
         String authorizationHeader = request.getHeader(jwtConfig.getAuthorizationHeader());
 
-        System.out.println("request is: " + request);
+        System.out.println("authorizationHeader is: " + authorizationHeader);
 
         if (Strings.isNullOrEmpty(authorizationHeader) || !authorizationHeader.startsWith(jwtConfig.getTokenPrefix())) {
             filterChain.doFilter(request, response);
@@ -58,6 +58,7 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
             Claims body = claimsJwt.getBody();
 
             String username = body.getSubject();
+            System.out.println("username " +body);
             var authorities = (List<Map<String, String>>) body.get("authorities");
 
             Set<SimpleGrantedAuthority> simpleGrantedAuthoritySet = authorities.stream()

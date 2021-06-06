@@ -91,6 +91,16 @@ const SignUpAdmin = (props) => {
         </div>
         <div className={classes.group}>
           <label htmlFor="user" className={classes.label}>
+            Username
+          </label>
+          <input
+            type="text"
+            className={classes.input}
+            {...register("username")}
+          />
+        </div>
+        <div className={classes.group}>
+          <label htmlFor="user" className={classes.label}>
             Phone Number
           </label>
           <input

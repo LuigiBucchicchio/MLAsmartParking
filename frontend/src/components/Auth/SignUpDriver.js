@@ -30,7 +30,7 @@ const SignUpDriver = (props) => {
             password: data.password,
           })
           .then((user) => {
-            console.log("dati login " + user)
+            console.log("dati login " + user);
             setToken(user.headers.authorization);
             props.tkn(true, user.data.role);
           })
@@ -44,7 +44,6 @@ const SignUpDriver = (props) => {
         console.log(err);
       });
   };
-
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={classes.loginForm}>
@@ -73,6 +72,16 @@ const SignUpDriver = (props) => {
             ctype="text"
             className={classes.input}
             {...register("email")}
+          />
+        </div>
+        <div className={classes.group}>
+          <label htmlFor="user" className={classes.label}>
+            Username
+          </label>
+          <input
+            type="text"
+            className={classes.input}
+            {...register("username")}
           />
         </div>
         <div className={classes.group}>
