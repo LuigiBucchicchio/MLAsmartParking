@@ -20,6 +20,7 @@ const SignIn = (props) => {
         password: data.password,
       })
       .then((user) => {
+        console.log(user.data)
         setToken(user.headers.authorization);
         props.tkn(true);
       })

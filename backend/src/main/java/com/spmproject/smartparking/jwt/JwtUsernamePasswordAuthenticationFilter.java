@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.stream.Collectors;
 
 public class JwtUsernamePasswordAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
@@ -51,7 +52,7 @@ public class JwtUsernamePasswordAuthenticationFilter extends UsernamePasswordAut
             );
            Authentication authenticate = authenticationManager.authenticate(authentication);
 
-            System.out.println("authenticate " + authenticate);
+            System.out.println("Authenticate " + authenticate);
            return authenticate;
             
         } catch (IOException e) {
@@ -66,6 +67,7 @@ public class JwtUsernamePasswordAuthenticationFilter extends UsernamePasswordAut
                                             Authentication authResult) throws IOException, ServletException {
 
 
+
         String token = Jwts
                 .builder()
                 .setSubject(authResult.getName())
@@ -75,7 +77,20 @@ public class JwtUsernamePasswordAuthenticationFilter extends UsernamePasswordAut
                 .signWith(secretKey)
                 .compact();
 
+
         System.out.println("Token " + token);
+
+        String authoritiesString = authResult.getAuthorities().toString().replace("]", "");
+        authoritiesString = authoritiesString.replace(" ", "");
+        String[] authoritiesSplitted = authoritiesString.split(",");
+
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(
+                "{\"" +"token" + "\":\"" + token + "\"," +
+                "\"" + "role" + "\":\"" + authoritiesSplitted[authoritiesSplitted.length - 1]+ "\"" +
+                        "}"
+        );
 
        response.addHeader(jwtConfig.getAuthorizationHeader(), jwtConfig.getTokenPrefix() + token);
 
