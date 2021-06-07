@@ -33,7 +33,7 @@ const SignUpAdmin = (props) => {
             password: data.password,
           })
           .then((user) => {
-            setToken(user.headers.authorization);
+            setToken(user.data.token);
             props.tkn(true, user.data.role);
           })
           .catch((err) => {

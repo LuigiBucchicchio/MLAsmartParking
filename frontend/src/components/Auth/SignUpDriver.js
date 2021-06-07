@@ -31,7 +31,7 @@ const SignUpDriver = (props) => {
           })
           .then((user) => {
             console.log("dati login " + user);
-            setToken(user.headers.authorization);
+            setToken(user.data.token);
             props.tkn(true, user.data.role);
           })
           .catch((err) => {

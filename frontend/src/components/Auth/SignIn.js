@@ -1,5 +1,4 @@
 import { useForm } from "react-hook-form";
-
 import axios from "axios";
 
 import useToken from "./useToken";
@@ -20,7 +19,8 @@ const SignIn = (props) => {
         password: data.password,
       })
       .then((user) => {
-        setToken(user.headers.authorization);
+        
+        setToken(user.data.token);
         props.tkn(true, user.data.role);
       })
       .catch((err) => {
