@@ -1,6 +1,7 @@
 package com.spmproject.smartparking.driver;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -12,6 +13,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import com.spmproject.smartparking.auth.User;
+import com.spmproject.smartparking.parkingPlace.ParkingPlace;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
@@ -53,10 +57,15 @@ public class DriverController {
 	public List<Driver> getAllDrivers() {
 		return driverService.getAllDrivers();
 	}
-	
+
 	//@PreAuthorize("hasRole('ROLE_ADMIN')")
-		@GetMapping("/{id}")
-		public Driver getDriver(@PathVariable Long id) {
-			return driverService.one(id);
-		}
+	@GetMapping("/{id}")
+	public Driver getDriver(@PathVariable Long id) {
+		return driverService.one(id);
+	}
+
+	@GetMapping("/")
+	public Driver getProfile(Authentication authentication) {
+		return driverService.one(authentication.getName());
+	}
 }

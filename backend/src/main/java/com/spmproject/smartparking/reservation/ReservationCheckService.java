@@ -27,7 +27,7 @@ public class ReservationCheckService {
 		this.reservationService=reservationService;
 	}
 	
-	@Scheduled(fixedDelay = 300000, initialDelay = 20000)
+	@Scheduled(fixedDelay = 500000, initialDelay = 20000)
 	public void reservationCheck() {
 		check ++;
 		System.out.println("Reservation Check Routine Started: number "+check);

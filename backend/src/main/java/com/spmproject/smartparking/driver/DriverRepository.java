@@ -6,4 +6,6 @@ import java.util.Optional;
 
 public interface DriverRepository  extends JpaRepository<Driver, Long> {
     Boolean existsByEmail(String email);
+
+	Optional<Driver> findByUsername(String username);
 }

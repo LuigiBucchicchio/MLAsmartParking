@@ -48,4 +48,8 @@ public class DriverService {
 	public Driver update(Driver d) {
 		return driverRepository.save(d);
 	}
+
+	public Driver one(String username) {
+		return driverRepository.findByUsername(username).orElseThrow(() -> new ItemNotFoundException(username));
+	}
 }
