@@ -48,7 +48,7 @@ public class PolicemanController {
 		Policeman p = new Policeman();
 		
 		// can we get it from context?
-		p.setMunicipality(municipalityService.getMunicipality((long)1));
+		p.setMunicipality(municipalityService.getMunicipalityByDistrictCode(payload.getDistrictCode()));
 		
 		p.setName(payload.getName());
 		p.setSurname(payload.getSurname());

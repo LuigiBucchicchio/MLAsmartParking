@@ -16,13 +16,16 @@ public class PolicemanPayload {
 	private String email;
 	private String phoneNumber;
 	private String password;
+	private String districtCode;
 
-	public PolicemanPayload(String name, String surname, String email, String username, String password, String phoneNumber) {
+	public PolicemanPayload(String name, String surname, String email, String username, String password,
+			String phoneNumber, String districtCode) {
 		this.name=name;
 		this.surname=surname;
 		this.username=username;
 		this.email=email;
 		this.phoneNumber=phoneNumber;
 		this.password=password;
+		this.districtCode=districtCode;
 	}
 }

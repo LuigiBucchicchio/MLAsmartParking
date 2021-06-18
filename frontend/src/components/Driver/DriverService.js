@@ -1,9 +1,9 @@
 import axios from 'axios'
-const DRIVER_GET_PROFILE_URL = 'http://localhost:8080/driver';
+const DRIVER_GET_PROFILE_URL = 'http://localhost:8080/driver/';
 const DRIVER_GET_ALL_URL = 'http://localhost:8080/driver/all';
 
 const config = {
-    headers: {Authorization: localStorage.getItem("token") }
+    headers: {Authorization: "Bearer "+localStorage.getItem("token") }
 };
 
 

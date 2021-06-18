@@ -16,7 +16,6 @@ import ListMunicipalitiesComponent from "./components/Municipality/ListMunicipal
 import ListPolicemenComponent from "./components/Policeman/ListPolicemenComponent";
 import MunicipalityComponent from "./components/Municipality/MunicipalityComponent";
 import PolicemanComponent from "./components/Policeman/PolicemanComponent";
-import ProfileComponent from "./components/Profile/ProfileComponent";
 import useToken from "./components/Auth/useToken";
 import useRole from "./components/Auth/useRole";
 import "./App.css";
@@ -46,9 +45,10 @@ function App() {
   return (
     <Fragment>
       <BrowserRouter>
+      <Header loggedRole={role} logout={logoutHandler} />
         <div className='bg' >
           <Route path="/" component={HomeComponent} logout={logoutHandler}/>
-        <Header loggedRole={role} logout={logoutHandler} />
+          
           <Route path="/municipality" component={MunicipalityComponent} />
           <Route path="/driver" component={DriverComponent} />
           <Route path="/policeman" component={PolicemanComponent} />

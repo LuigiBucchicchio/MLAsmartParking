@@ -46,5 +46,9 @@ public class MunicipalityService {
 	public Municipality getMunicipality(String username) {
 		return municipalityRepository.findByUsername(username).orElseThrow(()-> new ItemNotFoundException(username));
 	}
+	
+	public Municipality getMunicipalityByDistrictCode(String districtCode) {
+		return municipalityRepository.findByDistrictCode(districtCode).orElseThrow(()-> new ItemNotFoundException(districtCode));
+	}
 }
 

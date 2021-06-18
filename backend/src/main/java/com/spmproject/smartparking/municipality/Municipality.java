@@ -5,6 +5,7 @@ import com.spmproject.smartparking.security.ApplicationUserRole;
 import lombok.*;
 
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -24,9 +25,30 @@ public class Municipality extends User
 	@OneToMany
 	Set<Policeman> policemenList;
 	
+    String districtCode;
+	
 	public Municipality(String name, String email, String username, String password, String phoneNumber) {
 		super(name, email, username, password, phoneNumber, ApplicationUserRole.MUNICIPALITY);
 	
 		policemenList = new HashSet<Policeman>();
+		int interoMistico=0;
+		for(int i=0; i<email.length();i++) {
+			char carbone = email.charAt(i);
+			int mamma = (int) carbone;
+			interoMistico = interoMistico+mamma;
+		}
+		
+		Random r= new Random();
+	    int randomInt= r.nextInt(8);
+	    randomInt=randomInt+31;	
+		interoMistico=interoMistico*randomInt;
+		String stringaMistica = String.valueOf(interoMistico);
+		StringBuffer s= new StringBuffer("");
+		s.append(stringaMistica.charAt(0));
+		s.append(stringaMistica.charAt(1));
+		s.append(stringaMistica.charAt(2));
+		s.append(stringaMistica.charAt(3));
+		this.districtCode=s.toString();
+		
 	}
 }
