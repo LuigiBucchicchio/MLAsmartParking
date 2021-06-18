@@ -21,13 +21,11 @@ import useToken from "./components/Auth/useToken";
 import useRole from "./components/Auth/useRole";
 import "./App.css";
 
-
-
 function App() {
   const { role, setRole, removeRole } = useRole();
   const { token, setToken, removeToken } = useToken();
 
-  const { count } = useSelector(state => state.counter)
+  const { count } = useSelector((state) => state.counter);
   const dispatch = useDispatch();
 
   const setUserData = (token, role) => {
@@ -47,10 +45,9 @@ function App() {
   return (
     <Fragment>
       <BrowserRouter>
-        <Header logout={logoutHandler} />
+        <Header loggedRole={role} logout={logoutHandler} />
         <div className="bg">
           <Route path="/" /> <HomeComponent />
-          <Route />
           <Route path="/municipality" component={MunicipalityComponent} />
           <Route path="/driver" component={DriverComponent} />
           <Route path="/policeman" component={PolicemanComponent} />

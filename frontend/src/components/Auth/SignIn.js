@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
-
 import axios from "axios";
+import { useAlert } from "react-alert";
 
 import useToken from "./useToken";
 import classes from "./Login.module.css";
@@ -12,6 +12,8 @@ const SignIn = (props) => {
 
   const BASE_URL = "http://localhost:8080";
 
+  const alert = useAlert();
+
   const onSubmit = (data) => {
     //AuthService.signInCall(data);
     axios
@@ -22,9 +24,19 @@ const SignIn = (props) => {
       .then((user) => {
         props.tkn(user.data.token, user.data.role);
       })
-      .catch((err) => {
-        console.log("orrore");
-        console.log(err);
+      .catch((error) => {
+        if (error.response) {
+          if (error.response.status == 403) {
+            alert.error("Wrong email or password");
+          } else if (error.response.status == 500) {
+            alert.error("Internal server error");
+          } else {
+            console.log("orrore");
+            console.log(error);
+          }
+        } else {
+          alert.error("Server doesn't response");
+        }
       });
   };
 
