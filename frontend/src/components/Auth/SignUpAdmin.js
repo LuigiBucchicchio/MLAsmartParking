@@ -30,7 +30,7 @@ const SignUpAdmin = (props) => {
     // if is a policeman we have different parameter: districtCode
     if (isPoliceman) {
       await axios
-        .post(`${BASE_URL}/${role}/add/`, {
+        .post(`${BASE_URL}/${role}/add`, {
           email: data.email,
           username: data.username,
           password: data.password,
