@@ -1,12 +1,12 @@
 import {Fragment} from 'react';
 
-import Header from '../Layout/Header'
+import HeaderDriver from '../Layout/HeaderDriver'
 import Parking from '../Parking/Parking';
 
 const Home = (props) => {
     return(
         <Fragment>
-            <Header logout={props.logout}/>
+            <HeaderDriver logout={props.logout}/>
             <Parking/>
         </Fragment>        
     )
