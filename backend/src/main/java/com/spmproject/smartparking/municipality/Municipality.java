@@ -31,6 +31,7 @@ public class Municipality extends User
 		super(name, email, username, password, phoneNumber, ApplicationUserRole.MUNICIPALITY);
 	
 		policemenList = new HashSet<Policeman>();
+
 		int interoMistico=0;
 		for(int i=0; i<email.length();i++) {
 			char carbone = email.charAt(i);
@@ -49,6 +50,6 @@ public class Municipality extends User
 		s.append(stringaMistica.charAt(2));
 		s.append(stringaMistica.charAt(3));
 		this.districtCode=s.toString();
-		
+
 	}
 }

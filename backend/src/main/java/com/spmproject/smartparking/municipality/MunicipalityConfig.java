@@ -84,28 +84,6 @@ public class MunicipalityConfig {
 
 			if(userRepository.count()==((long)0)) {
 
-				User bianchi = new User(
-						12375678910L,
-						"driver",
-						"driver@gmail.com",
-						"driver",
-						passwordEncoder.encode("pass"),
-						"",
-						"jkd",
-						ApplicationUserRole.DRIVER
-						);
-
-				User rapsodia = new User(
-						12345678910L,
-						"admin",
-						"admin@gmail.com",
-						"admin",
-						passwordEncoder.encode("pass"),
-						"",
-						"jkd",
-						ApplicationUserRole.ADMIN
-						);
-				userRepository.saveAll(List.of(bianchi, rapsodia));
 			}
 		};
 

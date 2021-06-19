@@ -1,8 +1,13 @@
 package com.spmproject.smartparking.policeman;
 
+import java.util.HashSet;
 import java.util.List;
 
+import com.spmproject.smartparking.municipality.Municipality;
+import com.spmproject.smartparking.municipality.MunicipalityPayload;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -41,12 +46,30 @@ public class PolicemanController {
 		return policemanService.getAllPolicemen();
 	}
 
-	//@PreAuthorize("hasRole('ROLE_ADMIN','ROLE_POLICEMAN')")
 	@PostMapping("/add")
+	public ResponseEntity registerNewPoliceman(@RequestBody PolicemanPayload payload) {
+		if (!policemanService.isEmailUsed(payload.getEmail())) {
+			Policeman p = new Policeman();
+			p.setMunicipality(municipalityService.getMunicipalityByDistrictCode(payload.getDistrictCode()));
+			p.setName(payload.getName());
+			p.setSurname(payload.getSurname());
+			p.setEmail(payload.getEmail());
+			p.setUsername(payload.getUsername());
+			p.setPhoneNumber(payload.getPhoneNumber());
+			p.setPassword(payload.getPassword());
+
+			policemanService.addNewPoliceman(p);
+			return new ResponseEntity(HttpStatus.OK);
+		} else {
+			return new ResponseEntity(HttpStatus.CONFLICT);
+		}
+	}
+
 	public Policeman newPoliceman(@RequestBody PolicemanPayload payload) {
 		
 		Policeman p = new Policeman();
-		
+
+
 		// can we get it from context?
 		p.setMunicipality(municipalityService.getMunicipalityByDistrictCode(payload.getDistrictCode()));
 		

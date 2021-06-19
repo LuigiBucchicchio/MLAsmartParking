@@ -1,6 +1,8 @@
 package com.spmproject.smartparking.policeman;
 
+import com.spmproject.smartparking.municipality.Municipality;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.spmproject.smartparking.ItemNotFoundException;
@@ -10,6 +12,7 @@ import java.util.List;
 @Service
 public class PolicemanService {
 	private final PolicemanRepository policemanRepository;
+	BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
 	@Autowired
 	public PolicemanService(PolicemanRepository policemanRepository) {
@@ -21,7 +24,20 @@ public class PolicemanService {
 	}
 
 	public Policeman addNewPoliceman(Policeman p) {
-		return this.policemanRepository.save(p);
+		Policeman policeman = new Policeman(
+				p.getName(),
+				p.getSurname(),
+				p.getEmail(),
+				p.getUsername(),
+				passwordEncoder.encode(p.getPassword()),
+				p.getPhoneNumber()
+		);
+		return this.policemanRepository.save(policeman);
+	}
+
+	// check if email already used in another registration
+	public Boolean isEmailUsed(String email) {
+		return  policemanRepository.existsByEmail(email);
 	}
 
 	public Policeman One(long id) {
