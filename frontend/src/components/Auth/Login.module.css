@@ -22,7 +22,7 @@
   position: absolute;
   padding: 50px ;
   background-size: contain;
-  background: url(../../assets/loginLogo.png) no-repeat center;
+  background: url(../../assets/logo.png) no-repeat center;
 }
 
 .loginHtml .signIn,

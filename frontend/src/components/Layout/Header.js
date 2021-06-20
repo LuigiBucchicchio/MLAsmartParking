@@ -21,7 +21,7 @@ const Header = (props) => {
                     <img
                       alt=""
                       src={logo}
-                      height="60"
+                      height="30"
                       width="60"
                       className="d-inline-block align-top"
                     />{" "}
