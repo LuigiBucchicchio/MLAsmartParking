@@ -1,5 +1,6 @@
 import { Fragment } from "react";
-import { BrowserRouter, Route } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
+import { Route, Switch } from "react-router";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import AddParkingPlaceComponent from "./components/Parking/AddParkingPlaceComponent";
@@ -18,7 +19,7 @@ import PolicemanComponent from "./components/Policeman/PolicemanComponent";
 import useToken from "./components/Auth/useToken";
 import useRole from "./components/Auth/useRole";
 import "./App.css";
-import DriverProfileComponent from './components/Driver/DriverProfileComponent';
+import DriverProfileComponent from "./components/Driver/DriverProfileComponent";
 
 function App() {
   const { role, setRole, removeRole } = useRole();
@@ -42,28 +43,45 @@ function App() {
   return (
     <Fragment>
       <BrowserRouter>
-      <Header loggedRole={role} logout={logoutHandler} />
-        <div className='bg' >
-          <Route path="/" component={HomeComponent} logout={logoutHandler}/>
-          
-          <Route path="/municipality" component={MunicipalityComponent} />
-          <Route path="/driver" component={DriverComponent} />
-          <Route path="/policeman" component={PolicemanComponent} />
-          <Route path="/admin" component={AdminComponent} />
-          <Route
-            path="/listParkingPlaces"
-            component={ListParkingPlacesComponent}
-          />
-          <Route path="/addParkingPlace" component={AddParkingPlaceComponent} />
-          <Route path="/driver/profile" component={DriverProfileComponent} />
-          <Route path="/assignPoliceman" component={AssignPolicemanComponent} />
-          <Route path="/listPolicemen" component={ListPolicemenComponent} />
-          <Route
-            path="/listMunicipalities"
-            component={ListMunicipalitiesComponent}
-          />
-          <Route path="/listDrivers" component={ListDriversComponent} />
-        </div>
+        <Header loggedRole={role} logout={logoutHandler} />
+        <Switch>
+          <Route exact path="/">
+            <HomeComponent />
+          </Route>
+          <Route path="/municipality">
+            <MunicipalityComponent />
+          </Route>
+          <Route path="/driver">
+            <DriverComponent />
+          </Route>
+          <Route path="/policeman">
+            <PolicemanComponent />
+          </Route>
+          <Route path="/admin">
+            <AdminComponent />
+          </Route>
+          <Route path="/listParkingPlaces">
+            <ListParkingPlacesComponent />
+          </Route>
+          <Route path="/addParkingPlace">
+            <AddParkingPlaceComponent />
+          </Route>
+          <Route path="/driver/profile">
+            <DriverProfileComponent />
+          </Route>
+          <Route path="/assignPoliceman">
+            <AssignPolicemanComponent />
+          </Route>
+          <Route path="/listPolicemen">
+            <ListPolicemenComponent />
+          </Route>
+          <Route path="/listMunicipalities">
+            <ListMunicipalitiesComponent />
+          </Route>
+          <Route path="/listDrivers">
+            <ListDriversComponent />
+          </Route>
+        </Switch>
       </BrowserRouter>
     </Fragment>
   );
