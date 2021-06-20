@@ -6,7 +6,7 @@ export default function useRole() {
     return roleString;
   };
 
-  const [role, setRole, removeRole] =  useState(getRole());
+  const [role, setRole] =  useState(getRole());
 
   const saveRole = userRole => {
     localStorage.setItem("role", userRole);

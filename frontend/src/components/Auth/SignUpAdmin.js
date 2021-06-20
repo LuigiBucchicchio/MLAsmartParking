@@ -17,7 +17,7 @@ const SignUpAdmin = (props) => {
 
   const handleRole = (e) => {
     console.log(e.target.value);
-    if (e.target.value == "policeman") {
+    if (e.target.value === "policeman") {
       setIsPoliceman(true);
     } else {
       setIsPoliceman(false);

@@ -23,10 +23,10 @@ class AddParkingPlaceComponent extends React.Component {
   handleSubmit = (event) => {
     ParkingService.newParkingPlace(this.state.spotsnumber, this.state.address).then(response => {
       console.log("response", response.status);
-      if(response.status==200)
+      if(response.status === 200)
       alert("Success!");
       else
-      alert("Something went wrong, response code: "+response.status);
+      alert("Something went wrong, response code: " + response.status);
     })
     event.preventDefault();
   }

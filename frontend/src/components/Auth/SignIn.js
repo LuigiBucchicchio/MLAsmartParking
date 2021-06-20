@@ -2,13 +2,10 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useAlert } from "react-alert";
 
-import useToken from "./useToken";
 import classes from "./Login.module.css";
 
 const SignIn = (props) => {
   const { register, handleSubmit } = useForm();
-
-  const { setToken } = useToken();
 
   const BASE_URL = "http://localhost:8080";
 
@@ -26,9 +23,9 @@ const SignIn = (props) => {
       })
       .catch((error) => {
         if (error.response) {
-          if (error.response.status == 403) {
+          if (error.response.status === 403) {
             alert.error("Wrong email or password");
-          } else if (error.response.status == 500) {
+          } else if (error.response.status === 500) {
             alert.error("Internal server error");
           } else {
             console.log("orrore");

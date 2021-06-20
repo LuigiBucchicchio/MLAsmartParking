@@ -1,6 +1,5 @@
 import { Fragment } from "react";
 import { BrowserRouter, Route } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import AddParkingPlaceComponent from "./components/Parking/AddParkingPlaceComponent";
@@ -25,9 +24,6 @@ function App() {
   const { role, setRole, removeRole } = useRole();
   const { token, setToken, removeToken } = useToken();
 
-  const { count } = useSelector((state) => state.counter);
-  const dispatch = useDispatch();
-
   const setUserData = (token, role) => {
     setToken(token);
     setRole(role);
@@ -36,6 +32,7 @@ function App() {
   const logoutHandler = () => {
     console.log("inside logout handler");
     removeToken();
+    removeRole();
   };
 
   if (!token) {
