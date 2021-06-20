@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Container, Row } from "react-bootstrap";
 
 import SignUpDriver from "./SignUpDriver";
 import SignUpAdmin from "./SignUpAdmin";
@@ -8,7 +9,7 @@ const SignUp = (props) => {
   const [isAdmin, setisAdmin] = useState(false);
 
   return (
-    <div>
+    <Container>
       {isAdmin === false ? (
         <SignUpDriver tkn={props.tkn} />
       ) : (
@@ -16,18 +17,17 @@ const SignUp = (props) => {
       )}
 
       <div className={classes.hr}></div>
-      <div className={classes.group}>
+      <Row className={classes.group}>
         <button
-        type="button"
+          type="button"
           className={classes.admin}
           value="Admin"
           onClick={() => setisAdmin(!isAdmin)}
         >
           {isAdmin === false ? "Are you an Admin?" : "No, you're not"}
         </button>
-        
-      </div>
-    </div>
+      </Row>
+    </Container>
   );
 };
 

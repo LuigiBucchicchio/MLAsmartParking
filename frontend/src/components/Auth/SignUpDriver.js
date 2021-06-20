@@ -1,6 +1,7 @@
-import React from "react";
-import { useForm } from "react-hook-form";
 import axios from "axios";
+import React from "react";
+import { Col, Row } from "react-bootstrap";
+import { useForm } from "react-hook-form";
 
 import useToken from "./useToken";
 
@@ -48,22 +49,25 @@ const SignUpDriver = (props) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={classes.loginForm}>
       <div className={classes.signUpHtm}>
-        <div className={classes.group}>
-          <label htmlFor="name" className={classes.label}>
-            Name:
-          </label>
-          <input type="text" {...register("name")} />
-        </div>
-        <div className={classes.group}>
-          <label htmlFor="user" className={classes.label}>
-            Surname
-          </label>
-          <input
-            type="text"
-            className={classes.input}
-            {...register("surname")}
-          />
-        </div>
+        <Row>
+          <Col className={classes.group}>
+            <label htmlFor="name" className={classes.label}>
+              Name:
+            </label>
+            <input type="text" {...register("name")} />
+          </Col>
+          <Col className={classes.group}>
+            <label htmlFor="user" className={classes.label}>
+              Surname
+            </label>
+            <input
+              type="text"
+              className={classes.input}
+              {...register("surname")}
+            />
+          </Col>
+        </Row>
+
         <div className={classes.group}>
           <label htmlFor="pass" className={classes.label}>
             Email

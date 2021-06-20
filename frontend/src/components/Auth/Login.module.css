@@ -50,7 +50,7 @@
   border-color: #1c34ea;
 }
 .loginForm {
-  min-height: 345px;
+  
   position: relative;
   perspective: 1000px;
   transform-style: preserve-3d;
