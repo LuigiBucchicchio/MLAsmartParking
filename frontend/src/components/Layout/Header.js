@@ -1,10 +1,10 @@
-import { Fragment } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import { Col, Container, Row } from "react-bootstrap";
 
+import logo from "../../assets/logo.png"
 import classes from './Header.css'
 
 const Header = (props) => {
@@ -20,9 +20,9 @@ const Header = (props) => {
                     {" "}
                     <img
                       alt=""
-                      src="https://react-bootstrap.github.io/logo.svg"
-                      height="30"
-                      width="30"
+                      src={logo}
+                      height="60"
+                      width="60"
                       className="d-inline-block align-top"
                     />{" "}
                     MLA Smart Parking
