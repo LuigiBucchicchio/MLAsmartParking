@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -45,6 +48,20 @@ public class PolicemanController {
 	public List<Policeman> all() {
 		return policemanService.getAllPolicemen();
 	}
+	
+	@GetMapping("/all/municipality")
+	public List<Policeman> municipalityPolicemen() {
+		String currentUserName="";
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (!(authentication instanceof AnonymousAuthenticationToken)) {
+		    currentUserName = authentication.getName();
+		}
+		
+		Municipality m= municipalityService.getMunicipality(currentUserName);
+		List<Policeman> list = policemanService.getPolicemenFromMunicipalityID(m.getId());
+		return list;
+	}
+	
 
 	@PostMapping("/add")
 	public ResponseEntity registerNewPoliceman(@RequestBody PolicemanPayload payload) {
@@ -56,7 +73,8 @@ public class PolicemanController {
 			p.setEmail(payload.getEmail());
 			p.setUsername(payload.getUsername());
 			p.setPhoneNumber(payload.getPhoneNumber());
-			p.setPassword(payload.getPassword());
+			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+			p.setPassword(passwordEncoder.encode(payload.getPassword()));
 
 			policemanService.addNewPoliceman(p);
 			return new ResponseEntity(HttpStatus.OK);
@@ -65,30 +83,17 @@ public class PolicemanController {
 		}
 	}
 
-	public Policeman newPoliceman(@RequestBody PolicemanPayload payload) {
-		
-		Policeman p = new Policeman();
-
-
-		// can we get it from context?
-		p.setMunicipality(municipalityService.getMunicipalityByDistrictCode(payload.getDistrictCode()));
-		
-		p.setName(payload.getName());
-		p.setSurname(payload.getSurname());
-		p.setEmail(payload.getEmail());
-		p.setUsername(payload.getUsername());
-		p.setPhoneNumber(payload.getPhoneNumber());
-		
-		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-		p.setPassword(passwordEncoder.encode(payload.getPassword()));
-		Policeman saved=policemanService.addNewPoliceman(p);
-		return saved;
-	}
-
 	//@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@GetMapping("/{id}")
-	public Policeman one(@PathVariable Long id) {
-		return policemanService.One(id);
+	@GetMapping("/me")
+	public Policeman one() {
+		String currentUserName="";
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (!(authentication instanceof AnonymousAuthenticationToken)) {
+		    currentUserName = authentication.getName();
+		}
+		
+		Policeman p= policemanService.getOneByName(currentUserName);
+		return p;
 	}
 
 	//@PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -118,11 +123,11 @@ public class PolicemanController {
 		return policemanService.update(p);
 	}
 	
-	//@PreAuthorize("hasRole('ROLE_ADMIN')")
-		@PutMapping("/{id}/{parkingPlaceID}/assign")
-		public Policeman assignPoliceman(@PathVariable Long id, @PathVariable Long parkingPlaceID) {
-			Policeman p = policemanService.One(id);
-			ParkingPlace pp= parkingPlaceService.one(parkingPlaceID);
+		@PostMapping("/assign")
+		public Policeman assignPoliceman(@RequestBody AssignmentPayload payload) {
+			System.out.println(payload.getPolicemanName());
+			Policeman p= policemanService.getOneByName(payload.getPolicemanName());
+			ParkingPlace pp= parkingPlaceService.getOneByAddress(payload.getParkingAddress());
             p.setAssignedParkingPlace(pp);
 			return policemanService.update(p);
 		}

@@ -35,4 +35,8 @@ public class ParkingPlaceService {
 		found = this.parkingPlaceRepository.findById(id).orElseThrow(() -> new ItemNotFoundException(id));
 	    return found;
 	}
+	
+	public ParkingPlace getOneByAddress(String address) {
+		return this.parkingPlaceRepository.findByAddress(address);
+	}
 }

@@ -57,7 +57,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 				.addFilterAfter(new JwtTokenVerifier(secretKey, jwtConfig), JwtUsernamePasswordAuthenticationFilter.class)
 				.authorizeRequests()
 				.antMatchers("/", "index", "/css/*", "/js/*", "/municipality/all", "/driver/add",
-						"/municipality/add", "/policeman/add", "/admin/add", "/driver/",
+						"/municipality/add", "/policeman/add", "/admin/add", "/driver/", "/policeman/assign", "/policeman/me",
 						"/driver/all","/policeman/all").permitAll()
 				.antMatchers("/driver/**").hasAnyRole(DRIVER.name(), ADMIN.name())
 				.anyRequest()

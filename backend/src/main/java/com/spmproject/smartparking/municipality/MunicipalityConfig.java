@@ -7,6 +7,8 @@ import com.spmproject.smartparking.driver.Driver;
 import com.spmproject.smartparking.driver.DriverRepository;
 import com.spmproject.smartparking.parkingPlace.ParkingPlace;
 import com.spmproject.smartparking.parkingPlace.ParkingPlaceRepository;
+import com.spmproject.smartparking.policeman.Policeman;
+import com.spmproject.smartparking.policeman.PolicemanRepository;
 import com.spmproject.smartparking.security.ApplicationUserRole;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -19,7 +21,8 @@ import java.util.List;
 public class MunicipalityConfig {
 
 	@Bean
-	CommandLineRunner commandLineRunner(MunicipalityRepository municipalityRepository, DriverRepository driverRepository, UserRepository userRepository, ParkingPlaceRepository parkingPlaceRepository) {
+	CommandLineRunner commandLineRunner(MunicipalityRepository municipalityRepository, DriverRepository driverRepository,
+			UserRepository userRepository, ParkingPlaceRepository parkingPlaceRepository, PolicemanRepository policemanRepository) {
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
 		return args -> {
@@ -80,9 +83,38 @@ public class MunicipalityConfig {
 				parcheggioTermoli.setSpotsNumber(11);
 				parcheggioTermoli.setMunicipality(municipalityRepository.findById((long)2).orElseThrow(() -> new ItemNotFoundException((long)2)));
 				parkingPlaceRepository.save(parcheggioTermoli);
+				
+				ParkingPlace parcheggioTermoli2 = new ParkingPlace();
+				parcheggioTermoli2.setAddress("via mario milano");
+				parcheggioTermoli2.setSpotsNumber(22);
+				parcheggioTermoli2.setMunicipality(municipalityRepository.findById((long)2).orElseThrow(() -> new ItemNotFoundException((long)2)));
+				parkingPlaceRepository.save(parcheggioTermoli2);
 			}
 
-			if(userRepository.count()==((long)0)) {
+			if(policemanRepository.count()==((long)0)) {
+				Policeman franco = new Policeman();
+				franco.setMunicipality(municipalityRepository.findById((long)2).orElseThrow(() -> new ItemNotFoundException((long)2)));
+				franco.setName("Franco");
+				franco.setSurname("Verdonzi");
+				franco.setEmail("franco.verdonzi@gmail.com");
+				franco.setUsername("FrancoIlGrande");
+				franco.setPhoneNumber("00992476456");
+				franco.setPassword(passwordEncoder.encode("ilmagnificofranco"));
+				
+				
+				policemanRepository.save(franco);
+				
+				Policeman basso = new Policeman();
+				basso.setMunicipality(municipalityRepository.findById((long)2).orElseThrow(() -> new ItemNotFoundException((long)2)));
+				basso.setName("Basso");
+				basso.setSurname("Caruso");
+				basso.setEmail("basso.caruso@gmail.com");
+				basso.setUsername("BassoCaruso");
+				basso.setPhoneNumber("00992478787");
+				basso.setPassword(passwordEncoder.encode("bassocaruso"));
+				
+				
+				policemanRepository.save(basso);
 
 			}
 		};

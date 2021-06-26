@@ -1,5 +1,7 @@
 import React from 'react';
 import PolicemanService from './PolicemanService';
+import {Link} from 'react-router-dom';
+import './listPolicemen.css';
 
 class ListPolicemenComponent extends React.Component {
 
@@ -11,7 +13,7 @@ class ListPolicemenComponent extends React.Component {
       }
 
       componentDidMount() {
-        PolicemanService.getPolicemen().then((response) => {
+        PolicemanService.getPolicemenOfAMunicipality().then((response) => {
             this.setState({ policemen : response.data})
         }); 
       }
@@ -20,6 +22,15 @@ class ListPolicemenComponent extends React.Component {
       return (
                
         <div className= "container">
+          <table className="table table-hover table-dark">
+                   <thead>
+                       <tr>
+                           <th scope="col">Your Policemen</th>
+                       </tr>
+                   </thead>
+                   <tbody>
+                   </tbody>
+               </table>
                <table className="table table-hover table-dark">
                    <thead>
                        <tr>
@@ -28,6 +39,7 @@ class ListPolicemenComponent extends React.Component {
                            <th scope="col">Policeman Surname</th>
                            <th scope="col">Policeman Email</th>
                            <th scope="col">Policeman PhoneNumber</th>
+                           <th scope="col"> </th>
                        </tr>
                    </thead>
                    <tbody>
@@ -40,6 +52,7 @@ class ListPolicemenComponent extends React.Component {
                                        <td> {policeman.surname}</td>
                                        <td> {policeman.email}</td>
                                        <td> {policeman.phoneNumber}</td>
+                                       <td><Link to="/assignPoliceman"><bottone><hover></hover></bottone></Link></td>
                                    </tr>
                            )
                        }

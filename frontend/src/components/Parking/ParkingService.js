@@ -1,10 +1,11 @@
 import axios from 'axios'
 
 const PARKINGPLACES_GET_ALL_URL = 'http://localhost:8080/parking-place/all';
+const PARKINGPLACES_GET_ALL_MUNICIPALITY_URL = 'http://localhost:8080/parking-place/';
 const PARKINGPLACES_POST_ONE_URL = 'http://localhost:8080/parking-place/add';
 
 const config = {
-    headers: {Authorization: localStorage.getItem("token") }
+    headers: {Authorization: "Bearer "+localStorage.getItem("token") }
 };
 
 class ParkingService {
@@ -13,6 +14,10 @@ class ParkingService {
     
        return  axios.get(PARKINGPLACES_GET_ALL_URL,config)
     }
+
+    getParkingPlacesOfAMunicipality(){
+        return  axios.get(PARKINGPLACES_GET_ALL_MUNICIPALITY_URL,config)
+     }
 
     newParkingPlace(spotsNumber,address){
         const json = { "spotsNumber": spotsNumber,

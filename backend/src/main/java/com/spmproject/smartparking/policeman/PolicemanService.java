@@ -43,6 +43,10 @@ public class PolicemanService {
 	public Policeman One(long id) {
 		return policemanRepository.findById(id).orElseThrow(() -> new ItemNotFoundException(id));
 	}
+	
+	public Policeman getOneByName(String name) {
+		return policemanRepository.findByName(name);
+	}
 
 	public void deleteById(Long id) {
 		policemanRepository.deleteById(id);
@@ -50,5 +54,9 @@ public class PolicemanService {
 
 	public Policeman update(Policeman p) {
 		return policemanRepository.save(p);
+	}
+	
+	public List<Policeman> getPolicemenFromMunicipalityID(long id) {
+		return policemanRepository.findByMunicipalityId(id);
 	}
 }
