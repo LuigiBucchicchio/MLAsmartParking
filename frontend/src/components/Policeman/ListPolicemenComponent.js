@@ -19,6 +19,7 @@ class ListPolicemenComponent extends React.Component {
       }
 
     render() {
+        
       return (
                
         <div className= "container">
@@ -39,7 +40,7 @@ class ListPolicemenComponent extends React.Component {
                            <th scope="col">Policeman Surname</th>
                            <th scope="col">Policeman Email</th>
                            <th scope="col">Policeman PhoneNumber</th>
-                           <th scope="col"> </th>
+                           <th scope="col">Assigned Parking Place</th>
                        </tr>
                    </thead>
                    <tbody>
@@ -52,7 +53,9 @@ class ListPolicemenComponent extends React.Component {
                                        <td> {policeman.surname}</td>
                                        <td> {policeman.email}</td>
                                        <td> {policeman.phoneNumber}</td>
-                                       <td><Link to="/assignPoliceman"><bottone><hover></hover></bottone></Link></td>
+                                       <td>
+                                       { policeman.assignedParkingPlace!==null ? (policeman.assignedParkingPlace.address) : <Link to="/assignPoliceman"><bottone><hover></hover></bottone></Link>}
+                                   </td>
                                    </tr>
                            )
                        }

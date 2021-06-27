@@ -125,10 +125,17 @@ public class PolicemanController {
 	
 		@PostMapping("/assign")
 		public Policeman assignPoliceman(@RequestBody AssignmentPayload payload) {
-			System.out.println(payload.getPolicemanName());
+			
 			Policeman p= policemanService.getOneByName(payload.getPolicemanName());
 			ParkingPlace pp= parkingPlaceService.getOneByAddress(payload.getParkingAddress());
             p.setAssignedParkingPlace(pp);
+			return policemanService.update(p);
+		}
+		
+		@PostMapping("/unassign")
+		public Policeman unassignPoliceman(@RequestBody String policemanName) {
+			Policeman p= policemanService.getOneByName(policemanName);
+            p.setAssignedParkingPlace(null);
 			return policemanService.update(p);
 		}
 
