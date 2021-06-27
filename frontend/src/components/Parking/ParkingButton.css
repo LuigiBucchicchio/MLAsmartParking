@@ -1,0 +1,97 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:600&display=swap');
+modifybutton{
+  position: relative;
+  display: inline-flex;
+  width: 180px;
+  height: 55px;
+  margin: 0 15px;
+  perspective: 1000px;
+}
+modifybutton hover{
+  font-size: 19px;
+  letter-spacing: 1px;
+  transform-style: preserve-3d;
+  transform: translateZ(-25px);
+  transition: transform .25s;
+  font-family: 'Montserrat', sans-serif;
+  
+}
+modifybutton hover:before,
+modifybutton hover:after{
+  position: absolute;
+  content: "Modify";
+  height: 50px;
+  width: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 5px solid black;
+  box-sizing: border-box;
+  border-radius: 5px;
+}
+modifybutton hover:before{
+    color: #fff;
+    background: #000;
+  
+  transform: rotateY(0deg) translateZ(25px);
+}
+modifybutton hover:after{
+    color: #000;
+    background: #fff;
+  transform: rotateX(90deg) translateZ(25px);
+}
+modifybutton hover:hover{
+  transform: translateZ(-25px) rotateX(-90deg);
+}
+.container {
+    justify-content: center;
+     height: 80vh;
+     text-align: center;
+ }
+
+ .card {
+    width: 500px;
+    padding: 10px;
+    border-radius: 20px;
+    background: #fff;
+    border: none;
+    height: 350px;
+    position: relative
+}
+
+body {
+    background: #eee
+}
+
+.mobile-text {
+    color: #989696b8;
+    font-size: 15px
+}
+
+.form-control {
+    margin-right: 12px
+}
+
+.form-control:focus {
+    color: #495057;
+    background-color: #fff;
+    border-color: #ff8880;
+    outline: 0;
+    box-shadow: none
+}
+
+.cursor {
+    cursor: pointer
+}
+
+.title {
+    font-family: sans-serif;
+    font-size: 30px;
+    font-weight: 600;
+  }
+
+  .subtitle {
+    font-family: sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+  }

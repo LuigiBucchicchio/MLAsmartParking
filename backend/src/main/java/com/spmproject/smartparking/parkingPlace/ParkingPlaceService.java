@@ -19,6 +19,10 @@ public class ParkingPlaceService {
 	public List<ParkingPlace> getAllParkingPlaces() {
 		return parkingPlaceRepository.findAll();
 	}
+	
+	public List<ParkingPlace> getParkingPlacesOfAMunicipality(long id) {
+		return parkingPlaceRepository.findByMunicipalityId(id);
+	}
 
 	public ParkingPlace addNewParkingPlace(ParkingPlace p) {
 		return this.parkingPlaceRepository.save(p);

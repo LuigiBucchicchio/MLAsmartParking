@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat:600&display=swap');
-bottone{
+assignbutton{
   position: relative;
   display: inline-flex;
   width: 180px;
@@ -7,7 +7,7 @@ bottone{
   margin: 0 15px;
   perspective: 1000px;
 }
-bottone hover{
+assignbutton hover{
   font-size: 19px;
   letter-spacing: 1px;
   transform-style: preserve-3d;
@@ -16,8 +16,8 @@ bottone hover{
   font-family: 'Montserrat', sans-serif;
   
 }
-bottone hover:before,
-bottone hover:after{
+assignbutton hover:before,
+assignbutton hover:after{
   position: absolute;
   content: "Assign";
   height: 50px;
@@ -29,17 +29,61 @@ bottone hover:after{
   box-sizing: border-box;
   border-radius: 5px;
 }
-bottone hover:before{
+assignbutton hover:before{
     color: #fff;
     background: #000;
   
   transform: rotateY(0deg) translateZ(25px);
 }
-bottone hover:after{
+assignbutton hover:after{
     color: #000;
     background: #fff;
   transform: rotateX(90deg) translateZ(25px);
 }
-bottone hover:hover{
+assignbutton hover:hover{
+  transform: translateZ(-25px) rotateX(-90deg);
+}
+unassignbutton{
+  position: relative;
+  display: inline-flex;
+  width: 180px;
+  height: 55px;
+  margin: 0 15px;
+  perspective: 1000px;
+}
+unassignbutton hover{
+  font-size: 19px;
+  letter-spacing: 1px;
+  transform-style: preserve-3d;
+  transform: translateZ(-25px);
+  transition: transform .25s;
+  font-family: 'Montserrat', sans-serif;
+  
+}
+unassignbutton hover:before,
+unassignbutton hover:after{
+  position: absolute;
+  content: "Unassign";
+  height: 50px;
+  width: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 5px solid black;
+  box-sizing: border-box;
+  border-radius: 5px;
+}
+unassignbutton hover:before{
+    color: #fff;
+    background: #000;
+  
+  transform: rotateY(0deg) translateZ(25px);
+}
+unassignbutton hover:after{
+    color: #000;
+    background: #fff;
+  transform: rotateX(90deg) translateZ(25px);
+}
+unassignbutton hover:hover{
   transform: translateZ(-25px) rotateX(-90deg);
 }

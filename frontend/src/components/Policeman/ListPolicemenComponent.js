@@ -54,7 +54,9 @@ class ListPolicemenComponent extends React.Component {
                                        <td> {policeman.email}</td>
                                        <td> {policeman.phoneNumber}</td>
                                        <td>
-                                       { policeman.assignedParkingPlace!==null ? (policeman.assignedParkingPlace.address) : <Link to="/assignPoliceman"><bottone><hover></hover></bottone></Link>}
+                                       { policeman.assignedParkingPlace!==null ? (policeman.assignedParkingPlace.address && 
+                                       <div><p>{policeman.assignedParkingPlace.address}</p><Link to="/unassignPoliceman"><unassignbutton><hover></hover></unassignbutton></Link></div>)
+                                        : <Link to="/assignPoliceman"><assignbutton><hover></hover></assignbutton></Link>}
                                    </td>
                                    </tr>
                            )

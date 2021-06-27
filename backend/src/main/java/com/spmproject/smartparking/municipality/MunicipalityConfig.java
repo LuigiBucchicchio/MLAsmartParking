@@ -7,14 +7,18 @@ import com.spmproject.smartparking.driver.Driver;
 import com.spmproject.smartparking.driver.DriverRepository;
 import com.spmproject.smartparking.parkingPlace.ParkingPlace;
 import com.spmproject.smartparking.parkingPlace.ParkingPlaceRepository;
+import com.spmproject.smartparking.parkingspot.ParkingSpot;
+import com.spmproject.smartparking.parkingspot.ParkingSpotRepository;
 import com.spmproject.smartparking.policeman.Policeman;
 import com.spmproject.smartparking.policeman.PolicemanRepository;
+import com.spmproject.smartparking.reservation.Reservation;
 import com.spmproject.smartparking.security.ApplicationUserRole;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.util.HashSet;
 import java.util.List;
 
 @Configuration
@@ -22,7 +26,8 @@ public class MunicipalityConfig {
 
 	@Bean
 	CommandLineRunner commandLineRunner(MunicipalityRepository municipalityRepository, DriverRepository driverRepository,
-			UserRepository userRepository, ParkingPlaceRepository parkingPlaceRepository, PolicemanRepository policemanRepository) {
+			UserRepository userRepository, ParkingPlaceRepository parkingPlaceRepository, PolicemanRepository policemanRepository,
+			ParkingSpotRepository parkingSpotRepository) {
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
 		return args -> {
@@ -82,13 +87,33 @@ public class MunicipalityConfig {
 				parcheggioTermoli.setAddress("via saverio cannarsa, 7");
 				parcheggioTermoli.setSpotsNumber(11);
 				parcheggioTermoli.setMunicipality(municipalityRepository.findById((long)2).orElseThrow(() -> new ItemNotFoundException((long)2)));
-				parkingPlaceRepository.save(parcheggioTermoli);
+				ParkingPlace saved= new ParkingPlace();
+				saved =parkingPlaceRepository.save(parcheggioTermoli);
+				
+				for(int i=0;i<saved.getSpotsNumber();i++) {
+					ParkingSpot s = new ParkingSpot();
+					s.setLevel(0);
+					s.setParkingPlaceID(saved.getParkingPlaceID());
+					s.setProgressiveNumber(i+1);
+					s.setReservations(new HashSet<Reservation>());
+					parkingSpotRepository.save(s);
+				}
 				
 				ParkingPlace parcheggioTermoli2 = new ParkingPlace();
 				parcheggioTermoli2.setAddress("via mario milano");
 				parcheggioTermoli2.setSpotsNumber(22);
 				parcheggioTermoli2.setMunicipality(municipalityRepository.findById((long)2).orElseThrow(() -> new ItemNotFoundException((long)2)));
-				parkingPlaceRepository.save(parcheggioTermoli2);
+				saved= new ParkingPlace();
+				saved=parkingPlaceRepository.save(parcheggioTermoli2);
+				
+				for(int i=0;i<saved.getSpotsNumber();i++) {
+					ParkingSpot s = new ParkingSpot();
+					s.setLevel(0);
+					s.setParkingPlaceID(saved.getParkingPlaceID());
+					s.setProgressiveNumber(i+1);
+					s.setReservations(new HashSet<Reservation>());
+					parkingSpotRepository.save(s);
+				}
 			}
 
 			if(policemanRepository.count()==((long)0)) {

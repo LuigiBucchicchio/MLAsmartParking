@@ -3,12 +3,14 @@ package com.spmproject.smartparking.parkingPlace;
 import com.spmproject.smartparking.auth.User;
 import com.spmproject.smartparking.auth.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -70,7 +72,14 @@ public class ParkingPlaceController {
 		Municipality m= municipalityService.getMunicipality(username);
 		*/
 		
-		Municipality m= municipalityService.getMunicipality((long)1);
+		String currentUserName="";
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (!(authentication instanceof AnonymousAuthenticationToken)) {
+		    currentUserName = authentication.getName();
+		}
+		
+		Municipality m= municipalityService.getMunicipality(currentUserName);
+		
 		p.setAddress(address);
 		p.setSpotsNumber(spotsNumber);
 		p.setMunicipality(m);
@@ -88,11 +97,56 @@ public class ParkingPlaceController {
 
 	@GetMapping("/")
 	public List<ParkingPlace> getAllMunicipalityParkingPlaces(Authentication authentication) {
-		System.out.println(authentication.getName());
-		Optional<User> user = userRepository.findByUsername(authentication.getName());
+		Municipality m= municipalityService.getMunicipality(authentication.getName());
+        return parkingPlaceService.getParkingPlacesOfAMunicipality(m.getId());
+	}
 
+	@PostMapping("/modify")
+	public ParkingPlace parkingPlaceModification(@RequestBody ModificationPayload payload) {
+		String currentUserName="";
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (!(authentication instanceof AnonymousAuthenticationToken)) {
+		    currentUserName = authentication.getName();
+		}
+		Municipality m= municipalityService.getMunicipality(currentUserName);
+        List<ParkingPlace> parkingList= parkingPlaceService.getParkingPlacesOfAMunicipality(m.getId());
+        ParkingPlace pp= parkingPlaceService.one(payload.getParkingPlaceID());
 
-		return parkingPlaceService.getAllParkingPlaces();
+        if(parkingList.contains(pp)) {
+        	int before =pp.getSpotsNumber();
+        	int after = payload.getSpotsNumber();
+        	int diff = Math.abs(before -  after);
+        	List<ParkingSpot> spotList =parkingSpotService.getParkingSpotsFromPlace(pp.getParkingPlaceID());
+        	
+        	if(before>after) {
+        		for(int i=0;i<diff;i++) {
+        			ParkingSpot spot =spotList.get(spotList.size()-1);
+        			spotList.remove(spotList.size()-1);
+        			parkingSpotService.deleteParkingSpot(spot.getId());
+        			
+        			pp.setSpotsNumber(payload.getSpotsNumber());
+        		}
+        	}else if(after>before) {
+        		int lastProg = spotList.get(spotList.size()-1).getProgressiveNumber();
+        		for(int i=0;i<diff;i++) {
+        			ParkingSpot s = new ParkingSpot();
+        			s.setLevel(0);
+        			s.setParkingPlaceID(pp.getParkingPlaceID());
+        			s.setProgressiveNumber(i+1+lastProg);
+        			s.setReservations(new HashSet<Reservation>());
+        			parkingSpotService.addNewParkingSpot(s);
+        			
+        			pp.setSpotsNumber(payload.getSpotsNumber());
+        		}
+        	}else {
+        		//nothing changed
+        	}
+        	pp.setAddress(payload.getAddress());
+        }else {
+        	//not contains
+        }
+        
+		return parkingPlaceService.addNewParkingPlace(pp);
 	}
 
 

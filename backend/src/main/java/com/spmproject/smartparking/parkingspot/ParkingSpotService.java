@@ -38,5 +38,9 @@ public class ParkingSpotService {
 	public List<ParkingSpot> getFreeParkingSpotFromPlace(boolean isFree, Long parkingPlaceID) {
 		return parkingSpotRepository.findByIsFreeAndParkingPlaceID(isFree, parkingPlaceID);
 	}
+	
+	public void deleteParkingSpot(long parkingSpotID) {
+		parkingSpotRepository.deleteById(parkingSpotID);
+	}
 
 }

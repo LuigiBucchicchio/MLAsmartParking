@@ -20,6 +20,9 @@ import useToken from "./components/Auth/useToken";
 import useRole from "./components/Auth/useRole";
 import "./App.css";
 import DriverProfileComponent from "./components/Driver/DriverProfileComponent";
+import UnassignPolicemanComponent from "./components/Policeman/UnassignPolicemanComponent";
+import MunicipalityParkingPlacesComponent from "./components/Parking/MunicipalityParkingPlacesComponent";
+import ParkingPlaceModificationComponent from "./components/Parking/ParkingPlaceModificationComponent";
 
 function App() {
   const { role, setRole, removeRole } = useRole();
@@ -63,6 +66,12 @@ function App() {
           <Route path="/listParkingPlaces">
             <ListParkingPlacesComponent />
           </Route>
+          <Route path="/parkingPlaceModification">
+            <ParkingPlaceModificationComponent />
+          </Route>
+          <Route path="/municipalityParkingPlaces">
+            <MunicipalityParkingPlacesComponent />
+          </Route>
           <Route path="/addParkingPlace">
             <AddParkingPlaceComponent />
           </Route>
@@ -71,6 +80,9 @@ function App() {
           </Route>
           <Route path="/assignPoliceman">
             <AssignPolicemanComponent />
+          </Route>
+          <Route path="/unassignPoliceman">
+            <UnassignPolicemanComponent />
           </Route>
           <Route path="/listPolicemen">
             <ListPolicemenComponent />
