@@ -10,13 +10,13 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class AssignmentPayload {
-	
-	private String policemanName;
-	private String parkingAddress;
-	
-	public AssignmentPayload(String policemanName, String parkingAddress) {
-		this.parkingAddress=parkingAddress;
-		this.policemanName=policemanName;
-	}
+
+    private String policemanName;
+    private String parkingAddress;
+
+    public AssignmentPayload(String policemanName, String parkingAddress) {
+        this.parkingAddress = parkingAddress;
+        this.policemanName = policemanName;
+    }
 
 }

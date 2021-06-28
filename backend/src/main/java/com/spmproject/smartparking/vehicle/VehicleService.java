@@ -9,30 +9,30 @@ import java.util.List;
 
 @Service
 public class VehicleService {
-	private final VehicleRepository vehicleRepository;
+    private final VehicleRepository vehicleRepository;
 
-	@Autowired
-	public VehicleService(VehicleRepository vehicleRepository) {
-		this.vehicleRepository = vehicleRepository;
-	}
+    @Autowired
+    public VehicleService(VehicleRepository vehicleRepository) {
+        this.vehicleRepository = vehicleRepository;
+    }
 
-	public List<Vehicle> getAllVehicles() {
-		return vehicleRepository.findAll();
-	}
+    public List<Vehicle> getAllVehicles() {
+        return vehicleRepository.findAll();
+    }
 
-	public Vehicle addNewVehicle(Vehicle v) {
-		return this.vehicleRepository.save(v);
-	}
+    public Vehicle addNewVehicle(Vehicle v) {
+        return this.vehicleRepository.save(v);
+    }
 
-	public Vehicle one(String vehiclePlate) {
-		return vehicleRepository.findById(vehiclePlate).orElseThrow(()-> new ItemNotFoundException(vehiclePlate));
-	}
+    public Vehicle one(String vehiclePlate) {
+        return vehicleRepository.findById(vehiclePlate).orElseThrow(() -> new ItemNotFoundException(vehiclePlate));
+    }
 
-	public void deleteById(String vehiclePlate) {
-		vehicleRepository.deleteById(vehiclePlate);
-	}
+    public void deleteById(String vehiclePlate) {
+        vehicleRepository.deleteById(vehiclePlate);
+    }
 
-	public Vehicle update(Vehicle v) {
-		return vehicleRepository.save(v);
-	}
+    public Vehicle update(Vehicle v) {
+        return vehicleRepository.save(v);
+    }
 }

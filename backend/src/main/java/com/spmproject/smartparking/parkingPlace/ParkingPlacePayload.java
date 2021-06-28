@@ -10,10 +10,11 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class ParkingPlacePayload {
-int spotsNumber;
-String address;
-public ParkingPlacePayload(int spotsNumber, String address) {
-	this.address=address;
-	this.spotsNumber=spotsNumber;
-}
+    int spotsNumber;
+    String address;
+
+    public ParkingPlacePayload(int spotsNumber, String address) {
+        this.address = address;
+        this.spotsNumber = spotsNumber;
+    }
 }

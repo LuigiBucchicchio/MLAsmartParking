@@ -13,22 +13,23 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ParkingSpotController {
 
-	private ParkingSpotService parkingSpotService;
-	@Autowired
-	public ParkingSpotController(ParkingSpotService parkingSpotService) {
-		this.parkingSpotService=parkingSpotService;
-	}
+    private ParkingSpotService parkingSpotService;
 
-	//@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@GetMapping("parking-spot/all")
-	public List<ParkingSpot> getAllParkingSpot() {
-		return parkingSpotService.getAllParkingSpots();
-	}
-	
-	//@PreAuthorize("hasRole('ROLE_ADMIN')")
-		@GetMapping("parking-place/{id}/parking-spot/all")
-		public List<ParkingSpot> getAllParkingSpotFromPlace(@PathVariable Long id) {
-			return parkingSpotService.getParkingSpotsFromPlace(id);
-		}
-	
+    @Autowired
+    public ParkingSpotController(ParkingSpotService parkingSpotService) {
+        this.parkingSpotService = parkingSpotService;
+    }
+
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("parking-spot/all")
+    public List<ParkingSpot> getAllParkingSpot() {
+        return parkingSpotService.getAllParkingSpots();
+    }
+
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("parking-place/{id}/parking-spot/all")
+    public List<ParkingSpot> getAllParkingSpotFromPlace(@PathVariable Long id) {
+        return parkingSpotService.getParkingSpotsFromPlace(id);
+    }
+
 }

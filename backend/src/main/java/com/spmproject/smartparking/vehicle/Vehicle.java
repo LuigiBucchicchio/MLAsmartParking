@@ -16,16 +16,16 @@ import lombok.Data;
 @Data
 public class Vehicle {
 
-	@Id
-	private String vehiclePlate;
+    @Id
+    private String vehiclePlate;
 
-	private Enum<VehicleType> type; 
+    private Enum<VehicleType> type;
 
-	private String brand;
+    private String brand;
 
-	@ManyToMany(mappedBy = "vehicle_owned")
-	private Set<Driver> owners;
+    @ManyToMany(mappedBy = "vehicle_owned")
+    private Set<Driver> owners;
 
-	@OneToMany
-	private Set<Reservation> reservations;
+    @OneToMany
+    private Set<Reservation> reservations;
 }

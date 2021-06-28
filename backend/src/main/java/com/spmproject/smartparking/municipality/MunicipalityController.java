@@ -17,35 +17,35 @@ import java.util.List;
 @RequestMapping(path = "municipality")
 public class MunicipalityController {
 
-	private final MunicipalityService municipalityService;
+    private final MunicipalityService municipalityService;
 
-	@Autowired
-	public MunicipalityController(MunicipalityService municipalityService) {
-		this.municipalityService = municipalityService;
-	}
+    @Autowired
+    public MunicipalityController(MunicipalityService municipalityService) {
+        this.municipalityService = municipalityService;
+    }
 
-	//@PreAuthorize("hasAuthority('municipality:read')")
-	@GetMapping("/all")
-	public List<Municipality> getAllMunicipalities() {
-		return municipalityService.getAllMunicipalities();
-	}
+    //@PreAuthorize("hasAuthority('municipality:read')")
+    @GetMapping("/all")
+    public List<Municipality> getAllMunicipalities() {
+        return municipalityService.getAllMunicipalities();
+    }
 
-	//@PreAuthorize("hasAuthority('municipality:write')")
-	@PostMapping("/add")
-	public ResponseEntity registerNewMunicipality(@RequestBody MunicipalityPayload payload) {
-		if (!municipalityService.existingMunicipality(payload.getEmail())) {
-			Municipality m = new Municipality();
-			m.setPolicemenList(new HashSet<Policeman>());
-			m.setName(payload.getName());
-			m.setUsername(payload.getUsername());
-			m.setEmail(payload.getEmail());
-			m.setPhoneNumber(payload.getPhoneNumber());
-			m.setPassword(payload.getPassword());
+    //@PreAuthorize("hasAuthority('municipality:write')")
+    @PostMapping("/add")
+    public ResponseEntity registerNewMunicipality(@RequestBody MunicipalityPayload payload) {
+        if (!municipalityService.existingMunicipality(payload.getEmail())) {
+            Municipality m = new Municipality();
+            m.setPolicemenList(new HashSet<Policeman>());
+            m.setName(payload.getName());
+            m.setUsername(payload.getUsername());
+            m.setEmail(payload.getEmail());
+            m.setPhoneNumber(payload.getPhoneNumber());
+            m.setPassword(payload.getPassword());
 
-			municipalityService.addNewMunicipality(m);
-			return new ResponseEntity(HttpStatus.OK);
-		} else {
-			return new ResponseEntity(HttpStatus.CONFLICT);
-		}
-	}
+            municipalityService.addNewMunicipality(m);
+            return new ResponseEntity(HttpStatus.OK);
+        } else {
+            return new ResponseEntity(HttpStatus.CONFLICT);
+        }
+    }
 }

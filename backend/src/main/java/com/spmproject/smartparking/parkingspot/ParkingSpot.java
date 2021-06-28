@@ -15,18 +15,18 @@ import lombok.Data;
 @Entity
 @Data
 public class ParkingSpot {
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
 
-	private long parkingPlaceID;
+    private long parkingPlaceID;
 
-	private int progressiveNumber;
+    private int progressiveNumber;
 
-	private int level;
-	
-	private boolean isFree;
+    private int level;
 
-	@OneToMany
-	private Set<Reservation> reservations;
+    private boolean isFree;
+
+    @OneToMany
+    private Set<Reservation> reservations;
 }

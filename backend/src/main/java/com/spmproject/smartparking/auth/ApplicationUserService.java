@@ -19,7 +19,7 @@ public class ApplicationUserService implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        System.out.println("Email sent is "+email);
+        System.out.println("Email sent is " + email);
 
         User user = userRepository.findByEmail(email);
         if (user == null) {
@@ -30,7 +30,7 @@ public class ApplicationUserService implements UserDetailsService {
         user.setToken(token);
         userRepository.save(user);
 
-        System.out.println("L'utente trovato è "+user);
+        System.out.println("L'utente trovato è " + user);
         return ApplicationUser.build(user);
     }
 }
