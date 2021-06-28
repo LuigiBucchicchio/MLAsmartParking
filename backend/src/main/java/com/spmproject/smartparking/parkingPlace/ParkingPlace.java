@@ -4,7 +4,11 @@ import com.spmproject.smartparking.municipality.Municipality;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.annotation.Nullable;
 import javax.persistence.*;
+import javax.validation.constraints.Null;
+
+import java.awt.*;
 
 import static javax.persistence.GenerationType.SEQUENCE;
 
@@ -37,6 +41,10 @@ public class ParkingPlace {
 
 	@Column(nullable = false)
 	private String address;
+
+	@Column
+	@Nullable
+	private Point coords;
 
 	@ManyToOne
 	@JoinColumn(name = "municipality_id", referencedColumnName = "id", nullable = false)
