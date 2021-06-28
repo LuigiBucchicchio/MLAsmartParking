@@ -3,12 +3,12 @@ package com.spmproject.smartparking.parkingPlace;
 import com.spmproject.smartparking.municipality.Municipality;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.locationtech.jts.geom.Point;
 
 import javax.annotation.Nullable;
 import javax.persistence.*;
 import javax.validation.constraints.Null;
 
-import java.awt.*;
 
 import static javax.persistence.GenerationType.SEQUENCE;
 

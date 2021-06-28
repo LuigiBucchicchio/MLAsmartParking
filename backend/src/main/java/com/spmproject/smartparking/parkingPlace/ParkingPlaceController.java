@@ -2,6 +2,9 @@ package com.spmproject.smartparking.parkingPlace;
 
 import com.spmproject.smartparking.auth.User;
 import com.spmproject.smartparking.auth.UserRepository;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Point;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -22,10 +25,8 @@ import com.spmproject.smartparking.parkingspot.ParkingSpot;
 import com.spmproject.smartparking.parkingspot.ParkingSpotService;
 import com.spmproject.smartparking.reservation.Reservation;
 
-import javax.swing.text.html.Option;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
@@ -59,6 +60,8 @@ public class ParkingPlaceController {
 
         int spotsNumber = payload.getSpotsNumber();
         String address = payload.getAddress();
+        double lat = payload.getLat();
+        double lng = payload.getLng();
         ParkingPlace p = new ParkingPlace();
 		
 		/*
@@ -81,6 +84,11 @@ public class ParkingPlaceController {
         Municipality m = municipalityService.getMunicipality(currentUserName);
 
         p.setAddress(address);
+
+        GeometryFactory gf = new GeometryFactory();
+        Point coords = gf.createPoint(new Coordinate(lat, lng));
+        p.setCoords(coords);
+        
         p.setSpotsNumber(spotsNumber);
         p.setMunicipality(m);
         ParkingPlace saved = parkingPlaceService.addNewParkingPlace(p);

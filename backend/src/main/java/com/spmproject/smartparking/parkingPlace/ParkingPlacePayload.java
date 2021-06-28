@@ -12,6 +12,8 @@ import lombok.ToString;
 public class ParkingPlacePayload {
     int spotsNumber;
     String address;
+    double lat;
+    double lng;
 
     public ParkingPlacePayload(int spotsNumber, String address) {
         this.address = address;
