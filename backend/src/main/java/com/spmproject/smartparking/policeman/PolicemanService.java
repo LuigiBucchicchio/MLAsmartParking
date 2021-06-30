@@ -59,4 +59,8 @@ public class PolicemanService {
 	public List<Policeman> getPolicemenFromMunicipalityID(long id) {
 		return policemanRepository.findByMunicipalityId(id);
 	}
+
+	public Policeman getOneByUsername(String currentUserName) {
+		return policemanRepository.findByUsername(currentUserName);
+	}
 }

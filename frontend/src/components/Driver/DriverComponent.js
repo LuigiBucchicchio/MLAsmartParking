@@ -26,7 +26,7 @@ class DriverComponent extends React.Component {
                             </svg>
                         </span>
                     </Link>
-                    <Link to="/driver/profile" className="data-card">
+                    <Link to="/driverProfile" className="data-card">
                         <h3>SHOW</h3>
                         <h4>PROFILE PAGE</h4>
                         <p></p>

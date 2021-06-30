@@ -19,7 +19,7 @@ import PolicemanComponent from "./components/Policeman/PolicemanComponent";
 import useToken from "./components/Auth/useToken";
 import useRole from "./components/Auth/useRole";
 import "./App.css";
-import DriverProfileComponent from "./components/Driver/DriverProfileComponent";
+import DriverProfileComponent from './components/Driver/DriverProfileComponent';
 import UnassignPolicemanComponent from "./components/Policeman/UnassignPolicemanComponent";
 import MunicipalityParkingPlacesComponent from "./components/Parking/MunicipalityParkingPlacesComponent";
 import ParkingPlaceModificationComponent from "./components/Parking/ParkingPlaceModificationComponent";
@@ -75,7 +75,7 @@ function App() {
           <Route path="/addParkingPlace">
             <AddParkingPlaceComponent />
           </Route>
-          <Route path="/driver/profile">
+          <Route path="/driverProfile">
             <DriverProfileComponent />
           </Route>
           <Route path="/assignPoliceman">

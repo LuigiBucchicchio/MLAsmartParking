@@ -8,4 +8,5 @@ public interface PolicemanRepository extends JpaRepository<Policeman,Long>{
     Boolean existsByEmail(String email);
     List<Policeman> findByMunicipalityId(long id);
     Policeman findByName(String name);
+	Policeman findByUsername(String currentUserName);
 }

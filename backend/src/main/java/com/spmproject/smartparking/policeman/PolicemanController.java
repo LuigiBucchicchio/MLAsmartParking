@@ -91,8 +91,8 @@ public class PolicemanController {
 		if (!(authentication instanceof AnonymousAuthenticationToken)) {
 		    currentUserName = authentication.getName();
 		}
-		
-		Policeman p= policemanService.getOneByName(currentUserName);
+		System.out.println("currentUsername : "+currentUserName);
+		Policeman p= policemanService.getOneByUsername(currentUserName);
 		return p;
 	}
 

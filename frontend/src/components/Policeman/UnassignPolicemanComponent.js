@@ -49,7 +49,7 @@ render() {
     <div class="form-holder">
         <div class="form-content">
             <div class="form-items">
-                <h3>Assign Policeman</h3>
+                <h3>Unssign Policeman</h3>
                 <p></p>
                 <form onSubmit={this.handleSubmit}>
                    <div class="col-md-12">
