@@ -1,27 +1,17 @@
-import React from 'react';
-import Map from '../Layout/Map';
-import './Home.css';
+import React, { Fragment } from "react";
+import Map from "../Layout/Map";
+import "./Home.css";
+const HomeComponent = (props) => {
+  // const role = () => {
+  //     if (props.role = )
+  // };
 
-class HomeComponent extends React.Component {
+  return (
+    <Fragment className="container">
+      <Map />
+      {/* {role} */}
+    </Fragment>
+  );
+};
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            value : ''
-        }
-    }
-
-    render(){
-        return(
-            <>
-            <div className= "container">
-            <Map />
-            </div>
-            </>
-            
-        )
-    }
-
-
-}
-export default HomeComponent
+export default HomeComponent;

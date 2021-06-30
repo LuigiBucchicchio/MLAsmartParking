@@ -5,7 +5,7 @@ import Nav from "react-bootstrap/Nav";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import { Col, Container, Row } from "react-bootstrap";
 
-import classes from './Header.css'
+import classes from "./Header.css";
 
 const HeaderDriver = (props) => {
   return (
@@ -60,9 +60,7 @@ const HeaderDriver = (props) => {
               </Col>
               <Col sm={4}>
                 <Nav.Item onClick={props.logout} className={classes.logout_btn}>
-                <Nav.Link >
-                    Logout
-                  </Nav.Link>
+                  <Nav.Link>Logout</Nav.Link>
                 </Nav.Item>
               </Col>
             </Nav>
