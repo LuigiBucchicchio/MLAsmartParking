@@ -1,8 +1,18 @@
-import React from 'react';
-import Map from '../Layout/Map';
-import './Home.css';
+import React from "react";
+import Map from "../Layout/Map";
+import "./Home.css";
+const HomeComponent = (props) => {
+  // const role = () => {
+  //     if (props.role = )
+  // };
 
-class HomeComponent extends React.Component {
+  return (
+    <div className="container">
+      <Map />
+      {/* {role} */}
+    </div>
+  );
+};
 
     constructor(props) {
         super(props);

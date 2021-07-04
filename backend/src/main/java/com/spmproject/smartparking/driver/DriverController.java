@@ -2,7 +2,9 @@ package com.spmproject.smartparking.driver;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
+import com.spmproject.smartparking.vehicle.Vehicle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
@@ -64,8 +66,15 @@ public class DriverController {
         return driverService.one(id);
     }
 
-    @GetMapping("/")
-    public Driver getProfile(Authentication authentication) {
-        return driverService.one(authentication.getName());
-    }
+	@GetMapping("/")
+	public Driver getProfile(Authentication authentication) {
+		return driverService.one(authentication.getName());
+	}
+
+	@GetMapping("vehicle/all")
+	public Set<Vehicle> allDriverVehicle(Authentication authentication) {
+		Driver d = driverService.one(authentication.getName());
+		Set<Vehicle> allDriverVehicle = d.getVehicle_owned();
+		return allDriverVehicle;
+	}
 }

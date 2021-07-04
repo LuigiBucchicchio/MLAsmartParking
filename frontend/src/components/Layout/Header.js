@@ -7,12 +7,18 @@ import { Col, Container, Row } from "react-bootstrap";
 import logo from "../../assets/logo.png"
 import classes from './Header.css'
 
+
 const Header = (props) => {
+  const roleUser = () => {
+    console.log(props.loggedRole)
+  }
+  
   return (
     <>
       <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
         <Container fluid>
           <Row>
+            {roleUser}
             <Nav fill className="ml-auto">
               <Col sm={5}>
                 <Nav.Item>
