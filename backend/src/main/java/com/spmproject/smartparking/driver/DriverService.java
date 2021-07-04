@@ -52,4 +52,8 @@ public class DriverService {
 	public Driver one(String username) {
 		return driverRepository.findByUsername(username).orElseThrow(() -> new ItemNotFoundException(username));
 	}
+
+	public void remove(Long id) {
+		driverRepository.deleteById(id);
+	}
 }
