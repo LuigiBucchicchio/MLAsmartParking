@@ -10,4 +10,5 @@ public interface PolicemanRepository extends JpaRepository<Policeman, Long> {
     List<Policeman> findByMunicipalityId(long id);
 
     Policeman findByName(String name);
+	Policeman findByUsername(String currentUserName);
 }

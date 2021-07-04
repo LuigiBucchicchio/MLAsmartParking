@@ -14,24 +14,4 @@ const HomeComponent = (props) => {
   );
 };
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            value : ''
-        }
-    }
-
-    render(){
-        return(
-            <>
-            <div className= "container">
-            <Map />
-            </div>
-            </>
-            
-        )
-    }
-
-
-}
-export default HomeComponent
+export default HomeComponent;

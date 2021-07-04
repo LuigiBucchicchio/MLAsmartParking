@@ -1,8 +1,14 @@
-import React from 'react';
-import '../Layout/Cards.css';
-import {Link} from 'react-router-dom';
+import React from "react";
+import "../Layout/Cards.css";
+import { Link } from "react-router-dom";
 
 class DriverComponent extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      value: "",
+    };
+  };
 
   render() {
     return (

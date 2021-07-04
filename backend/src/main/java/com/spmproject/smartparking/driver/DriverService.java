@@ -46,11 +46,13 @@ public class DriverService {
         return driverRepository.findById(driverID).orElseThrow(() -> new ItemNotFoundException(driverID));
     }
 
-    public Driver update(Driver d) {
+	public Driver one(String username) {
+		return driverRepository.findByUsername(username).orElseThrow(() -> new ItemNotFoundException(username));
+	}
+	public void remove(Long id) {
+		driverRepository.deleteById(id);
+	}
         return driverRepository.save(d);
-    }
-
-    public Driver one(String username) {
-        return driverRepository.findByUsername(username).orElseThrow(() -> new ItemNotFoundException(username));
+    public Driver update(Driver d) {
     }
 }

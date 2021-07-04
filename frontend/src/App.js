@@ -91,7 +91,7 @@ function App() {
           <Route path="/addParkingPlace">
             <AddParkingPlaceComponent />
           </Route>
-          <Route path="/driver/profile">
+          <Route path="/driverProfile">
             <DriverProfileComponent />
           </Route>
           <Route path="/assignPoliceman">

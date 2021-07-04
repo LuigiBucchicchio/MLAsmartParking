@@ -58,10 +58,18 @@ public class PolicemanController {
             currentUserName = authentication.getName();
         }
 
-        Municipality m = municipalityService.getMunicipality(currentUserName);
-        List<Policeman> list = policemanService.getPolicemenFromMunicipalityID(m.getId());
-        return list;
-    }
+	//@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@GetMapping("/me")
+	public Policeman one() {
+		String currentUserName="";
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (!(authentication instanceof AnonymousAuthenticationToken)) {
+		    currentUserName = authentication.getName();
+		}
+		System.out.println("currentUsername : "+currentUserName);
+		Policeman p= policemanService.getOneByUsername(currentUserName);
+		return p;
+	}
 
 
     @PostMapping("/add")

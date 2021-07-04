@@ -22,11 +22,13 @@ class PolicemanComponent extends React.Component {
         if(this.state.policeman.assignedParkingPlace === undefined || this.state.policeman.assignedParkingPlace === null )
              text= "you are currently not assigned";
         else
-        text= "you are assigned at the parking place: " + this.state.policeman.assignedParkingPlace; 
+        text= "you are assigned at the parking place: " + this.state.policeman.assignedParkingPlace.address + ", "+ this.state.policeman.municipality.name; 
  
         return(
             <div className= "container">
-                <h1>{text}</h1>
+                <br></br>
+                <h2>{text}</h2>
+                <br></br>
                    <table className="table table-hover table-dark">
                        <thead>
                            <tr>

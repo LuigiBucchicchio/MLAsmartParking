@@ -48,15 +48,15 @@ public class PolicemanService {
         return policemanRepository.findByName(name);
     }
 
-    public void deleteById(Long id) {
-        policemanRepository.deleteById(id);
-    }
+	public Policeman update(Policeman p) {
+		return policemanRepository.save(p);
+	}
+	
+	public List<Policeman> getPolicemenFromMunicipalityID(long id) {
+		return policemanRepository.findByMunicipalityId(id);
+	}
 
-    public Policeman update(Policeman p) {
-        return policemanRepository.save(p);
-    }
-
-    public List<Policeman> getPolicemenFromMunicipalityID(long id) {
-        return policemanRepository.findByMunicipalityId(id);
-    }
+	public Policeman getOneByUsername(String currentUserName) {
+		return policemanRepository.findByUsername(currentUserName);
+	}
 }
