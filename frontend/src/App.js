@@ -9,6 +9,7 @@ import AssignPolicemanComponent from "./components/Policeman/AssignPolicemanComp
 import Auth from "./components/Auth/Auth";
 import DriverComponent from "./components/Driver/DriverComponent";
 import HomeComponent from "./components/Home/HomeComponent";
+import HeaderDriver from "./components/Layout/HeaderDriver";
 import Header from "./components/Layout/Header";
 import ListParkingPlacesComponent from "./components/Parking/ListParkingPlacesComponent";
 import ListDriversComponent from "./components/Driver/ListDriversComponent";
@@ -18,11 +19,13 @@ import MunicipalityComponent from "./components/Municipality/MunicipalityCompone
 import PolicemanComponent from "./components/Policeman/PolicemanComponent";
 import useToken from "./components/Auth/useToken";
 import useRole from "./components/Auth/useRole";
-import "./App.css";
-import DriverProfileComponent from './components/Driver/DriverProfileComponent';
+import DriverProfileComponent from "./components/Driver/DriverProfileComponent";
 import UnassignPolicemanComponent from "./components/Policeman/UnassignPolicemanComponent";
 import MunicipalityParkingPlacesComponent from "./components/Parking/MunicipalityParkingPlacesComponent";
 import ParkingPlaceModificationComponent from "./components/Parking/ParkingPlaceModificationComponent";
+import VehicleComponent from "./components/Vehicle/VehicleList"
+
+import "./App.css";
 
 function App() {
   const { role, setRole, removeRole } = useRole();
@@ -39,14 +42,27 @@ function App() {
     removeRole();
   };
 
+  const pageName = "Test"
+
   if (!token) {
     return <Auth auth={setUserData} />;
   }
 
+  var RoleHeader;
+
+  // select which header show based on the role
+  if (role === "ROLE_DRIVER") {
+    RoleHeader = HeaderDriver;
+  }
+  else 
+  {
+    RoleHeader = Header
+  }
   return (
     <Fragment>
       <BrowserRouter>
-        <Header loggedRole={role} logout={logoutHandler} />
+        <RoleHeader  pageName={pageName} role={role} logout={logoutHandler}  />
+        {/* <HeaderDriver role={role} logout={logoutHandler} /> */}
         <Switch>
           <Route exact path="/">
             <HomeComponent />
@@ -54,13 +70,13 @@ function App() {
           <Route path="/municipality">
             <MunicipalityComponent />
           </Route>
-          <Route path="/driver">
+          <Route exact path="/driver">
             <DriverComponent />
           </Route>
-          <Route path="/policeman">
+          <Route exact path="/policeman">
             <PolicemanComponent />
           </Route>
-          <Route path="/admin">
+          <Route exact path="/admin">
             <AdminComponent />
           </Route>
           <Route path="/listParkingPlaces">
@@ -92,6 +108,9 @@ function App() {
           </Route>
           <Route path="/listDrivers">
             <ListDriversComponent />
+          </Route>
+          <Route path="/driver/vehicle">
+            <VehicleComponent />
           </Route>
         </Switch>
       </BrowserRouter>

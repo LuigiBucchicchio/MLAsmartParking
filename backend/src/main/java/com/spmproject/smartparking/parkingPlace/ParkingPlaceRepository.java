@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 
 public interface ParkingPlaceRepository extends JpaRepository<ParkingPlace, Long> {
-	 <Optional>ParkingPlace findByAddress(String address);
-	 List<ParkingPlace> findByMunicipalityId(long municipalityId);
+    <Optional> ParkingPlace findByAddress(String address);
+
+    List<ParkingPlace> findByMunicipalityId(long municipalityId);
 }

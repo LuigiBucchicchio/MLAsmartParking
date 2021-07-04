@@ -11,46 +11,42 @@ import java.util.List;
 
 @Service
 public class PolicemanService {
-	private final PolicemanRepository policemanRepository;
-	BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private final PolicemanRepository policemanRepository;
+    BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-	@Autowired
-	public PolicemanService(PolicemanRepository policemanRepository) {
-		this.policemanRepository = policemanRepository;
-	}
+    @Autowired
+    public PolicemanService(PolicemanRepository policemanRepository) {
+        this.policemanRepository = policemanRepository;
+    }
 
-	public List<Policeman> getAllPolicemen() {
-		return policemanRepository.findAll();
-	}
+    public List<Policeman> getAllPolicemen() {
+        return policemanRepository.findAll();
+    }
 
-	public Policeman addNewPoliceman(Policeman p) {
-		Policeman policeman = new Policeman(
-				p.getName(),
-				p.getSurname(),
-				p.getEmail(),
-				p.getUsername(),
-				passwordEncoder.encode(p.getPassword()),
-				p.getPhoneNumber()
-		);
-		return this.policemanRepository.save(policeman);
-	}
+    public Policeman addNewPoliceman(Policeman p) {
+        Policeman policeman = new Policeman(
+                p.getName(),
+                p.getSurname(),
+                p.getEmail(),
+                p.getUsername(),
+                passwordEncoder.encode(p.getPassword()),
+                p.getPhoneNumber()
+        );
+        return this.policemanRepository.save(policeman);
+    }
 
-	// check if email already used in another registration
-	public Boolean isEmailUsed(String email) {
-		return  policemanRepository.existsByEmail(email);
-	}
+    // check if email already used in another registration
+    public Boolean isEmailUsed(String email) {
+        return policemanRepository.existsByEmail(email);
+    }
 
-	public Policeman One(long id) {
-		return policemanRepository.findById(id).orElseThrow(() -> new ItemNotFoundException(id));
-	}
-	
-	public Policeman getOneByName(String name) {
-		return policemanRepository.findByName(name);
-	}
+    public Policeman One(long id) {
+        return policemanRepository.findById(id).orElseThrow(() -> new ItemNotFoundException(id));
+    }
 
-	public void deleteById(Long id) {
-		policemanRepository.deleteById(id);
-	}
+    public Policeman getOneByName(String name) {
+        return policemanRepository.findByName(name);
+    }
 
 	public Policeman update(Policeman p) {
 		return policemanRepository.save(p);

@@ -1,6 +1,7 @@
 import React from 'react';
 import ParkingService from './ParkingService';
 import "./Parking.css";
+import Table from '../Layout/Table'
 
 class ListParkingPlacesComponent extends React.Component {
 
@@ -29,6 +30,7 @@ class ListParkingPlacesComponent extends React.Component {
         return (
                
          <div className= "container">
+             <Table/>
                 <table className="table table-hover table-dark">
                     <thead>
                         <tr>

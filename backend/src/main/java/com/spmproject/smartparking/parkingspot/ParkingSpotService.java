@@ -10,37 +10,37 @@ import com.spmproject.smartparking.parkingPlace.ParkingPlace;
 
 @Service
 public class ParkingSpotService {
-	
 
-	private final ParkingSpotRepository parkingSpotRepository;
 
-	@Autowired
-	public ParkingSpotService(ParkingSpotRepository parkingSpotRepository) {
-		this.parkingSpotRepository=parkingSpotRepository;
-	}
+    private final ParkingSpotRepository parkingSpotRepository;
 
-	public List<ParkingSpot> getAllParkingSpots() {
-		return parkingSpotRepository.findAll();
-	}
+    @Autowired
+    public ParkingSpotService(ParkingSpotRepository parkingSpotRepository) {
+        this.parkingSpotRepository = parkingSpotRepository;
+    }
 
-	public ParkingSpot addNewParkingSpot(ParkingSpot ps) {
-		return this.parkingSpotRepository.save(ps);
-	}
+    public List<ParkingSpot> getAllParkingSpots() {
+        return parkingSpotRepository.findAll();
+    }
 
-	public ParkingSpot one(long parkingSpotID) {
-		return parkingSpotRepository.findById(parkingSpotID).orElseThrow(()-> new ItemNotFoundException(parkingSpotID));
-	}
+    public ParkingSpot addNewParkingSpot(ParkingSpot ps) {
+        return this.parkingSpotRepository.save(ps);
+    }
 
-	public List<ParkingSpot> getParkingSpotsFromPlace(Long parkingPlaceID) {
-		return parkingSpotRepository.findByParkingPlaceID(parkingPlaceID);
-	}
-	
-	public List<ParkingSpot> getFreeParkingSpotFromPlace(boolean isFree, Long parkingPlaceID) {
-		return parkingSpotRepository.findByIsFreeAndParkingPlaceID(isFree, parkingPlaceID);
-	}
-	
-	public void deleteParkingSpot(long parkingSpotID) {
-		parkingSpotRepository.deleteById(parkingSpotID);
-	}
+    public ParkingSpot one(long parkingSpotID) {
+        return parkingSpotRepository.findById(parkingSpotID).orElseThrow(() -> new ItemNotFoundException(parkingSpotID));
+    }
+
+    public List<ParkingSpot> getParkingSpotsFromPlace(Long parkingPlaceID) {
+        return parkingSpotRepository.findByParkingPlaceID(parkingPlaceID);
+    }
+
+    public List<ParkingSpot> getFreeParkingSpotFromPlace(boolean isFree, Long parkingPlaceID) {
+        return parkingSpotRepository.findByIsFreeAndParkingPlaceID(isFree, parkingPlaceID);
+    }
+
+    public void deleteParkingSpot(long parkingSpotID) {
+        parkingSpotRepository.deleteById(parkingSpotID);
+    }
 
 }

@@ -10,13 +10,14 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class ModificationPayload {
-	private long parkingPlaceID;
-	private int spotsNumber;
-	private String address;
-	public ModificationPayload(long parkingPlaceID, int spotsNumber, String address) {
-		this.parkingPlaceID=parkingPlaceID;
-		this.spotsNumber=spotsNumber;
-		this.address=address;
-	}
+    private long parkingPlaceID;
+    private int spotsNumber;
+    private String address;
+
+    public ModificationPayload(long parkingPlaceID, int spotsNumber, String address) {
+        this.parkingPlaceID = parkingPlaceID;
+        this.spotsNumber = spotsNumber;
+        this.address = address;
+    }
 
 }

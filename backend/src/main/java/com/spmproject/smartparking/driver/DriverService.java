@@ -11,49 +11,48 @@ import java.util.Optional;
 
 @Service
 public class DriverService {
-	private final DriverRepository driverRepository;
+    private final DriverRepository driverRepository;
 
-	BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-	@Autowired
-	public DriverService(DriverRepository driverRepository) {
-		this.driverRepository = driverRepository;
-	}
+    @Autowired
+    public DriverService(DriverRepository driverRepository) {
+        this.driverRepository = driverRepository;
+    }
 
-	// search for a driver by email
-	public Boolean existingDriver(String email) {
-		return driverRepository.existsByEmail(email);
-	}
-	public List<Driver> getAllDrivers() {
-		return driverRepository.findAll();
-	}
+    // search for a driver by email
+    public Boolean existingDriver(String email) {
+        return driverRepository.existsByEmail(email);
+    }
 
-	public Driver addNewDriver(Driver d) {
-		Driver driver = new Driver(
-				d.getName(),
-				d.getSurname(),
-				d.getEmail(),
-				d.getUsername(),
-				passwordEncoder.encode(d.getPassword()),
-				d.getPhoneNumber()
-		);
+    public List<Driver> getAllDrivers() {
+        return driverRepository.findAll();
+    }
 
-		return this.driverRepository.save(driver);
-	}
+    public Driver addNewDriver(Driver d) {
+        Driver driver = new Driver(
+                d.getName(),
+                d.getSurname(),
+                d.getEmail(),
+                d.getUsername(),
+                passwordEncoder.encode(d.getPassword()),
+                d.getPhoneNumber()
+        );
 
-	public Driver one(long driverID) {
-		return driverRepository.findById(driverID).orElseThrow(() -> new ItemNotFoundException(driverID));
-	}
+        return this.driverRepository.save(driver);
+    }
 
-	public Driver update(Driver d) {
-		return driverRepository.save(d);
-	}
+    public Driver one(long driverID) {
+        return driverRepository.findById(driverID).orElseThrow(() -> new ItemNotFoundException(driverID));
+    }
 
 	public Driver one(String username) {
 		return driverRepository.findByUsername(username).orElseThrow(() -> new ItemNotFoundException(username));
 	}
-
 	public void remove(Long id) {
 		driverRepository.deleteById(id);
 	}
+        return driverRepository.save(d);
+    public Driver update(Driver d) {
+    }
 }

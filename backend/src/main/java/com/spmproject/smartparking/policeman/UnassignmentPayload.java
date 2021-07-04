@@ -10,11 +10,11 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class UnassignmentPayload {
-	
-		private String policemanName;
-		
-		
-		 public UnassignmentPayload(String policemanName){
-			this.policemanName=policemanName;
-		}
+
+    private String policemanName;
+
+
+    public UnassignmentPayload(String policemanName) {
+        this.policemanName = policemanName;
+    }
 }

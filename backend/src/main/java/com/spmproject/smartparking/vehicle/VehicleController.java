@@ -6,6 +6,7 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,25 +27,25 @@ import com.spmproject.smartparking.reservation.Reservation;
 @RequestMapping(path = "vehicle")
 public class VehicleController {
 
-	private VehicleService vehicleService;
-	private DriverService driverService;
+    private VehicleService vehicleService;
+    private DriverService driverService;
 
-	@Autowired
-	public VehicleController(VehicleService vehicleService, DriverService driverService) {
-		this.driverService=driverService;
-		this.vehicleService=vehicleService;
-	}
+    @Autowired
+    public VehicleController(VehicleService vehicleService, DriverService driverService) {
+        this.driverService = driverService;
+        this.vehicleService = vehicleService;
+    }
 
 
-	//@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@GetMapping("/all")
-	public List<Vehicle> all() {
-		return vehicleService.getAllVehicles();
-	}
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/all")
+    public List<Vehicle> all() {
+        return vehicleService.getAllVehicles();
+    }
 
 	//@PreAuthorize("hasRole('ROLE_ADMIN','ROLE_DRIVER')")
 	@PostMapping("/add")
-	public Vehicle newVehicle(@RequestBody VehiclePayload payload) {
+	public Vehicle newVehicle(@RequestBody VehiclePayload payload, Authentication authentication) {
 		Vehicle v= new Vehicle();
 		
 		v.setVehiclePlate(payload.getVehiclePlate());
@@ -52,10 +53,12 @@ public class VehicleController {
 
 		VehicleType vehicleType=typeMap(payload.getType());
 		v.setType(vehicleType);
-		
-		Driver d = driverService.one((long)1);
+
+
+		Driver d = driverService.one(authentication.getName());
 		Set<Driver> driverSet = new HashSet<Driver>();
 		driverSet.add(d);
+
 		v.setOwners(driverSet);
 		v.setReservations(new HashSet<Reservation>());
 		d.getVehicle_owned().add(v);
@@ -63,64 +66,77 @@ public class VehicleController {
 		return vehicleService.addNewVehicle(v);
 	}
 
-	//@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@GetMapping("/{vehiclePlate}")
-	public Vehicle one(@PathVariable String vehiclePlate) {
-		return vehicleService.one(vehiclePlate);
-	}
+        VehicleType vehicleType = typeMap(payload.getType());
+        v.setType(vehicleType);
 
-	//@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@PutMapping("/{vehiclePlate}")
-	public Vehicle replaceVehicle(@RequestBody VehiclePayload payload, @PathVariable String vehiclePlate){
-		Vehicle v = vehicleService.one(vehiclePlate);
+        Driver d = driverService.one((long) 1);
+        Set<Driver> driverSet = new HashSet<Driver>();
+        driverSet.add(d);
+        v.setOwners(driverSet);
+        v.setReservations(new HashSet<Reservation>());
+        d.getVehicle_owned().add(v);
+        driverService.update(d);
+        return vehicleService.addNewVehicle(v);
+    }
 
-		if(!(v.getBrand().equals(payload.getBrand())))
-			v.setBrand(payload.getBrand());
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/{vehiclePlate}")
+    public Vehicle one(@PathVariable String vehiclePlate) {
+        return vehicleService.one(vehiclePlate);
+    }
 
-		// Must get DriverID from the context
-		// here only the Default one
-		Driver d = driverService.one((long)1);
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PutMapping("/{vehiclePlate}")
+    public Vehicle replaceVehicle(@RequestBody VehiclePayload payload, @PathVariable String vehiclePlate) {
+        Vehicle v = vehicleService.one(vehiclePlate);
 
-		if(!v.getOwners().contains(d)) {
-			v.getOwners().add(d);
-			d.getVehicle_owned().add(v);
-			driverService.update(d);
-		}
+        if (!(v.getBrand().equals(payload.getBrand())))
+            v.setBrand(payload.getBrand());
 
-		VehicleType vehicleType=typeMap(payload.getType());
+        // Must get DriverID from the context
+        // here only the Default one
+        Driver d = driverService.one((long) 1);
 
-		if(!v.getType().equals(vehicleType))
-			v.setType(vehicleType);
+        if (!v.getOwners().contains(d)) {
+            v.getOwners().add(d);
+            d.getVehicle_owned().add(v);
+            driverService.update(d);
+        }
 
-		return vehicleService.update(v);
-	}
+        VehicleType vehicleType = typeMap(payload.getType());
 
-	//@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@DeleteMapping("/{vehiclePlate}")
-	public void deleteVehicle(@PathVariable String vehiclePlate) {
-		vehicleService.one(vehiclePlate);
-		vehicleService.deleteById(vehiclePlate);
-	}
+        if (!v.getType().equals(vehicleType))
+            v.setType(vehicleType);
 
-	//map string type to the corresponding VehicleType enum
-	private VehicleType typeMap (String type) {
-		VehicleType vehicleType;
-		if(type.equals("Motociclo"))
-			vehicleType=VehicleType.MOTOCICLO;
-		else if(type.equals("Autovettura"))
-			vehicleType=VehicleType.AUTOVETTURA;
-		else if(type.equals("Autobus"))
-			vehicleType=VehicleType.AUTOBUS;
-		else if(type.equals("Motocarro"))
-			vehicleType=VehicleType.MOTOCARRO;
-		else if(type.equals("Autocarro"))
-			vehicleType=VehicleType.AUTOCARRO;
-		else if(type.equals("Ciclomotore"))
-			vehicleType=VehicleType.CICLOMOTORE;
-		else if(type.equals("Macchina Operatrice"))
-			vehicleType=VehicleType.MACC_OPERATRICE;
-		else vehicleType=null;
-		return vehicleType;
-	}
+        return vehicleService.update(v);
+    }
+
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
+    @DeleteMapping("/{vehiclePlate}")
+    public void deleteVehicle(@PathVariable String vehiclePlate) {
+        vehicleService.one(vehiclePlate);
+        vehicleService.deleteById(vehiclePlate);
+    }
+
+    //map string type to the corresponding VehicleType enum
+    private VehicleType typeMap(String type) {
+        VehicleType vehicleType;
+        if (type.equals("Motociclo"))
+            vehicleType = VehicleType.MOTOCICLO;
+        else if (type.equals("Autovettura"))
+            vehicleType = VehicleType.AUTOVETTURA;
+        else if (type.equals("Autobus"))
+            vehicleType = VehicleType.AUTOBUS;
+        else if (type.equals("Motocarro"))
+            vehicleType = VehicleType.MOTOCARRO;
+        else if (type.equals("Autocarro"))
+            vehicleType = VehicleType.AUTOCARRO;
+        else if (type.equals("Ciclomotore"))
+            vehicleType = VehicleType.CICLOMOTORE;
+        else if (type.equals("Macchina Operatrice"))
+            vehicleType = VehicleType.MACC_OPERATRICE;
+        else vehicleType = null;
+        return vehicleType;
+    }
 
 }

@@ -1,4 +1,5 @@
 package com.spmproject.smartparking.policeman;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,22 +11,22 @@ import lombok.ToString;
 @ToString
 public class PolicemanPayload {
 
-	private String name;
-	private String surname;
-	private String username;
-	private String email;
-	private String phoneNumber;
-	private String password;
-	private String districtCode;
+    private String name;
+    private String surname;
+    private String username;
+    private String email;
+    private String phoneNumber;
+    private String password;
+    private String districtCode;
 
-	public PolicemanPayload(String name, String surname, String email, String username, String password,
-			String phoneNumber, String districtCode) {
-		this.name=name;
-		this.surname=surname;
-		this.username=username;
-		this.email=email;
-		this.phoneNumber=phoneNumber;
-		this.password=password;
-		this.districtCode=districtCode;
-	}
+    public PolicemanPayload(String name, String surname, String email, String username, String password,
+                            String phoneNumber, String districtCode) {
+        this.name = name;
+        this.surname = surname;
+        this.username = username;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.password = password;
+        this.districtCode = districtCode;
+    }
 }

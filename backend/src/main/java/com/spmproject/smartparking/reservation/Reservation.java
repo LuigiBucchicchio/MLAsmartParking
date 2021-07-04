@@ -1,5 +1,6 @@
 package com.spmproject.smartparking.reservation;
 
+import java.sql.Driver;
 import java.sql.Timestamp;
 
 import javax.persistence.Entity;
@@ -19,7 +20,7 @@ public class Reservation {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long id;
-
+	
 	private Timestamp startingTime;
 
 	private Timestamp endingTime;

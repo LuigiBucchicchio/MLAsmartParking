@@ -17,23 +17,23 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-@EqualsAndHashCode(callSuper=true)
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 public class Policeman extends User {
-	
-	@ManyToOne
-	private Municipality municipality;
 
-	private String surname;
+    @ManyToOne
+    private Municipality municipality;
 
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "assignedParkingPlaceID", referencedColumnName = "id")
-	private ParkingPlace assignedParkingPlace;
+    private String surname;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "assignedParkingPlaceID", referencedColumnName = "id")
+    private ParkingPlace assignedParkingPlace;
 
 
-	Policeman(String name, String surname, String email, String username, String password, String phoneNumber) {
-		super(name, email, username, password, phoneNumber, ApplicationUserRole.POLICEMAN);
-		this.surname = surname;
-	}
+    Policeman(String name, String surname, String email, String username, String password, String phoneNumber) {
+        super(name, email, username, password, phoneNumber, ApplicationUserRole.POLICEMAN);
+        this.surname = surname;
+    }
 
 }

@@ -32,56 +32,31 @@ import com.spmproject.smartparking.parkingPlace.ParkingPlaceService;
 @RequestMapping(path = "policeman")
 public class PolicemanController {
 
-	private PolicemanService policemanService;
-	private ParkingPlaceService parkingPlaceService;
-	private MunicipalityService municipalityService;
-	@Autowired
-	public PolicemanController(PolicemanService policemanService,
-			ParkingPlaceService parkingPlaceService, MunicipalityService municipalityService) {
-		this.policemanService=policemanService;
-		this.parkingPlaceService=parkingPlaceService;
-		this.municipalityService=municipalityService;
-	}
+    private PolicemanService policemanService;
+    private ParkingPlaceService parkingPlaceService;
+    private MunicipalityService municipalityService;
 
-	//@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@GetMapping("/all")
-	public List<Policeman> all() {
-		return policemanService.getAllPolicemen();
-	}
-	
-	@GetMapping("/all/municipality")
-	public List<Policeman> municipalityPolicemen() {
-		String currentUserName="";
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (!(authentication instanceof AnonymousAuthenticationToken)) {
-		    currentUserName = authentication.getName();
-		}
-		
-		Municipality m= municipalityService.getMunicipality(currentUserName);
-		List<Policeman> list = policemanService.getPolicemenFromMunicipalityID(m.getId());
-		return list;
-	}
-	
+    @Autowired
+    public PolicemanController(PolicemanService policemanService,
+                               ParkingPlaceService parkingPlaceService, MunicipalityService municipalityService) {
+        this.policemanService = policemanService;
+        this.parkingPlaceService = parkingPlaceService;
+        this.municipalityService = municipalityService;
+    }
 
-	@PostMapping("/add")
-	public ResponseEntity registerNewPoliceman(@RequestBody PolicemanPayload payload) {
-		if (!policemanService.isEmailUsed(payload.getEmail())) {
-			Policeman p = new Policeman();
-			p.setMunicipality(municipalityService.getMunicipalityByDistrictCode(payload.getDistrictCode()));
-			p.setName(payload.getName());
-			p.setSurname(payload.getSurname());
-			p.setEmail(payload.getEmail());
-			p.setUsername(payload.getUsername());
-			p.setPhoneNumber(payload.getPhoneNumber());
-			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-			p.setPassword(passwordEncoder.encode(payload.getPassword()));
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/all")
+    public List<Policeman> all() {
+        return policemanService.getAllPolicemen();
+    }
 
-			policemanService.addNewPoliceman(p);
-			return new ResponseEntity(HttpStatus.OK);
-		} else {
-			return new ResponseEntity(HttpStatus.CONFLICT);
-		}
-	}
+    @GetMapping("/all/municipality")
+    public List<Policeman> municipalityPolicemen() {
+        String currentUserName = "";
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            currentUserName = authentication.getName();
+        }
 
 	//@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/me")
@@ -96,54 +71,88 @@ public class PolicemanController {
 		return p;
 	}
 
-	//@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@PutMapping("/{id}")
-	public Policeman replacePoliceman(@RequestBody PolicemanPayload payload, @PathVariable Long id) {
-		Policeman p = policemanService.One(id);
 
-		if (!(p.getName().equals(payload.getName())))
-			p.setName(payload.getName());
+    @PostMapping("/add")
+    public ResponseEntity registerNewPoliceman(@RequestBody PolicemanPayload payload) {
+        if (!policemanService.isEmailUsed(payload.getEmail())) {
+            Policeman p = new Policeman();
+            p.setMunicipality(municipalityService.getMunicipalityByDistrictCode(payload.getDistrictCode()));
+            p.setName(payload.getName());
+            p.setSurname(payload.getSurname());
+            p.setEmail(payload.getEmail());
+            p.setUsername(payload.getUsername());
+            p.setPhoneNumber(payload.getPhoneNumber());
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            p.setPassword(passwordEncoder.encode(payload.getPassword()));
 
-		if (!(p.getEmail().equals(payload.getEmail())))
-			p.setEmail(payload.getEmail());
+            policemanService.addNewPoliceman(p);
+            return new ResponseEntity(HttpStatus.OK);
+        } else {
+            return new ResponseEntity(HttpStatus.CONFLICT);
+        }
+    }
 
-		if (!(p.getUsername().equals(payload.getUsername())))
-			p.setUsername(payload.getUsername());
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/me")
+    public Policeman one() {
+        String currentUserName = "";
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            currentUserName = authentication.getName();
+        }
 
-		if (!(p.getPhoneNumber().equals(payload.getPhoneNumber())))
-			p.setPhoneNumber(payload.getPhoneNumber());
+        Policeman p = policemanService.getOneByName(currentUserName);
+        return p;
+    }
 
-		if (!(p.getSurname().equals(payload.getSurname())))
-			p.setSurname(payload.getSurname());
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PutMapping("/{id}")
+    public Policeman replacePoliceman(@RequestBody PolicemanPayload payload, @PathVariable Long id) {
+        Policeman p = policemanService.One(id);
 
-		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-		if (!(passwordEncoder.matches(payload.getPassword(), p.getPassword())))
-			p.setPassword(passwordEncoder.encode(payload.getPassword()));
-		
-		return policemanService.update(p);
-	}
-	
-		@PostMapping("/assign")
-		public Policeman assignPoliceman(@RequestBody AssignmentPayload payload) {
-			
-			Policeman p= policemanService.getOneByName(payload.getPolicemanName());
-			ParkingPlace pp= parkingPlaceService.getOneByAddress(payload.getParkingAddress());
-            p.setAssignedParkingPlace(pp);
-			return policemanService.update(p);
-		}
-		
-		
-		@PostMapping("/unassign")
-		public Policeman unassignPoliceman(@RequestBody UnassignmentPayload payload) {
-			Policeman p= policemanService.getOneByName(payload.getPolicemanName());
-            p.setAssignedParkingPlace(null);
-			return policemanService.update(p);
-		}
+        if (!(p.getName().equals(payload.getName())))
+            p.setName(payload.getName());
 
-	//@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@DeleteMapping("/{id}")
-	public void deletePoliceman(@PathVariable Long id) {
-		policemanService.One(id);
-		policemanService.deleteById(id);
-	}
+        if (!(p.getEmail().equals(payload.getEmail())))
+            p.setEmail(payload.getEmail());
+
+        if (!(p.getUsername().equals(payload.getUsername())))
+            p.setUsername(payload.getUsername());
+
+        if (!(p.getPhoneNumber().equals(payload.getPhoneNumber())))
+            p.setPhoneNumber(payload.getPhoneNumber());
+
+        if (!(p.getSurname().equals(payload.getSurname())))
+            p.setSurname(payload.getSurname());
+
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        if (!(passwordEncoder.matches(payload.getPassword(), p.getPassword())))
+            p.setPassword(passwordEncoder.encode(payload.getPassword()));
+
+        return policemanService.update(p);
+    }
+
+    @PostMapping("/assign")
+    public Policeman assignPoliceman(@RequestBody AssignmentPayload payload) {
+
+        Policeman p = policemanService.getOneByName(payload.getPolicemanName());
+        ParkingPlace pp = parkingPlaceService.getOneByAddress(payload.getParkingAddress());
+        p.setAssignedParkingPlace(pp);
+        return policemanService.update(p);
+    }
+
+
+    @PostMapping("/unassign")
+    public Policeman unassignPoliceman(@RequestBody UnassignmentPayload payload) {
+        Policeman p = policemanService.getOneByName(payload.getPolicemanName());
+        p.setAssignedParkingPlace(null);
+        return policemanService.update(p);
+    }
+
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
+    @DeleteMapping("/{id}")
+    public void deletePoliceman(@PathVariable Long id) {
+        policemanService.One(id);
+        policemanService.deleteById(id);
+    }
 }

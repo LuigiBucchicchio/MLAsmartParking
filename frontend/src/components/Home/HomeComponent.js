@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import Map from "../Layout/Map";
 import "./Home.css";
 const HomeComponent = (props) => {
@@ -7,10 +7,10 @@ const HomeComponent = (props) => {
   // };
 
   return (
-    <Fragment className="container">
+    <div className="container">
       <Map />
       {/* {role} */}
-    </Fragment>
+    </div>
   );
 };
 
