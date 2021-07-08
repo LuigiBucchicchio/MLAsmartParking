@@ -17,9 +17,10 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import AccountIcon from "@material-ui/icons/AccountCircle";
-import ReservationIcon from "@material-ui/icons/EventNote";
+import ReservationIcon from "@material-ui/icons/EventAvailable";
 import CarIcon from "@material-ui/icons/DirectionsCar";
-import { propTypes } from "react-bootstrap/esm/Image";
+
+import logo from "../../assets/logo.png";
 
 const drawerWidth = 240;
 
@@ -29,7 +30,10 @@ const useStyles = makeStyles((theme) => ({
   },
   toolbar: theme.mixins.toolbar,
 
+  title: { color: "#fff" },
   appBar: {
+    backgroundColor: "#000",
+    color: "#fff",
     transition: theme.transitions.create(["margin", "width"], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
@@ -80,7 +84,7 @@ const useStyles = makeStyles((theme) => ({
     }),
     marginLeft: 0,
   },
-  linkMenu: {
+  underlineNone: {
     textDecoration: "none",
   },
 }));
@@ -117,10 +121,13 @@ export default function PersistentDrawerLeft(props) {
           >
             <MenuIcon />
           </IconButton>
-          {console.log(props.pageName)}
-          <Typography variant="h6" noWrap>
-            {props.pageName}
-          </Typography>
+
+          <Link className={clsx(classes.underlineNone)} as={Link} to="/">
+            <Typography variant="h6" className={classes.title}>
+              <img alt="logo" src={logo} height="30" width="40" />
+              MLASmartParking
+            </Typography>
+          </Link>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -144,7 +151,7 @@ export default function PersistentDrawerLeft(props) {
           </div>
           <Divider />
 
-          <Link className={classes.linkMenu} href="#" to="/driver">
+          <Link className={classes.underlineNone} href="#" to="/driver">
             <ListItem button key="Account">
               <ListItemIcon>
                 <AccountIcon />
@@ -153,7 +160,7 @@ export default function PersistentDrawerLeft(props) {
             </ListItem>
           </Link>
           <Divider />
-          <Link className={classes.linkMenu} href="#" to="/">
+          <Link className={classes.underlineNone} href="#" to="/">
             <ListItem button key="Reservation">
               <ListItemIcon>
                 <ReservationIcon />
@@ -162,7 +169,7 @@ export default function PersistentDrawerLeft(props) {
             </ListItem>
           </Link>
           <Divider />
-          <Link className={classes.linkMenu} href="#" to="/driver/vehicle">
+          <Link className={classes.underlineNone} href="#" to="/driver/vehicle">
             <ListItem button key="Vehicle">
               <ListItemIcon>
                 <CarIcon />

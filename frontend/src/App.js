@@ -11,7 +11,6 @@ import DriverComponent from "./components/Driver/DriverComponent";
 import HomeComponent from "./components/Home/HomeComponent";
 import HeaderDriver from "./components/Layout/HeaderDriver";
 import Header from "./components/Layout/Header";
-import ListParkingPlacesComponent from "./components/Parking/ListParkingPlacesComponent";
 import ListDriversComponent from "./components/Driver/ListDriversComponent";
 import ListMunicipalitiesComponent from "./components/Municipality/ListMunicipalitiesComponent";
 import ListPolicemenComponent from "./components/Policeman/ListPolicemenComponent";
@@ -23,9 +22,10 @@ import DriverProfileComponent from "./components/Driver/DriverProfileComponent";
 import UnassignPolicemanComponent from "./components/Policeman/UnassignPolicemanComponent";
 import MunicipalityParkingPlacesComponent from "./components/Parking/MunicipalityParkingPlacesComponent";
 import ParkingPlaceModificationComponent from "./components/Parking/ParkingPlaceModificationComponent";
-import VehicleComponent from "./components/Vehicle/VehicleList"
+import VehicleComponent from "./components/Driver/Vehicle/VehicleList"
 
 import "./App.css";
+require('dotenv').config()
 
 function App() {
   const { role, setRole, removeRole } = useRole();
@@ -59,13 +59,13 @@ function App() {
     RoleHeader = Header
   }
   return (
-    <Fragment>
+    
       <BrowserRouter>
         <RoleHeader  pageName={pageName} role={role} logout={logoutHandler}  />
         {/* <HeaderDriver role={role} logout={logoutHandler} /> */}
         <Switch>
           <Route exact path="/">
-            <HomeComponent />
+            <HomeComponent role={role}/>
           </Route>
           <Route path="/municipality">
             <MunicipalityComponent />
@@ -78,9 +78,6 @@ function App() {
           </Route>
           <Route exact path="/admin">
             <AdminComponent />
-          </Route>
-          <Route path="/listParkingPlaces">
-            <ListParkingPlacesComponent />
           </Route>
           <Route path="/parkingPlaceModification">
             <ParkingPlaceModificationComponent />
@@ -114,7 +111,7 @@ function App() {
           </Route>
         </Switch>
       </BrowserRouter>
-    </Fragment>
+    
   );
 }
 

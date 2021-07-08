@@ -43,35 +43,22 @@ public class VehicleController {
         return vehicleService.getAllVehicles();
     }
 
-	//@PreAuthorize("hasRole('ROLE_ADMIN','ROLE_DRIVER')")
-	@PostMapping("/add")
-	public Vehicle newVehicle(@RequestBody VehiclePayload payload, Authentication authentication) {
-		Vehicle v= new Vehicle();
-		
-		v.setVehiclePlate(payload.getVehiclePlate());
-		v.setBrand(payload.getBrand());
+    //@PreAuthorize("hasRole('ROLE_ADMIN','ROLE_DRIVER')")
+    @PostMapping("/add")
+    public Vehicle newVehicle(@RequestBody VehiclePayload payload, Authentication authentication) {
+        Vehicle v= new Vehicle();
 
-		VehicleType vehicleType=typeMap(payload.getType());
-		v.setType(vehicleType);
+        v.setVehiclePlate(payload.getVehiclePlate());
+        v.setBrand(payload.getBrand());
 
-
-		Driver d = driverService.one(authentication.getName());
-		Set<Driver> driverSet = new HashSet<Driver>();
-		driverSet.add(d);
-
-		v.setOwners(driverSet);
-		v.setReservations(new HashSet<Reservation>());
-		d.getVehicle_owned().add(v);
-		driverService.update(d);
-		return vehicleService.addNewVehicle(v);
-	}
-
-        VehicleType vehicleType = typeMap(payload.getType());
+        VehicleType vehicleType=typeMap(payload.getType());
         v.setType(vehicleType);
 
-        Driver d = driverService.one((long) 1);
+
+        Driver d = driverService.one(authentication.getName());
         Set<Driver> driverSet = new HashSet<Driver>();
         driverSet.add(d);
+
         v.setOwners(driverSet);
         v.setReservations(new HashSet<Reservation>());
         d.getVehicle_owned().add(v);

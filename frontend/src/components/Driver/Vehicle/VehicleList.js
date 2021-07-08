@@ -1,9 +1,8 @@
 import * as React from "react";
 import { DataGrid } from "@material-ui/data-grid";
-import EditIcon from "@material-ui/icons/Edit"
-import DeleteIcon from "@material-ui/icons/Delete"
-
-import ParkingService from "../Parking/ParkingService";
+import EditIcon from "@material-ui/icons/Edit";
+import DeleteIcon from "@material-ui/icons/Delete";
+import Paper from '@material-ui/core/Paper';
 
 const vehicles = [];
 
@@ -31,23 +30,6 @@ const columns = [
     width: 130,
     editable: false,
   },
-  // {
-  //   field: "actions",
-  //   headerName: "Actions",
-  //   sortable: false,
-  //   width: 140,
-  //   disableClickEventBubbling: true,
-  //   renderCell: (params) => {
-  //     return (
-  //       <div
-  //         className="d-flex justify-content-between align-items-center"
-  //         style={{ cursor: "pointer" }}
-  //       >
-  //         <EditIcon index={params.row.id} />
-  //       </div>
-  //     );
-  //   },
-  // },
   {
     field: "fullName",
     headerName: "Full name",
@@ -75,14 +57,23 @@ const rows = [
 
 export default function VehicleList() {
   return (
-    <div style={{ marginLeft: "auto", marginRight: "auto", height: 800, width: "80%" }}>
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        pageSize={10}
-        checkboxSelection
-        disableSelectionOnClick
-      />
+    <div
+      style={{
+        marginLeft: "auto",
+        marginRight: "auto",
+        height: 800,
+        width: "60%",
+      }}
+    >
+      <Paper>
+        <DataGrid
+          rows={rows}
+          columns={columns}
+          pageSize={10}
+          checkboxSelection
+          disableSelectionOnClick
+        />
+      </Paper>
     </div>
   );
 }
