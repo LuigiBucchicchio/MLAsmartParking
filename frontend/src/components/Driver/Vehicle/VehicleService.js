@@ -1,16 +1,16 @@
 import axios from "axios";
 
-const VEHICLEDRIVER_GET = 'http://localhost:8080/driver/vehicle/all';
+const VEHICLEDRIVER_GET = "http://localhost:8080/driver/vehicle/all";
 
-const VehicleService = () => {
-    const getAllDriverVehicle = () => {
-        axios
-            .get('/posts')
-            .then((res) => {
-                console.log(res);
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-    };
-}
+const config = {
+    headers: {Authorization: "Bearer "+localStorage.getItem("token") }
+};
+
+export const getAllDriverVehicle = () => {
+    return  axios.get(VEHICLEDRIVER_GET,config)
+};
+
+
+export const addNewDriverVehicle = () => {
+    return axios.post()
+};

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import clsx from "clsx";
 import { Link } from "react-router-dom";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
@@ -21,6 +21,7 @@ import ReservationIcon from "@material-ui/icons/EventAvailable";
 import CarIcon from "@material-ui/icons/DirectionsCar";
 
 import logo from "../../assets/logo.png";
+import { MailOutlineOutlined } from "@material-ui/icons";
 
 const drawerWidth = 240;
 
@@ -93,13 +94,10 @@ export default function PersistentDrawerLeft(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+  const mounted = React.useRef();
 
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-
-  const handleDrawerClose = () => {
-    setOpen(false);
+  const handleDrawer = () => {
+    setOpen(!open);
   };
 
   return (
@@ -115,7 +113,7 @@ export default function PersistentDrawerLeft(props) {
           <IconButton
             color="inherit"
             aria-label="open drawer"
-            onClick={handleDrawerOpen}
+            onClick={handleDrawer}
             edge="start"
             className={clsx(classes.menuButton, open && classes.hide)}
           >
@@ -141,7 +139,7 @@ export default function PersistentDrawerLeft(props) {
       >
         <List>
           <div className={classes.drawerHeader}>
-            <IconButton onClick={handleDrawerClose}>
+            <IconButton onClick={handleDrawer}>
               {theme.direction === "ltr" ? (
                 <ChevronLeftIcon />
               ) : (
@@ -151,7 +149,7 @@ export default function PersistentDrawerLeft(props) {
           </div>
           <Divider />
 
-          <Link className={classes.underlineNone} href="#" to="/driver">
+          <Link className={classes.underlineNone} href="#" to="/driver" onClick={handleDrawer}>
             <ListItem button key="Account">
               <ListItemIcon>
                 <AccountIcon />
@@ -160,7 +158,7 @@ export default function PersistentDrawerLeft(props) {
             </ListItem>
           </Link>
           <Divider />
-          <Link className={classes.underlineNone} href="#" to="/">
+          <Link className={classes.underlineNone} href="#" to="/" onClick={handleDrawer}>
             <ListItem button key="Reservation">
               <ListItemIcon>
                 <ReservationIcon />
@@ -169,7 +167,7 @@ export default function PersistentDrawerLeft(props) {
             </ListItem>
           </Link>
           <Divider />
-          <Link className={classes.underlineNone} href="#" to="/driver/vehicle">
+          <Link className={classes.underlineNone} href="#" to="/driver/vehicle" onClick={handleDrawer}>
             <ListItem button key="Vehicle">
               <ListItemIcon>
                 <CarIcon />

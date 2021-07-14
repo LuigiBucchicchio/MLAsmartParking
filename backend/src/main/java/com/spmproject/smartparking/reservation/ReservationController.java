@@ -5,14 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.spmproject.smartparking.parkingspot.ParkingSpot;
 import com.spmproject.smartparking.parkingspot.ParkingSpotService;
@@ -21,6 +14,7 @@ import com.spmproject.smartparking.vehicle.VehicleService;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
+@RequestMapping(path = "reservetion")
 public class ReservationController {
 
 	private ReservationService reservationService;
@@ -36,22 +30,23 @@ public class ReservationController {
 	}
 
 	//@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@GetMapping("reservation/all")
+	@GetMapping("/all")
 	public List<Reservation> all() {
 		return reservationService.getAllReservations();
 	}
 
 	//@PreAuthorize("hasRole('ROLE_ADMIN','ROLE_POLICEMAN')")
-	@PostMapping("reservation/{parkingPlaceID}/add")
+	@PostMapping("/{parkingPlaceID}/add")
 	public Reservation newReservation(@RequestBody ReservationPayload payload, @PathVariable Long parkingPlaceID) {
-		
+		System.out.println("New Reservation ");
 		
 	    List<ParkingSpot> listaMistica = parkingSpotService.getFreeParkingSpotFromPlace(true,parkingPlaceID);
 	    Collections.shuffle(listaMistica);
 	    ParkingSpot spottino = listaMistica.get(0);
-		
+		System.out.println("Prima dell'errore ");
 		Vehicle vehicleReserved = vehicleService.one(payload.getVehiclePlate());
-		
+		System.out.println("Dopo dell'errore ");
+		System.out.println(vehicleReserved);
 		Reservation reservation= new Reservation();
 		
 		reservation.setStartingTime(payload.getStartingTime());
@@ -64,13 +59,13 @@ public class ReservationController {
 	}
 
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@GetMapping("reservation/{id}")
+	@GetMapping("/{id}")
 	public Reservation one(@PathVariable Long id) {
 		return reservationService.one(id);
 	}
 
 	//@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@PutMapping("reservation/{id}")
+	@PutMapping("/{id}")
 	public Reservation replaceReservation(@RequestBody ReservationPayload payload ,@PathVariable Long id){
 
 		Reservation reservation= reservationService.one(id);
@@ -87,7 +82,7 @@ public class ReservationController {
 	}
 
 	//@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@DeleteMapping("reservation/{id}")
+	@DeleteMapping("/{id}")
 	public void deleteReservation(@PathVariable Long id) {
 		reservationService.one(id);
 		reservationService.deleteReservation(id);
