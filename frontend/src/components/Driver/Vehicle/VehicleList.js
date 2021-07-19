@@ -2,31 +2,28 @@ import React, { Fragment, useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import AddCircle from "@material-ui/icons/AddCircle";
 import Button from "@material-ui/core/Button";
-import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
+import DeleteIcon from "@material-ui/icons/Delete";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import { FormLabel } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
-import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
-import FormHelperText from "@material-ui/core/FormHelperText";
-import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import { useAlert } from "react-alert";
 
-import Typography from "@material-ui/core/Typography";
-
-import { getAllDriverVehicle } from "./VehicleService";
+import { addNewDriverVehicle, getAllDriverVehicle } from "./VehicleService";
 
 const useStyles = makeStyles({
   addCircle: {
-    maxWidth: 200,
-    height: 200,
+    maxWidth: 100,
+    height: 100,
   },
   backgroundWallpaper: {
     backgroundColor: "grey",
@@ -51,18 +48,27 @@ const useStyles = makeStyles({
     display: "flex",
     alignItems: "center",
   },
+  divButtonAdd: {
+    display: "flex",
+    alignItems: "center",
+    width: "100%",
+    justifyContent: "center",
+  },
 
   buttonAdd: {
-    width: "100%",
     justifyContent: "center",
   },
 });
 
 export default function VehicleList() {
   const classes = useStyles();
+  const alert = useAlert();
 
-  const [vehicles, setVehicles] = useState()
+  const [vehicles, setVehicles] = useState([]);
+
   const [open, setOpen] = useState(false);
+  const [vehiclePlate, setVehiclePlate] = useState("");
+  const [brand, setBrand] = useState("");
   const [type, setType] = useState("");
 
   const handleDialog = () => {
@@ -71,63 +77,94 @@ export default function VehicleList() {
 
   const handleNewVehicle = () => {
     // check if the dialog is filled
-    if (type != "") {
+    if (type != "" && vehiclePlate != "" && brand != "") {
       handleDialog();
       //call to add a new vehicle
-    }
+      addNewDriverVehicle({
+        vehiclePlate: vehiclePlate,
+        type: type,
+        brand: brand,
+      })
+        .then(() => {
+          getAllDriverVehicle()
+            .then((response) => {
+              console.log(response.data);
+              setVehicles(response.data);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    } else alert.error("Fill the form");
+  };
+
+  const handleDeleteVehicle = () => {
+
   };
 
   const handleType = (event) => {
     setType(event.target.value);
   };
 
+  const handleVehiclePlate = (event) => {
+    setVehiclePlate(event.target.value);
+  };
+
+  const handleBrand = (event) => {
+    setBrand(event.target.value);
+  };
+
   useEffect(() => {
     getAllDriverVehicle().then((response) => {
-      console.log(response.data);
+      setVehicles(response.data);
     });
   }, [null]);
 
-  const dataTest = [{ id: 1, plate: "FG456TH", type: "Duna" }];
-
-  const cars = dataTest.map((d) => (
-    <Card key={d.id} className={classes.root}>
-      <CardActionArea>
-        <CardMedia
-          className={classes.media}
-          image="/static/images/cards/contemplative-reptile.jpg"
-          title="Contemplative Reptile"
-        />
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
-            Lizard
-          </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
-            Lizards are a widespread group of squamate reptiles, with over 6,000
-            species, ranging across all continents except Antarctica
-          </Typography>
-        </CardContent>
-      </CardActionArea>
-      <CardActions>
-        <Button size="small" color="primary">
-          Share
+  const vehiclesList = vehicles.map((vehicle) => (
+    <TableRow key={vehicle.vehiclePlate}>
+      <TableCell>{vehicle.vehiclePlate}</TableCell>
+      <TableCell align="right" component="th" scope="row">
+        {vehicle.brand}
+      </TableCell>
+      <TableCell align="right">{vehicle.type}</TableCell>
+      <TableCell align="right">
+        <Button onclick={handleDeleteVehicle}>
+          <DeleteIcon />
         </Button>
-        <Button size="small" color="primary">
-          Learn More
-        </Button>
-      </CardActions>
-    </Card>
+      </TableCell>
+    </TableRow>
   ));
 
   return (
     <Fragment>
-      <div className={classes.alignItemsAndJustifyContent}>{cars}</div>
-      <Button
-        className={classes.buttonAdd}
-        color="primary"
-        onClick={handleDialog}
-      >
-        <AddCircle className={classes.addCircle} style={{ fontSize: 50 }} />
-      </Button>
+      <div className={classes.alignItemsAndJustifyContent}>
+        <Table className={classes.table} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell>Plate</TableCell>
+              <TableCell align="right">Brand</TableCell>
+              <TableCell align="right">Type</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {vehiclesList}
+            {/* <TableContainer component={Paper}>{cars}</TableContainer> */}
+          </TableBody>
+        </Table>
+      </div>
+      <div className={classes.divButtonAdd}>
+        <Button
+          className={classes.buttonAdd}
+          color="primary"
+          onClick={handleDialog}
+        >
+          <AddCircle className={classes.addCircle} style={{ fontSize: 50 }} />
+        </Button>
+      </div>
+
       <Dialog
         open={open}
         onClose={handleDialog}
@@ -135,26 +172,40 @@ export default function VehicleList() {
       >
         <DialogTitle id="form-dialog-title">Add a new Vehicle</DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            Add all the requirements information
-          </DialogContentText>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={type}
-            onChange={handleType}
-          >
-            <MenuItem value={"car"}>Car</MenuItem>
-            <MenuItem value={"motorcycle"}>Motorcycle</MenuItem>
-          </Select>
           <TextField
             autoFocus
             margin="dense"
             id="name"
-            label="Target Plate"
+            label="Target Plate*"
             type="text"
             fullWidth
+            onChange={handleVehiclePlate}
           />
+          <TextField
+            margin="dense"
+            id="name"
+            label="Brand*"
+            type="text"
+            fullWidth
+            onChange={handleBrand}
+          />
+
+          <FormLabel component="legend">Type*</FormLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            style={{ width: 70 }}
+            value={type}
+            onChange={handleType}
+          >
+            <MenuItem value={"CAR"}>CAR</MenuItem>
+            <MenuItem value={"MOTORCYCLE"}>MOTORCYCLE</MenuItem>
+            <MenuItem value={"AUTOBUS"}>AUTOBUS</MenuItem>
+            <MenuItem value={"MOTORCARRIAGE"}>MOTORCARRIAGE</MenuItem>
+            <MenuItem value={"CARTRIDGE"}>CARTRIDGE</MenuItem>
+            <MenuItem value={"CYCLOMOTOR"}>CYCLOMOTOR</MenuItem>
+            <MenuItem value={"MACHINE_OPERATOR"}>MACHINE OPERATOR</MenuItem>
+          </Select>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleDialog} color="primary">

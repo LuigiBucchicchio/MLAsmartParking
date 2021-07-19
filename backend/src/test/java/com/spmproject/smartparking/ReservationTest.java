@@ -60,7 +60,7 @@ public class ReservationTest {
 			r.setEndingTime(rp.getEndingTime());
 			Vehicle v = new Vehicle();
 			v.setBrand("ciaone");
-			v.setType(VehicleType.AUTOVETTURA);
+			v.setType(VehicleType.CAR);
 			v.setVehiclePlate(rp.getVehiclePlate());
 			vehicleService.addNewVehicle(v);
 			r.setVehicle(vehicleService.one(rp.getVehiclePlate()));

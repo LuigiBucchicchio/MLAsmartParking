@@ -24,6 +24,7 @@ export default function ParkingPlacesList() {
   useEffect(() => {
     ParkingService.getParkingPlaces().then((response) => {
       setParkingPlaces(response.data);
+      console.log(parkingPlaces)
       console.log(response.data)
     });
   }, [null]);

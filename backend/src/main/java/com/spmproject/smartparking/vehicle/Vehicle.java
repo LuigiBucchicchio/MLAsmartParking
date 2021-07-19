@@ -2,10 +2,7 @@ package com.spmproject.smartparking.vehicle;
 
 import java.util.Set;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
 import com.spmproject.smartparking.driver.Driver;
 import com.spmproject.smartparking.reservation.Reservation;
@@ -22,9 +19,6 @@ public class Vehicle {
     private Enum<VehicleType> type;
 
     private String brand;
-
-    @ManyToMany(mappedBy = "vehicle_owned")
-    private Set<Driver> owners;
 
     @OneToMany
     private Set<Reservation> reservations;

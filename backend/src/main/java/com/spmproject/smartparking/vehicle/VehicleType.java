@@ -1,11 +1,11 @@
 package com.spmproject.smartparking.vehicle;
 
 public enum VehicleType {
-    MOTOCICLO,
-    AUTOVETTURA,
+    MOTORCYCLE,
+    CAR,
     AUTOBUS,
-    MOTOCARRO,
-    AUTOCARRO,
-    CICLOMOTORE,
-    MACC_OPERATRICE
+    MOTORCARRIAGE,
+    CARTRIDGE,
+    CYCLOMOTOR,
+    MACHINE_OPERATOR
 }
