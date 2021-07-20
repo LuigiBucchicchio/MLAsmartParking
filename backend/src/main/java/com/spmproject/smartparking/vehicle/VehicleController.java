@@ -50,7 +50,7 @@ public class VehicleController {
     //@PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/driver/all")
     public Set<Vehicle> allOneDriver() {
-        System.out.println("Sgrava questo ");
+
         String currentUserName = "";
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
@@ -58,10 +58,8 @@ public class VehicleController {
         }
 
         Driver d = driverService.one(currentUserName);
-        System.out.println("il driver " + d);
         Set<Vehicle> allDriverVehicle = d.getVehicle_owned();
 
-        System.out.println("Il veicolo dei driver " + allDriverVehicle);
         return allDriverVehicle;
     }
 
@@ -70,7 +68,7 @@ public class VehicleController {
     public ResponseEntity newVehicle(@RequestBody VehiclePayload payload, Authentication authentication) {
         Driver d = driverService.one(authentication.getName());
         if (d.getName() != "") {
-            Vehicle v= new Vehicle();
+            Vehicle v = new Vehicle();
 
             v.setVehiclePlate(payload.getVehiclePlate());
             v.setBrand(payload.getBrand());
@@ -124,8 +122,15 @@ public class VehicleController {
 
     //@PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{vehiclePlate}")
-    public void deleteVehicle(@PathVariable String vehiclePlate) {
-        vehicleService.one(vehiclePlate);
+    public void deleteVehicle(@PathVariable String vehiclePlate, Authentication auth) {
+        // find driver
+        Driver d = driverService.one(auth.getName());
+
+        Vehicle v = vehicleService.one(vehiclePlate);
+        d.getVehicle_owned().remove(v);
+
+        driverService.update(d);
+                
         vehicleService.deleteById(vehiclePlate);
     }
 

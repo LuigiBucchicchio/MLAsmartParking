@@ -18,7 +18,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import { useAlert } from "react-alert";
 
-import { addNewDriverVehicle, getAllDriverVehicle } from "./VehicleService";
+import { addNewDriverVehicle, deleteDriverVehicle, getAllDriverVehicle } from "./VehicleService";
 
 const useStyles = makeStyles({
   addCircle: {
@@ -66,19 +66,25 @@ export default function VehicleList() {
 
   const [vehicles, setVehicles] = useState([]);
 
-  const [open, setOpen] = useState(false);
+  const [isAddOpen, setIsAddOpen] = useState(false);
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [vehiclePlate, setVehiclePlate] = useState("");
   const [brand, setBrand] = useState("");
   const [type, setType] = useState("");
 
-  const handleDialog = () => {
-    setOpen(!open);
+  const handleAddDialog = () => {
+    setIsAddOpen(!isAddOpen);
+  };
+
+  const handleDeleteDialog = () => {
+    console.log("Delete dialog");
+    setIsDeleteOpen(!isDeleteOpen);
   };
 
   const handleNewVehicle = () => {
     // check if the dialog is filled
     if (type != "" && vehiclePlate != "" && brand != "") {
-      handleDialog();
+      handleAddDialog();
       //call to add a new vehicle
       addNewDriverVehicle({
         vehiclePlate: vehiclePlate,
@@ -102,7 +108,9 @@ export default function VehicleList() {
   };
 
   const handleDeleteVehicle = () => {
-
+    deleteDriverVehicle({
+      vehiclePlate: "GG456TH",
+    })
   };
 
   const handleType = (event) => {
@@ -131,10 +139,11 @@ export default function VehicleList() {
       </TableCell>
       <TableCell align="right">{vehicle.type}</TableCell>
       <TableCell align="right">
-        <Button onclick={handleDeleteVehicle}>
+        <Button onClick={handleDeleteDialog}>
           <DeleteIcon />
         </Button>
       </TableCell>
+      
     </TableRow>
   ));
 
@@ -147,6 +156,7 @@ export default function VehicleList() {
               <TableCell>Plate</TableCell>
               <TableCell align="right">Brand</TableCell>
               <TableCell align="right">Type</TableCell>
+              <TableCell align="right"></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -159,15 +169,33 @@ export default function VehicleList() {
         <Button
           className={classes.buttonAdd}
           color="primary"
-          onClick={handleDialog}
+          onClick={handleAddDialog}
         >
           <AddCircle className={classes.addCircle} style={{ fontSize: 50 }} />
         </Button>
       </div>
 
       <Dialog
-        open={open}
-        onClose={handleDialog}
+        open={isDeleteOpen}
+        onClose={handleDeleteDialog}
+        aria-labelledby="form-dialog-title"
+      >
+        <DialogTitle>Are you sure you want to delete this?</DialogTitle>
+        <DialogContent>
+          <DialogActions>
+          <Button onClick={handleDeleteDialog} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleDeleteVehicle} color="primary">
+            Yes
+          </Button>
+          </DialogActions>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog
+        open={isAddOpen}
+        onClose={handleAddDialog}
         aria-labelledby="form-dialog-title"
       >
         <DialogTitle id="form-dialog-title">Add a new Vehicle</DialogTitle>
@@ -208,7 +236,7 @@ export default function VehicleList() {
           </Select>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleDialog} color="primary">
+          <Button onClick={handleAddDialog} color="primary">
             Cancel
           </Button>
           <Button onClick={handleNewVehicle} color="primary">
