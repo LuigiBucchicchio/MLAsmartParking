@@ -13,13 +13,15 @@ export const getAllDriverVehicle = () => {
 };
 
 export const deleteDriverVehicle = async (data) => {
+    console.log(config)
     return await axios
-    .delete(`${VEHICLEDRIVER_DELETE}${data.vehiclePlate}`, {
-    }, config)
+    .delete(`${VEHICLEDRIVER_DELETE}${data.vehiclePlate}`, config)
     .then(deleted => {
         console.log("Delete ok");
+        console.log(deleted)
     }).catch(err => {
-        console.log("Error")
+        
+        console.log("Error " + err)
     })
 }
 

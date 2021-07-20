@@ -68,6 +68,7 @@ export default function VehicleList() {
 
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [deleteElement, setDeleteElement] = useState("");
   const [vehiclePlate, setVehiclePlate] = useState("");
   const [brand, setBrand] = useState("");
   const [type, setType] = useState("");
@@ -76,14 +77,16 @@ export default function VehicleList() {
     setIsAddOpen(!isAddOpen);
   };
 
-  const handleDeleteDialog = () => {
+  const handleDeleteDialog = (deleteVehicle) => {
     console.log("Delete dialog");
+    setDeleteElement(deleteVehicle)
+    console.log(deleteVehicle)
     setIsDeleteOpen(!isDeleteOpen);
   };
 
   const handleNewVehicle = () => {
     // check if the dialog is filled
-    if (type != "" && vehiclePlate != "" && brand != "") {
+    if (type !== "" && vehiclePlate !== "" && brand !== "") {
       handleAddDialog();
       //call to add a new vehicle
       addNewDriverVehicle({
@@ -109,7 +112,19 @@ export default function VehicleList() {
 
   const handleDeleteVehicle = () => {
     deleteDriverVehicle({
-      vehiclePlate: "GG456TH",
+      vehiclePlate: deleteElement,
+    }).then(() => {
+      setIsDeleteOpen(false)
+      getAllDriverVehicle()
+      .then((response) => {
+        console.log(response.data);
+        setVehicles(response.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    }).catch(() => {
+      setIsDeleteOpen(false)
     })
   };
 
@@ -139,7 +154,7 @@ export default function VehicleList() {
       </TableCell>
       <TableCell align="right">{vehicle.type}</TableCell>
       <TableCell align="right">
-        <Button onClick={handleDeleteDialog}>
+        <Button onClick={() => handleDeleteDialog(vehicle.vehiclePlate)} >
           <DeleteIcon />
         </Button>
       </TableCell>

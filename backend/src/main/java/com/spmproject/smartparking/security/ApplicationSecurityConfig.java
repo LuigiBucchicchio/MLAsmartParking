@@ -78,12 +78,14 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
         config.addAllowedMethod("POST");
         config.addAllowedMethod("DELETE");
         config.addAllowedMethod("PATCH");
-        //source.registerCorsConfiguration("/**", config);
-        CorsConfiguration config2 = new CorsConfiguration().applyPermitDefaultValues();
+        source.registerCorsConfiguration("/**", config);
+        //CorsConfiguration config2 = new CorsConfiguration().applyPermitDefaultValues();
 
-        source.registerCorsConfiguration("/**", config2.applyPermitDefaultValues());
+        source.registerCorsConfiguration("/**", config.applyPermitDefaultValues());
+        //source.registerCorsConfiguration("/**", config2.applyPermitDefaultValues());
         return source;
     }
+
 
     @Override
     public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {

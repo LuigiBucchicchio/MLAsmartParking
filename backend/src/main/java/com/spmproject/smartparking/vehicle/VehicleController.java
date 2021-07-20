@@ -123,15 +123,20 @@ public class VehicleController {
     //@PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{vehiclePlate}")
     public void deleteVehicle(@PathVariable String vehiclePlate, Authentication auth) {
+        System.out.println("Ciaoo");
+        System.out.println();
         // find driver
+
         Driver d = driverService.one(auth.getName());
 
         Vehicle v = vehicleService.one(vehiclePlate);
         d.getVehicle_owned().remove(v);
 
         driverService.update(d);
-                
+
         vehicleService.deleteById(vehiclePlate);
+
+
     }
 
     //map string type to the corresponding VehicleType enum
