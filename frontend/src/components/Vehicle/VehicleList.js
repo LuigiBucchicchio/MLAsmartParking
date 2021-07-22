@@ -1,88 +1,264 @@
-import * as React from "react";
-import { DataGrid } from "@material-ui/data-grid";
-import EditIcon from "@material-ui/icons/Edit"
-import DeleteIcon from "@material-ui/icons/Delete"
+import React, { Fragment, useEffect, useState } from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import AddCircle from "@material-ui/icons/AddCircle";
+import Button from "@material-ui/core/Button";
+import DeleteIcon from "@material-ui/icons/Delete";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import { FormLabel } from "@material-ui/core";
+import TextField from "@material-ui/core/TextField";
+import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import { useAlert } from "react-alert";
 
-import ParkingService from "../Parking/ParkingService";
+import { addNewDriverVehicle, deleteDriverVehicle, getAllDriverVehicle } from "./VehicleService";
 
-const vehicles = [];
-
-// ParkingService.getParkingPlaces().then((response) => {
-//   this.setState({ vehicles : response.data})
-// });
-
-const columns = [
-  { field: "id", headerName: "ID", width: 90 },
-  {
-    field: "plate",
-    headerName: "Plate",
-    width: 150,
-    editable: false,
+const useStyles = makeStyles({
+  addCircle: {
+    maxWidth: 100,
+    height: 100,
   },
-  {
-    field: "brand",
-    headerName: "Brand",
-    width: 150,
-    editable: false,
+  backgroundWallpaper: {
+    backgroundColor: "grey",
   },
-  {
-    field: "type",
-    headerName: "Type",
-    width: 130,
-    editable: false,
+  marginAutoContainer: {
+    display: "flex",
+    backgroundColor: "gold",
   },
-  // {
-  //   field: "actions",
-  //   headerName: "Actions",
-  //   sortable: false,
-  //   width: 140,
-  //   disableClickEventBubbling: true,
-  //   renderCell: (params) => {
-  //     return (
-  //       <div
-  //         className="d-flex justify-content-between align-items-center"
-  //         style={{ cursor: "pointer" }}
-  //       >
-  //         <EditIcon index={params.row.id} />
-  //       </div>
-  //     );
-  //   },
-  // },
-  {
-    field: "fullName",
-    headerName: "Full name",
-    description: "This column has a value getter and is not sortable.",
-    sortable: false,
-    width: 160,
-    valueGetter: (params) =>
-      `${params.getValue(params.id, "firstName") || ""} ${
-        params.getValue(params.id, "lastName") || ""
-      }`,
+  marginAutoItem: {
+    margin: "auto",
   },
-];
+  alignItemsAndJustifyContent: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  media: {
+    height: 140,
+  },
 
-const rows = [
-  { id: 1, lastName: "Snow", firstName: "Jon", age: 35, DeleteIcon },
-  { id: 2, lastName: "Lannister", firstName: "Cersei", age: 42 },
-  { id: 3, lastName: "Lannister", firstName: "Jaime", age: 45 },
-  { id: 4, lastName: "Stark", firstName: "Arya", age: 16 },
-  { id: 5, lastName: "Targaryen", firstName: "Daenerys", age: null },
-  { id: 6, lastName: "Melisandre", firstName: null, age: 150 },
-  { id: 7, lastName: "Clifford", firstName: "Ferrara", age: 44 },
-  { id: 8, lastName: "Frances", firstName: "Rossini", age: 36 },
-  { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
-];
+  centeredIcon: {
+    display: "flex",
+    alignItems: "center",
+  },
+  divButtonAdd: {
+    display: "flex",
+    alignItems: "center",
+    width: "100%",
+    justifyContent: "center",
+  },
+
+  buttonAdd: {
+    justifyContent: "center",
+  },
+});
 
 export default function VehicleList() {
+  const classes = useStyles();
+  const alert = useAlert();
+
+  const [vehicles, setVehicles] = useState([]);
+
+  const [isAddOpen, setIsAddOpen] = useState(false);
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [deleteElement, setDeleteElement] = useState("");
+  const [vehiclePlate, setVehiclePlate] = useState("");
+  const [brand, setBrand] = useState("");
+  const [type, setType] = useState("");
+
+  const handleAddDialog = () => {
+    setIsAddOpen(!isAddOpen);
+  };
+
+  const handleDeleteDialog = (deleteVehicle) => {
+    console.log("Delete dialog");
+    setDeleteElement(deleteVehicle)
+    console.log(deleteVehicle)
+    setIsDeleteOpen(!isDeleteOpen);
+  };
+
+  const handleNewVehicle = () => {
+    // check if the dialog is filled
+    if (type !== "" && vehiclePlate !== "" && brand !== "") {
+      handleAddDialog();
+      //call to add a new vehicle
+      addNewDriverVehicle({
+        vehiclePlate: vehiclePlate,
+        type: type,
+        brand: brand,
+      })
+        .then(() => {
+          getAllDriverVehicle()
+            .then((response) => {
+              console.log(response.data);
+              setVehicles(response.data);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    } else alert.error("Fill the form");
+  };
+
+  const handleDeleteVehicle = () => {
+    deleteDriverVehicle({
+      vehiclePlate: deleteElement,
+    }).then(() => {
+      setIsDeleteOpen(false)
+      getAllDriverVehicle()
+      .then((response) => {
+        console.log(response.data);
+        setVehicles(response.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    }).catch(() => {
+      setIsDeleteOpen(false)
+    })
+  };
+
+  const handleType = (event) => {
+    setType(event.target.value);
+  };
+
+  const handleVehiclePlate = (event) => {
+    setVehiclePlate(event.target.value);
+  };
+
+  const handleBrand = (event) => {
+    setBrand(event.target.value);
+  };
+
+  useEffect(() => {
+    getAllDriverVehicle().then((response) => {
+      setVehicles(response.data);
+    });
+  }, []);
+
+  const vehiclesList = vehicles.map((vehicle) => (
+    <TableRow key={vehicle.vehiclePlate}>
+      <TableCell>{vehicle.vehiclePlate}</TableCell>
+      <TableCell align="right" component="th" scope="row">
+        {vehicle.brand}
+      </TableCell>
+      <TableCell align="right">{vehicle.type}</TableCell>
+      <TableCell align="right">
+        <Button onClick={() => handleDeleteDialog(vehicle.vehiclePlate)} >
+          <DeleteIcon />
+        </Button>
+      </TableCell>
+      
+    </TableRow>
+  ));
+
   return (
-    <div style={{ marginLeft: "auto", marginRight: "auto", height: 800, width: "80%" }}>
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        pageSize={10}
-        checkboxSelection
-        disableSelectionOnClick
-      />
-    </div>
+    <Fragment>
+      <div className={classes.alignItemsAndJustifyContent}>
+        <Table className={classes.table} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell>Plate</TableCell>
+              <TableCell align="right">Brand</TableCell>
+              <TableCell align="right">Type</TableCell>
+              <TableCell align="right"></TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {vehiclesList}
+            {/* <TableContainer component={Paper}>{cars}</TableContainer> */}
+          </TableBody>
+        </Table>
+      </div>
+      <div className={classes.divButtonAdd}>
+        <Button
+          className={classes.buttonAdd}
+          color="primary"
+          onClick={handleAddDialog}
+        >
+          <AddCircle className={classes.addCircle} style={{ fontSize: 50 }} />
+        </Button>
+      </div>
+
+      <Dialog
+        open={isDeleteOpen}
+        onClose={handleDeleteDialog}
+        aria-labelledby="form-dialog-title"
+      >
+        <DialogTitle>Are you sure you want to delete this?</DialogTitle>
+        <DialogContent>
+          <DialogActions>
+          <Button onClick={handleDeleteDialog} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleDeleteVehicle} color="primary">
+            Yes
+          </Button>
+          </DialogActions>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog
+        open={isAddOpen}
+        onClose={handleAddDialog}
+        aria-labelledby="form-dialog-title"
+      >
+        <DialogTitle id="form-dialog-title">Add a new Vehicle</DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="name"
+            label="Target Plate*"
+            type="text"
+            fullWidth
+            onChange={handleVehiclePlate}
+          />
+          <TextField
+            margin="dense"
+            id="name"
+            label="Brand*"
+            type="text"
+            fullWidth
+            onChange={handleBrand}
+          />
+
+          <FormLabel component="legend">Type*</FormLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            style={{ width: 70 }}
+            value={type}
+            onChange={handleType}
+          >
+            <MenuItem value={"CAR"}>CAR</MenuItem>
+            <MenuItem value={"MOTORCYCLE"}>MOTORCYCLE</MenuItem>
+            <MenuItem value={"AUTOBUS"}>AUTOBUS</MenuItem>
+            <MenuItem value={"MOTORCARRIAGE"}>MOTORCARRIAGE</MenuItem>
+            <MenuItem value={"CARTRIDGE"}>CARTRIDGE</MenuItem>
+            <MenuItem value={"CYCLOMOTOR"}>CYCLOMOTOR</MenuItem>
+            <MenuItem value={"MACHINE_OPERATOR"}>MACHINE OPERATOR</MenuItem>
+          </Select>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleAddDialog} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleNewVehicle} color="primary">
+            Add
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </Fragment>
   );
 }

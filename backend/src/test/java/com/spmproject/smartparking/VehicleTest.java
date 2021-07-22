@@ -47,7 +47,7 @@ public class VehicleTest {
 			
 			Vehicle v = new Vehicle();
 			v.setBrand(payload.getBrand());
-			v.setType(VehicleType.AUTOVETTURA);
+			v.setType(VehicleType.CAR);
 			v.setVehiclePlate(payload.getVehiclePlate());
 			
 			Vehicle saved = vehicleService.addNewVehicle(v);

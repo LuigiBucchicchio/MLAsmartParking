@@ -52,7 +52,8 @@ public class DriverService {
 	public void remove(Long id) {
 		driverRepository.deleteById(id);
 	}
-        return driverRepository.save(d);
+
     public Driver update(Driver d) {
+        return driverRepository.save(d);
     }
 }

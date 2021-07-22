@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import clsx from "clsx";
 import { Link } from "react-router-dom";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
@@ -17,9 +17,10 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import AccountIcon from "@material-ui/icons/AccountCircle";
-import ReservationIcon from "@material-ui/icons/EventNote";
+import ReservationIcon from "@material-ui/icons/EventAvailable";
 import CarIcon from "@material-ui/icons/DirectionsCar";
-import { propTypes } from "react-bootstrap/esm/Image";
+
+import logo from "../../assets/logo.png";
 
 const drawerWidth = 240;
 
@@ -29,7 +30,10 @@ const useStyles = makeStyles((theme) => ({
   },
   toolbar: theme.mixins.toolbar,
 
+  title: { color: "#fff" },
   appBar: {
+    backgroundColor: "#000",
+    color: "#fff",
     transition: theme.transitions.create(["margin", "width"], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
@@ -80,7 +84,7 @@ const useStyles = makeStyles((theme) => ({
     }),
     marginLeft: 0,
   },
-  linkMenu: {
+  underlineNone: {
     textDecoration: "none",
   },
 }));
@@ -88,14 +92,10 @@ const useStyles = makeStyles((theme) => ({
 export default function PersistentDrawerLeft(props) {
   const classes = useStyles();
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-
-  const handleDrawerClose = () => {
-    setOpen(false);
+  const handleDrawer = () => {
+    setOpen(!open);
   };
 
   return (
@@ -111,16 +111,19 @@ export default function PersistentDrawerLeft(props) {
           <IconButton
             color="inherit"
             aria-label="open drawer"
-            onClick={handleDrawerOpen}
+            onClick={handleDrawer}
             edge="start"
             className={clsx(classes.menuButton, open && classes.hide)}
           >
             <MenuIcon />
           </IconButton>
-          {console.log(props.pageName)}
-          <Typography variant="h6" noWrap>
-            {props.pageName}
-          </Typography>
+
+          <Link className={clsx(classes.underlineNone)} as={Link} to="/">
+            <Typography variant="h6" className={classes.title}>
+              <img alt="logo" src={logo} height="30" width="40" />
+              MLASmartParking
+            </Typography>
+          </Link>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -134,7 +137,7 @@ export default function PersistentDrawerLeft(props) {
       >
         <List>
           <div className={classes.drawerHeader}>
-            <IconButton onClick={handleDrawerClose}>
+            <IconButton onClick={handleDrawer}>
               {theme.direction === "ltr" ? (
                 <ChevronLeftIcon />
               ) : (
@@ -144,7 +147,12 @@ export default function PersistentDrawerLeft(props) {
           </div>
           <Divider />
 
-          <Link className={classes.linkMenu} href="#" to="/driver">
+          <Link
+            className={classes.underlineNone}
+            href="#"
+            to="/driver"
+            onClick={handleDrawer}
+          >
             <ListItem button key="Account">
               <ListItemIcon>
                 <AccountIcon />
@@ -153,7 +161,12 @@ export default function PersistentDrawerLeft(props) {
             </ListItem>
           </Link>
           <Divider />
-          <Link className={classes.linkMenu} href="#" to="/">
+          <Link
+            className={classes.underlineNone}
+            href="#"
+            to="/driver/reservations"
+            onClick={handleDrawer}
+          >
             <ListItem button key="Reservation">
               <ListItemIcon>
                 <ReservationIcon />
@@ -162,7 +175,12 @@ export default function PersistentDrawerLeft(props) {
             </ListItem>
           </Link>
           <Divider />
-          <Link className={classes.linkMenu} href="#" to="/driver/vehicle">
+          <Link
+            className={classes.underlineNone}
+            href="#"
+            to="/driver/vehicles"
+            onClick={handleDrawer}
+          >
             <ListItem button key="Vehicle">
               <ListItemIcon>
                 <CarIcon />

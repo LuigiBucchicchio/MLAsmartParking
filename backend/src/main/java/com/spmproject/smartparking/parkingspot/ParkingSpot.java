@@ -25,7 +25,7 @@ public class ParkingSpot {
 
     private int level;
 
-    private boolean isFree;
+    private boolean isFree = true;
 
     @OneToMany
     private Set<Reservation> reservations;

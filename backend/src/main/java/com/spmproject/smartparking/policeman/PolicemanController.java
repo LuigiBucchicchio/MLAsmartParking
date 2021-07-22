@@ -50,6 +50,7 @@ public class PolicemanController {
         return policemanService.getAllPolicemen();
     }
 
+    /*
     @GetMapping("/all/municipality")
     public List<Policeman> municipalityPolicemen() {
         String currentUserName = "";
@@ -57,6 +58,9 @@ public class PolicemanController {
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             currentUserName = authentication.getName();
         }
+    }
+
+     */
 
 	//@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/me")
@@ -90,19 +94,6 @@ public class PolicemanController {
         } else {
             return new ResponseEntity(HttpStatus.CONFLICT);
         }
-    }
-
-    //@PreAuthorize("hasRole('ROLE_ADMIN')")
-    @GetMapping("/me")
-    public Policeman one() {
-        String currentUserName = "";
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (!(authentication instanceof AnonymousAuthenticationToken)) {
-            currentUserName = authentication.getName();
-        }
-
-        Policeman p = policemanService.getOneByName(currentUserName);
-        return p;
     }
 
     //@PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -153,6 +144,6 @@ public class PolicemanController {
     @DeleteMapping("/{id}")
     public void deletePoliceman(@PathVariable Long id) {
         policemanService.One(id);
-        policemanService.deleteById(id);
+        //policemanService.deleteById(id);
     }
 }

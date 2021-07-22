@@ -5,8 +5,12 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,40 +47,43 @@ public class VehicleController {
         return vehicleService.getAllVehicles();
     }
 
-	//@PreAuthorize("hasRole('ROLE_ADMIN','ROLE_DRIVER')")
-	@PostMapping("/add")
-	public Vehicle newVehicle(@RequestBody VehiclePayload payload, Authentication authentication) {
-		Vehicle v= new Vehicle();
-		
-		v.setVehiclePlate(payload.getVehiclePlate());
-		v.setBrand(payload.getBrand());
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/driver/all")
+    public Set<Vehicle> allOneDriver() {
 
-		VehicleType vehicleType=typeMap(payload.getType());
-		v.setType(vehicleType);
+        String currentUserName = "";
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            currentUserName = authentication.getName();
+        }
 
+        Driver d = driverService.one(currentUserName);
+        Set<Vehicle> allDriverVehicle = d.getVehicle_owned();
 
-		Driver d = driverService.one(authentication.getName());
-		Set<Driver> driverSet = new HashSet<Driver>();
-		driverSet.add(d);
+        return allDriverVehicle;
+    }
 
-		v.setOwners(driverSet);
-		v.setReservations(new HashSet<Reservation>());
-		d.getVehicle_owned().add(v);
-		driverService.update(d);
-		return vehicleService.addNewVehicle(v);
-	}
+    //@PreAuthorize("hasRole('ROLE_ADMIN','ROLE_DRIVER')")
+    @PostMapping("/add")
+    public ResponseEntity newVehicle(@RequestBody VehiclePayload payload, Authentication authentication) {
+        Driver d = driverService.one(authentication.getName());
+        if (d.getName() != "") {
+            Vehicle v = new Vehicle();
 
-        VehicleType vehicleType = typeMap(payload.getType());
-        v.setType(vehicleType);
+            v.setVehiclePlate(payload.getVehiclePlate());
+            v.setBrand(payload.getBrand());
 
-        Driver d = driverService.one((long) 1);
-        Set<Driver> driverSet = new HashSet<Driver>();
-        driverSet.add(d);
-        v.setOwners(driverSet);
-        v.setReservations(new HashSet<Reservation>());
-        d.getVehicle_owned().add(v);
-        driverService.update(d);
-        return vehicleService.addNewVehicle(v);
+            VehicleType vehicleType = typeMap(payload.getType());
+            v.setType(vehicleType);
+
+            vehicleService.addNewVehicle(v);
+
+            v.setReservations(new HashSet<Reservation>());
+            d.getVehicle_owned().add(v);
+            driverService.update(d);
+            return new ResponseEntity(HttpStatus.OK);
+        }
+        return new ResponseEntity(HttpStatus.CONFLICT);
     }
 
     //@PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -85,6 +92,7 @@ public class VehicleController {
         return vehicleService.one(vehiclePlate);
     }
 
+    /*
     //@PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/{vehiclePlate}")
     public Vehicle replaceVehicle(@RequestBody VehiclePayload payload, @PathVariable String vehiclePlate) {
@@ -110,31 +118,44 @@ public class VehicleController {
 
         return vehicleService.update(v);
     }
+    */
 
     //@PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{vehiclePlate}")
-    public void deleteVehicle(@PathVariable String vehiclePlate) {
-        vehicleService.one(vehiclePlate);
+    public void deleteVehicle(@PathVariable String vehiclePlate, Authentication auth) {
+        System.out.println("Ciaoo");
+        System.out.println();
+        // find driver
+
+        Driver d = driverService.one(auth.getName());
+
+        Vehicle v = vehicleService.one(vehiclePlate);
+        d.getVehicle_owned().remove(v);
+
+        driverService.update(d);
+
         vehicleService.deleteById(vehiclePlate);
+
+
     }
 
     //map string type to the corresponding VehicleType enum
     private VehicleType typeMap(String type) {
         VehicleType vehicleType;
-        if (type.equals("Motociclo"))
-            vehicleType = VehicleType.MOTOCICLO;
-        else if (type.equals("Autovettura"))
-            vehicleType = VehicleType.AUTOVETTURA;
-        else if (type.equals("Autobus"))
+        if (type.equals("MOTORCYCLE"))
+            vehicleType = VehicleType.MOTORCYCLE;
+        else if (type.equals("CAR"))
+            vehicleType = VehicleType.CAR;
+        else if (type.equals("AUTOBUS"))
             vehicleType = VehicleType.AUTOBUS;
-        else if (type.equals("Motocarro"))
-            vehicleType = VehicleType.MOTOCARRO;
-        else if (type.equals("Autocarro"))
-            vehicleType = VehicleType.AUTOCARRO;
-        else if (type.equals("Ciclomotore"))
-            vehicleType = VehicleType.CICLOMOTORE;
-        else if (type.equals("Macchina Operatrice"))
-            vehicleType = VehicleType.MACC_OPERATRICE;
+        else if (type.equals("MOTORCARRIAGE"))
+            vehicleType = VehicleType.MOTORCARRIAGE;
+        else if (type.equals("CARTRIDGE"))
+            vehicleType = VehicleType.CARTRIDGE;
+        else if (type.equals("CYCLOMOTOR"))
+            vehicleType = VehicleType.CYCLOMOTOR;
+        else if (type.equals("MACHINE OPERATOR"))
+            vehicleType = VehicleType.MACHINE_OPERATOR;
         else vehicleType = null;
         return vehicleType;
     }
