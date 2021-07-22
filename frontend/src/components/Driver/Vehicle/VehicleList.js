@@ -144,7 +144,7 @@ export default function VehicleList() {
     getAllDriverVehicle().then((response) => {
       setVehicles(response.data);
     });
-  }, [null]);
+  }, []);
 
   const vehiclesList = vehicles.map((vehicle) => (
     <TableRow key={vehicle.vehiclePlate}>

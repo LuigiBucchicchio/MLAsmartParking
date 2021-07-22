@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import clsx from "clsx";
 import { Link } from "react-router-dom";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
@@ -21,7 +21,6 @@ import ReservationIcon from "@material-ui/icons/EventAvailable";
 import CarIcon from "@material-ui/icons/DirectionsCar";
 
 import logo from "../../assets/logo.png";
-import { MailOutlineOutlined } from "@material-ui/icons";
 
 const drawerWidth = 240;
 
@@ -93,8 +92,7 @@ const useStyles = makeStyles((theme) => ({
 export default function PersistentDrawerLeft(props) {
   const classes = useStyles();
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
-  const mounted = React.useRef();
+  const [open, setOpen] = useState(false);
 
   const handleDrawer = () => {
     setOpen(!open);
@@ -149,7 +147,12 @@ export default function PersistentDrawerLeft(props) {
           </div>
           <Divider />
 
-          <Link className={classes.underlineNone} href="#" to="/driver" onClick={handleDrawer}>
+          <Link
+            className={classes.underlineNone}
+            href="#"
+            to="/driver"
+            onClick={handleDrawer}
+          >
             <ListItem button key="Account">
               <ListItemIcon>
                 <AccountIcon />
@@ -158,7 +161,12 @@ export default function PersistentDrawerLeft(props) {
             </ListItem>
           </Link>
           <Divider />
-          <Link className={classes.underlineNone} href="#" to="/" onClick={handleDrawer}>
+          <Link
+            className={classes.underlineNone}
+            href="#"
+            to="/"
+            onClick={handleDrawer}
+          >
             <ListItem button key="Reservation">
               <ListItemIcon>
                 <ReservationIcon />
@@ -167,7 +175,12 @@ export default function PersistentDrawerLeft(props) {
             </ListItem>
           </Link>
           <Divider />
-          <Link className={classes.underlineNone} href="#" to="/driver/vehicle" onClick={handleDrawer}>
+          <Link
+            className={classes.underlineNone}
+            href="#"
+            to="/driver/vehicle"
+            onClick={handleDrawer}
+          >
             <ListItem button key="Vehicle">
               <ListItemIcon>
                 <CarIcon />

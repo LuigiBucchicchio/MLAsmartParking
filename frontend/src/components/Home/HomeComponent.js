@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 import clsx from "clsx";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 
 import ParkingPlacesList from "../Parking/ParkingPlacesList.js";
 import Map from "../Layout/Map.js";

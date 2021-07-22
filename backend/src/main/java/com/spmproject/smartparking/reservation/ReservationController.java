@@ -14,7 +14,7 @@ import com.spmproject.smartparking.vehicle.VehicleService;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
-@RequestMapping(path = "reservetion")
+@RequestMapping(path = "reservation")
 public class ReservationController {
 
 	private ReservationService reservationService;
@@ -39,14 +39,17 @@ public class ReservationController {
 	@PostMapping("/{parkingPlaceID}/add")
 	public Reservation newReservation(@RequestBody ReservationPayload payload, @PathVariable Long parkingPlaceID) {
 		System.out.println("New Reservation ");
-		
+		System.out.println(payload.getVehiclePlate());
+		System.out.println(payload);
+
 	    List<ParkingSpot> listaMistica = parkingSpotService.getFreeParkingSpotFromPlace(true,parkingPlaceID);
 	    Collections.shuffle(listaMistica);
 	    ParkingSpot spottino = listaMistica.get(0);
 		System.out.println("Prima dell'errore ");
+		System.out.println(payload.getVehiclePlate());
 		Vehicle vehicleReserved = vehicleService.one(payload.getVehiclePlate());
 		System.out.println("Dopo dell'errore ");
-		System.out.println(vehicleReserved);
+		
 		Reservation reservation= new Reservation();
 		
 		reservation.setStartingTime(payload.getStartingTime());

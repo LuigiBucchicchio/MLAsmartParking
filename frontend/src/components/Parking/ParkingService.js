@@ -34,13 +34,6 @@ class ParkingService {
         console.log(json);
         return axios.post(PARKINGPLACES_POST_ONE_URL, json,config)
     }
-
-    reserveParkingSpot(parkingPlaceId){
-        const json = {
-            "parkingPlaceId": parkingPlaceId 
-        }
-        return axios.post(process.env.REACT_APP_RESERVATION + '/`${parkingPlaceId}/add`', json,config)
-    }
 }
 
 export default new ParkingService()
