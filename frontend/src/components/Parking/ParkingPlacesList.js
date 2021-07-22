@@ -19,6 +19,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
+import { useAlert } from "react-alert";
 import {
   MuiPickersUtilsProvider,
   KeyboardTimePicker,
@@ -27,7 +28,7 @@ import {
 
 import ParkingService from "./ParkingService";
 import { getAllDriverVehicle } from "../Driver/Vehicle/VehicleService";
-import { reserveParkingSpot } from "./ParkingSpot/ParkingSpotService";
+import { reserveParkingSpot } from "../Reservation/ReservationService";
 
 const useStyles = makeStyles({
   table: {
@@ -41,11 +42,13 @@ export default function ParkingPlacesList() {
   const [vehicles, setVehicles] = useState([]);
   const [selectedParkingPlace, setSelectedParkingPlace] = useState("");
   const [selectedVehiclePlate, setSelectedVehiclePlate] = useState("");
-  const [selectedTime, setSelectedTime] = React.useState(new Date());
+  const [endingTime, setEndingTime] = React.useState(new Date());
 
   useEffect(() => {
     ParkingService.getParkingPlaces().then((response) => {
       setParkingPlaces(response.data);
+      // minimum parking time
+      setEndingTime(endingTime.setMinutes(endingTime.getMinutes() + 10));
     });
   }, []);
 
@@ -56,46 +59,73 @@ export default function ParkingPlacesList() {
   ));
 
   const handleReservationSelected = (key, event) => {
-    console.log("chiave ");
-    console.log(key);
     //setReservationSelected({...reservationSelected, [key]: event.target.value})
-    if (key === "time") setSelectedTime(event.target.value);
-    else if (key === "vehiclePlate")
+    if (key === "time") {
+      setEndingTime(event);
+    } else if (key === "vehiclePlate")
       setSelectedVehiclePlate(event.target.value);
   };
+
+  const alert = useAlert();
 
   // get vehicle driver, open or close dialog
   const handleReservtionDialog = (parkingPlaceId) => {
     if (!isReservationOpen) {
-      console.log(parkingPlaceId);
       setSelectedParkingPlace(parkingPlaceId);
+
       getAllDriverVehicle()
-        .then((res) => {
-          console.log(res.data);
-          setVehicles(res.data);
+        .then((v) => {
+          console.log(v);
+          if (v.data.length > 0) {
+            setVehicles(v.data);
+            setIsReservationOpen(!isReservationOpen);
+          } else alert.show("You need to add a vehicle");
         })
         .catch();
     } else {
       setSelectedVehiclePlate("");
       setSelectedParkingPlace("");
+      setIsReservationOpen(!isReservationOpen);
     }
-    setIsReservationOpen(!isReservationOpen);
   };
 
   // call to service reservation
   const handleReservationCall = () => {
     var startingTime = new Date();
-    var endingTime = new Date();
-    endingTime.setHours(startingTime.getHours() + 2);
-    console.log(endingTime);
+    // check if the date and time are valid
 
-    const data = {
-      parkingPlaceId: selectedParkingPlace,
-      vehiclePlate: selectedVehiclePlate,
-      startingTime: startingTime,
-      endingTime: endingTime,
-    };
-    reserveParkingSpot(data);
+    if (endingTime <= startingTime)
+      alert.error("Select a valid time")
+    else if (endingTime> startingTime) {
+      const data = {
+        parkingPlaceId: selectedParkingPlace,
+        vehiclePlate: selectedVehiclePlate,
+        startingTime: startingTime,
+        endingTime: endingTime,
+      };
+      reserveParkingSpot(data);
+      handleReservtionDialog()
+
+      //  create a random success sentence
+      const rand = Math.floor(Math.random() * 4) + 1 ;
+      
+      switch(rand){
+        case 1:
+          alert.success("You have a special place now")
+          break;
+        case 2:
+          alert.success("We were only waiting for you!")
+          break;
+        case 3:
+          alert.success("Park here your car and your bad feelings")
+          break;
+        case 4:
+          alert.success(`${selectedVehiclePlate} is so happy now!`)
+          break;
+      }
+        
+      
+    }
   };
 
   const classes = useStyles();
@@ -154,12 +184,27 @@ export default function ParkingPlacesList() {
           </Select>
           <div>
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <div>
+                <KeyboardDatePicker
+                  disableToolbar
+                  variant="inline"
+                  format="MM/dd/yyyy"
+                  margin="normal"
+                  id="date-picker-inline"
+                  label="Choose your ending date"
+                  value={endingTime}
+                  onChange={(date) => handleReservationSelected("time", date)}
+                  KeyboardButtonProps={{
+                    "aria-label": "change date",
+                  }}
+                />
+              </div>
               <KeyboardTimePicker
                 margin="normal"
                 id="time-picker"
-                label="Choose your ending time"
-                value={selectedTime}
-                onChange={(e) => handleReservationSelected("time", e)}
+                label="Choose your ending time (min 10 minutes)"
+                value={endingTime}
+                onChange={(date) => handleReservationSelected("time", date)}
                 KeyboardButtonProps={{
                   "aria-label": "change time",
                 }}
