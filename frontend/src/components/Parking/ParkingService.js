@@ -4,7 +4,6 @@ const PARKINGPLACES_GET_ALL_URL = 'http://localhost:8080/parking-place/all';
 const PARKINGPLACES_GET_ALL_MUNICIPALITY_URL = 'http://localhost:8080/parking-place/';
 const PARKINGPLACES_POST_ONE_URL = 'http://localhost:8080/parking-place/add';
 const PARKINGPLACES_MODIFICATION = 'http://localhost:8080/parking-place/modify';
-const RESERVE_PARKING_SPOT = 'http://localhost:8080/reservation/{parkingPlaceID}/add'
 
 const config = {
     headers: {Authorization: "Bearer "+localStorage.getItem("token") }

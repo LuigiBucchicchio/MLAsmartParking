@@ -27,7 +27,7 @@ import {
 } from "@material-ui/pickers";
 
 import ParkingService from "./ParkingService";
-import { getAllDriverVehicle } from "../Driver/Vehicle/VehicleService";
+import { getAllDriverVehicle } from "../Vehicle/VehicleService";
 import { reserveParkingSpot } from "../Reservation/ReservationService";
 
 const useStyles = makeStyles({

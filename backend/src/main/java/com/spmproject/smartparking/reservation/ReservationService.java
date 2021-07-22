@@ -20,6 +20,10 @@ public class ReservationService {
 		return reservationRepository.findAll();
 	}
 
+	public List<Reservation> getAllReservationsOfOneVehicle(String vehiclePlate) {
+		return this.reservationRepository.findAllByVehicleVehiclePlate(vehiclePlate);
+	}
+
 	public Reservation addNewReservation(Reservation r) {
 		return this.reservationRepository.save(r);
 	}

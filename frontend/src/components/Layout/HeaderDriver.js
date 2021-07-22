@@ -164,7 +164,7 @@ export default function PersistentDrawerLeft(props) {
           <Link
             className={classes.underlineNone}
             href="#"
-            to="/"
+            to="/driver/reservations"
             onClick={handleDrawer}
           >
             <ListItem button key="Reservation">
@@ -178,7 +178,7 @@ export default function PersistentDrawerLeft(props) {
           <Link
             className={classes.underlineNone}
             href="#"
-            to="/driver/vehicle"
+            to="/driver/vehicles"
             onClick={handleDrawer}
           >
             <ListItem button key="Vehicle">
