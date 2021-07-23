@@ -18,6 +18,8 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import { useAlert } from "react-alert";
 
+import { getAllReservationOneDriver } from "./ReservationService"
+
 const useStyles = makeStyles({
   addCircle: {
     maxWidth: 100,
@@ -59,148 +61,83 @@ const useStyles = makeStyles({
 });
 
 export default function ReservationList() {
-//   const classes = useStyles();
-//   const alert = useAlert();
+  const classes = useStyles();
+  const alert = useAlert();
 
-//   const [isAddOpen, setIsAddOpen] = useState(false);
-//   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
-//   const [deleteElement, setDeleteElement] = useState("");
-  
+  const [isAddOpen, setIsAddOpen] = useState(false);
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [deleteElement, setDeleteElement] = useState("");
+  const [reservations, setReservations] = useState([])
 
-//   const handleAddDialog = () => {
-//     setIsAddOpen(!isAddOpen);
-//   };
-
-//   const handleDeleteDialog = (deleteReservation) => {
-//     console.log("Delete dialog");
-//     setDeleteElement(deleteReservation)
-//     console.log(deleteReservation)
-//     setIsDeleteOpen(!isDeleteOpen);
-//   };
-
-
-//   const handleDeleteReservation = () => {
-//   };
-
-
-
-//   useEffect(() => {
-
-//   }, []);
-
-//   const vehiclesList = reservations.map((reservation) => (
-//     <TableRow key={reservation.id}>
-//       <TableCell>{reservation.vehiclePlate}</TableCell>
-//       <TableCell align="right" component="th" scope="row">
-//         {vehicle.parkingSpot}
-//       </TableCell>
-//       <TableCell align="right">{reservation.startingTime}</TableCell>
-//       <TableCell align="right">
-//         <Button onClick={() => handleDeleteDialog(reservation.endingTime)} >
-//           <DeleteIcon />
-//         </Button>
-//       </TableCell>
+  useEffect(() => {
+    getAllReservationOneDriver()
+    .then(listReservation => {
       
-//     </TableRow>
-//   ));
+      if (listReservation.data === 0){
+        alert.info("Reserve to be in this hall of fame")
+      }
+      setReservations(listReservation.data);
+    }).catch(err => {
+      console.log(err)
+    })
+  }, []);
 
-//   return (
-//     <Fragment>
-//       <div className={classes.alignItemsAndJustifyContent}>
-//         <Table className={classes.table} aria-label="simple table">
-//           <TableHead>
-//             <TableRow>
-//               <TableCell>Plate</TableCell>
-//               <TableCell align="right">Brand</TableCell>
-//               <TableCell align="right">Type</TableCell>
-//               <TableCell align="right"></TableCell>
-//             </TableRow>
-//           </TableHead>
-//           <TableBody>
-//             {vehiclesList}
-//             {/* <TableContainer component={Paper}>{cars}</TableContainer> */}
-//           </TableBody>
-//         </Table>
-//       </div>
-//       <div className={classes.divButtonAdd}>
-//         <Button
-//           className={classes.buttonAdd}
-//           color="primary"
-//           onClick={handleAddDialog}
-//         >
-//           <AddCircle className={classes.addCircle} style={{ fontSize: 50 }} />
-//         </Button>
-//       </div>
+  const handleAddDialog = () => {
+    setIsAddOpen(!isAddOpen);
+  };
 
-//       <Dialog
-//         open={isDeleteOpen}
-//         onClose={handleDeleteDialog}
-//         aria-labelledby="form-dialog-title"
-//       >
-//         <DialogTitle>Are you sure you want to delete this?</DialogTitle>
-//         <DialogContent>
-//           <DialogActions>
-//           <Button onClick={handleDeleteDialog} color="primary">
-//             Cancel
-//           </Button>
-//           <Button onClick={handleDeleteVehicle} color="primary">
-//             Yes
-//           </Button>
-//           </DialogActions>
-//         </DialogContent>
-//       </Dialog>
+  const handleDeleteDialog = (deleteReservation) => {
+    console.log("Delete dialog");
+    setDeleteElement(deleteReservation)
+    console.log(deleteReservation)
+    setIsDeleteOpen(!isDeleteOpen);
+  };
 
-//       <Dialog
-//         open={isAddOpen}
-//         onClose={handleAddDialog}
-//         aria-labelledby="form-dialog-title"
-//       >
-//         <DialogTitle id="form-dialog-title">Add a new Vehicle</DialogTitle>
-//         <DialogContent>
-//           <TextField
-//             autoFocus
-//             margin="dense"
-//             id="name"
-//             label="Target Plate*"
-//             type="text"
-//             fullWidth
-//             onChange={handleVehiclePlate}
-//           />
-//           <TextField
-//             margin="dense"
-//             id="name"
-//             label="Brand*"
-//             type="text"
-//             fullWidth
-//             onChange={handleBrand}
-//           />
+  const handleDeleteReservation = () => {
+  };
 
-//           <FormLabel component="legend">Type*</FormLabel>
-//           <Select
-//             labelId="demo-simple-select-label"
-//             id="demo-simple-select"
-//             style={{ width: 70 }}
-//             value={type}
-//             onChange={handleType}
-//           >
-//             <MenuItem value={"CAR"}>CAR</MenuItem>
-//             <MenuItem value={"MOTORCYCLE"}>MOTORCYCLE</MenuItem>
-//             <MenuItem value={"AUTOBUS"}>AUTOBUS</MenuItem>
-//             <MenuItem value={"MOTORCARRIAGE"}>MOTORCARRIAGE</MenuItem>
-//             <MenuItem value={"CARTRIDGE"}>CARTRIDGE</MenuItem>
-//             <MenuItem value={"CYCLOMOTOR"}>CYCLOMOTOR</MenuItem>
-//             <MenuItem value={"MACHINE_OPERATOR"}>MACHINE OPERATOR</MenuItem>
-//           </Select>
-//         </DialogContent>
-//         <DialogActions>
-//           <Button onClick={handleAddDialog} color="primary">
-//             Cancel
-//           </Button>
-//           <Button onClick={handleNewVehicle} color="primary">
-//             Add
-//           </Button>
-//         </DialogActions>
-//       </Dialog>
-//     </Fragment>
-//   );
+  // const reservationsList = reservations.map((reservation) => (
+  //   <TableRow key={reservation.id}>
+  //     <TableCell>{reservation.vehiclePlate}</TableCell>
+  //     <TableCell align="right" component="th" scope="row">
+  //       {reservation.parkingSpot}
+  //     </TableCell>
+  //     <TableCell align="right">{reservation.startingTime}</TableCell>
+  //     <TableCell align="right">
+  //       <Button onClick={() => handleDeleteDialog(reservation.endingTime)} >
+  //         <DeleteIcon />
+  //       </Button>
+  //     </TableCell>  
+  //   </TableRow>
+  // ));
+
+  return (
+    <Fragment>
+      <div className={classes.alignItemsAndJustifyContent}>
+        <Table className={classes.table} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell>Vehicle Plate</TableCell>
+              <TableCell align="right">Parking Place</TableCell>
+              <TableCell align="right">Time</TableCell>
+              <TableCell align="right"></TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {console.log(reservations)}
+          </TableBody>
+        </Table>
+      </div>
+      <div className={classes.divButtonAdd}>
+        <Button
+          className={classes.buttonAdd}
+          color="primary"
+          onClick={handleAddDialog}
+        >
+          <AddCircle className={classes.addCircle} style={{ fontSize: 50 }} />
+        </Button>
+      </div>
+
+    </Fragment>
+  );
 }

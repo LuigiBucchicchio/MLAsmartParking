@@ -1,12 +1,12 @@
 package com.spmproject.smartparking.reservation;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Stream;
 
 import com.spmproject.smartparking.driver.Driver;
 import com.spmproject.smartparking.driver.DriverService;
+import com.spmproject.smartparking.parkingPlace.ParkingPlace;
+import com.spmproject.smartparking.parkingPlace.ParkingPlaceService;
 import com.spmproject.smartparking.vehicle.VehiclePayload;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -26,15 +26,17 @@ public class ReservationController {
     private ReservationService reservationService;
     private VehicleService vehicleService;
     private ParkingSpotService parkingSpotService;
+    private ParkingPlaceService parkingPlaceService;
     private DriverService driverService;
 
     @Autowired
     public ReservationController(ReservationService reservationService, VehicleService vehicleService,
-                                 ParkingSpotService parkingSpotService, DriverService driverService) {
+                                 ParkingSpotService parkingSpotService, DriverService driverService,  ParkingPlaceService parkingPlaceService) {
         this.reservationService = reservationService;
         this.parkingSpotService = parkingSpotService;
         this.vehicleService = vehicleService;
         this.driverService = driverService;
+        this.parkingPlaceService = parkingPlaceService;
     }
 
     //@PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -44,46 +46,63 @@ public class ReservationController {
     }
 
     @GetMapping("/driver/all")
-    public List<Reservation> allDriverReservation(Authentication authentication) {
+    public Set<ReservationResponse> allDriverReservation(Authentication authentication) {
         Driver d = driverService.one(authentication.getName());
-        List<Reservation> reservations = new ArrayList<Reservation>();
+        Set<Reservation> reservations = new HashSet<>();
+        ReservationResponse reservationResponse = new ReservationResponse();
+        Set<ReservationResponse> reservationResponseSet = new HashSet<>();
+
         // check driver
         if (d != null) {
             // set of all the vehicles of the auth driver
             Set<Vehicle> vehicles = d.getVehicle_owned();
 
+            Stream<Vehicle> vehicleStream = vehicles.stream();
 
-            for (int i = 0; i < vehicles.size(); i++) {
-                reservations.addAll(reservationService.getAllReservationsOfOneVehicle(vehicles.toArray(new Vehicle[vehicles.size()])[i].getVehiclePlate()));
-            }
+            vehicleStream.forEach((v) -> {
+                reservations.addAll(reservationService.getAllReservationsOfOneVehicle(v.getVehiclePlate()));
+            });
+
+            // element where to store the response to send to the driver
+            Stream<Reservation> reservationStream = reservations.stream();
+
+            reservationStream.forEach((r) ->{
+                // search for the parking place related to parking spot reservation
+                ParkingPlace parkingPlace = parkingPlaceService.one(r.getParkingSpot().getParkingPlaceID());
+
+                reservationResponse.setVehiclePlate(r.getVehicle().getVehiclePlate());
+                reservationResponse.setParkingPlaceName(parkingPlace.getAddress());
+                reservationResponse.setParkingPlaceSpot(r.getParkingSpot().getProgressiveNumber());
+                reservationResponse.setStartingTime(r.getStartingTime());
+                reservationResponse.setEndingTime(r.getEndingTime());
+
+                reservationResponseSet.add(reservationResponse);
+            });
         }
-        return reservations;
+        return reservationResponseSet;
     }
 
 
     //@PreAuthorize("hasRole('ROLE_ADMIN','ROLE_POLICEMAN')")
     @PostMapping("/{parkingPlaceID}/add")
     public Reservation newReservation(@RequestBody ReservationPayload payload, @PathVariable Long parkingPlaceID) {
-        System.out.println("New Reservation ");
-        System.out.println(payload.getVehiclePlate());
-        System.out.println(payload);
-
         List<ParkingSpot> listaMistica = parkingSpotService.getFreeParkingSpotFromPlace(true, parkingPlaceID);
         Collections.shuffle(listaMistica);
         ParkingSpot spottino = listaMistica.get(0);
-        System.out.println("Prima dell'errore ");
-        System.out.println(payload.getVehiclePlate());
+
         Vehicle vehicleReserved = vehicleService.one(payload.getVehiclePlate());
-        System.out.println("Dopo dell'errore ");
 
         Reservation reservation = new Reservation();
-
         reservation.setStartingTime(payload.getStartingTime());
         reservation.setEndingTime(payload.getEndingTime());
         reservation.setVehicle(vehicleReserved);
         reservation.setParkingSpot(spottino);
         spottino.setFree(false);
+
+        System.out.println(reservation);
+        System.out.println(spottino);
         parkingSpotService.addNewParkingSpot(spottino);
+
         return reservationService.addNewReservation(reservation);
     }
 

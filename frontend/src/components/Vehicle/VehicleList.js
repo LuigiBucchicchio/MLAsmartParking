@@ -158,7 +158,6 @@ export default function VehicleList() {
           <DeleteIcon />
         </Button>
       </TableCell>
-      
     </TableRow>
   ));
 
@@ -176,7 +175,6 @@ export default function VehicleList() {
           </TableHead>
           <TableBody>
             {vehiclesList}
-            {/* <TableContainer component={Paper}>{cars}</TableContainer> */}
           </TableBody>
         </Table>
       </div>

@@ -106,12 +106,13 @@ function App() {
           <Route path="/listDrivers">
             <ListDriversComponent />
           </Route>
+          <Route path="/driver/reservations">
+            <ReservationComponent />
+          </Route>
           <Route path="/driver/vehicles">
             <VehicleComponent />
           </Route>
-          <Route path="/driver/reservtions">
-            <ReservationComponent />
-          </Route>
+     
         </Switch>
       </BrowserRouter>
     

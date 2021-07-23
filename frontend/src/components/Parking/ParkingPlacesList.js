@@ -37,6 +37,8 @@ const useStyles = makeStyles({
 });
 
 export default function ParkingPlacesList() {
+  const alert = useAlert();
+  
   const [parkingPlaces, setParkingPlaces] = useState([]);
   const [isReservationOpen, setIsReservationOpen] = useState(false);
   const [vehicles, setVehicles] = useState([]);
@@ -65,8 +67,6 @@ export default function ParkingPlacesList() {
     } else if (key === "vehiclePlate")
       setSelectedVehiclePlate(event.target.value);
   };
-
-  const alert = useAlert();
 
   // get vehicle driver, open or close dialog
   const handleReservtionDialog = (parkingPlaceId) => {
