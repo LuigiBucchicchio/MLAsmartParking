@@ -1,28 +1,10 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import AddCircle from "@material-ui/icons/AddCircle";
-import Button from "@material-ui/core/Button";
-import EditIcon from "@material-ui/icons/Edit";
-import "date-fns";
-import DateFnsUtils from "@date-io/date-fns";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import { duration, FormLabel } from "@material-ui/core";
-import TextField from "@material-ui/core/TextField";
-import MenuItem from "@material-ui/core/MenuItem";
-import Select from "@material-ui/core/Select";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import {
-  MuiPickersUtilsProvider,
-  KeyboardTimePicker,
-  KeyboardDatePicker,
-} from "@material-ui/pickers";
 import { useAlert } from "react-alert";
 
 import { getAllReservationOneDriver } from "./ReservationService";
@@ -71,8 +53,6 @@ export default function ReservationList() {
   const classes = useStyles();
   const alert = useAlert();
 
-  const [isEditOpen, setIsEditOpen] = useState(false);
-  const [editElement, setEditElement] = useState("");
   const [reservations, setReservations] = useState([]);
 
   useEffect(() => {
@@ -86,12 +66,7 @@ export default function ReservationList() {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
-
-  const handleEditDialog = (timeToEdit) => {
-    console.log("Edit dialog");
-    setIsEditOpen(!isEditOpen);
-  };
+  }, [alert]);
 
   const convertStringTimestampToDay = (string) => {
     const t = new Date(string);
@@ -125,7 +100,7 @@ export default function ReservationList() {
   };
 
   const reservationsList = reservations.map((reservation) => (
-    <TableRow key={reservation.id}>
+    <TableRow key={reservation.startingTime}>
       <TableCell>{reservation.vehiclePlate}</TableCell>
       <TableCell align="right" component="th" scope="row">
         {reservation.parkingPlaceAddress}
@@ -145,20 +120,6 @@ export default function ReservationList() {
           reservation.endingTime
         )}
       </TableCell>
-
-      {
-        // check if you are in time to edit the reservation
-        new Date(reservation.endingTime).getTime() - new Date().getTime() >
-        0 ? (
-          <TableCell align="right">
-            <Button onClick={() => handleEditDialog(reservation.endingTime)}>
-              <EditIcon />
-            </Button>
-          </TableCell>
-        ) : (
-          <TableCell />
-        )
-      }
     </TableRow>
   ));
 
@@ -174,7 +135,6 @@ export default function ReservationList() {
               <TableCell align="right">Date</TableCell>
               <TableCell align="right">Time</TableCell>
               <TableCell align="right">Duration</TableCell>
-              <TableCell></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -182,43 +142,6 @@ export default function ReservationList() {
           </TableBody>
         </Table>
       </div>
-
-      <Dialog
-        open={isEditOpen}
-        onClose={handleEditDialog}
-        aria-labelledby="form-dialog-title"
-      >
-        <DialogContent>
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <div>
-              <KeyboardDatePicker
-                disableToolbar
-                variant="inline"
-                format="MM/dd/yyyy"
-                minDate={new Date()}
-                margin="normal"
-                id="date-picker-inline"
-                label="Choose your new ending date"
-                //value={endingTime}
-                //onChange={(date) => handleReservationSelected("time", date)}
-                KeyboardButtonProps={{
-                  "aria-label": "change date",
-                }}
-              />
-            </div>
-            <KeyboardTimePicker
-              margin="normal"
-              id="time-picker"
-              label="Choose your new ending time"
-              //value={endingTime}
-              //onChange={(date) => handleReservationSelected("time", date)}
-              KeyboardButtonProps={{
-                "aria-label": "change time",
-              }}
-            />
-          </MuiPickersUtilsProvider>
-        </DialogContent>
-      </Dialog>
     </Fragment>
   );
 }

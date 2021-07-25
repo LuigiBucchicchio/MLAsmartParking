@@ -122,6 +122,8 @@ export default function ParkingPlacesList() {
         case 4:
           alert.success(`${selectedVehiclePlate} is so happy now!`)
           break;
+        default:
+          alert.success(`${selectedVehiclePlate} reserved!`)
       }
         
       
