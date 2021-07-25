@@ -189,6 +189,7 @@ export default function ParkingPlacesList() {
                   disableToolbar
                   variant="inline"
                   format="MM/dd/yyyy"
+                  minDate={new Date()}
                   margin="normal"
                   id="date-picker-inline"
                   label="Choose your ending date"

@@ -31,7 +31,7 @@ public class ReservationController {
 
     @Autowired
     public ReservationController(ReservationService reservationService, VehicleService vehicleService,
-                                 ParkingSpotService parkingSpotService, DriverService driverService,  ParkingPlaceService parkingPlaceService) {
+                                 ParkingSpotService parkingSpotService, DriverService driverService, ParkingPlaceService parkingPlaceService) {
         this.reservationService = reservationService;
         this.parkingSpotService = parkingSpotService;
         this.vehicleService = vehicleService;
@@ -52,6 +52,7 @@ public class ReservationController {
         ReservationResponse reservationResponse = new ReservationResponse();
         Set<ReservationResponse> reservationResponseSet = new HashSet<>();
 
+        System.out.println("reservation all");
         // check driver
         if (d != null) {
             // set of all the vehicles of the auth driver
@@ -64,26 +65,34 @@ public class ReservationController {
             });
 
             // element where to store the response to send to the driver
-            Stream<Reservation> reservationStream = reservations.stream();
+            Iterator<Reservation> it = reservations.iterator();
+            int count = 0;
 
-            reservationStream.forEach((r) ->{
+            while (it.hasNext()) {
+                Reservation r = it.next();
+
                 // search for the parking place related to parking spot reservation
                 ParkingPlace parkingPlace = parkingPlaceService.one(r.getParkingSpot().getParkingPlaceID());
 
+                reservationResponse = new ReservationResponse();
+
                 reservationResponse.setVehiclePlate(r.getVehicle().getVehiclePlate());
-                reservationResponse.setParkingPlaceName(parkingPlace.getAddress());
-                reservationResponse.setParkingPlaceSpot(r.getParkingSpot().getProgressiveNumber());
+                reservationResponse.setParkingPlaceAddress(parkingPlace.getAddress());
+                reservationResponse.setParkingPlaceSpot(r.getParkingSpot().getId());
                 reservationResponse.setStartingTime(r.getStartingTime());
                 reservationResponse.setEndingTime(r.getEndingTime());
 
+                //boolean result = reservationResponseArray.
+                //reservationResponseArray[count] = reservationResponse;
                 reservationResponseSet.add(reservationResponse);
-            });
+
+                count++;
+
+            }
         }
         return reservationResponseSet;
     }
 
-
-    //@PreAuthorize("hasRole('ROLE_ADMIN','ROLE_POLICEMAN')")
     @PostMapping("/{parkingPlaceID}/add")
     public Reservation newReservation(@RequestBody ReservationPayload payload, @PathVariable Long parkingPlaceID) {
         List<ParkingSpot> listaMistica = parkingSpotService.getFreeParkingSpotFromPlace(true, parkingPlaceID);

@@ -2,12 +2,14 @@ import React, { Fragment, useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import AddCircle from "@material-ui/icons/AddCircle";
 import Button from "@material-ui/core/Button";
-import DeleteIcon from "@material-ui/icons/Delete";
+import EditIcon from "@material-ui/icons/Edit";
+import "date-fns";
+import DateFnsUtils from "@date-io/date-fns";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import { FormLabel } from "@material-ui/core";
+import { duration, FormLabel } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
@@ -16,9 +18,14 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
+import {
+  MuiPickersUtilsProvider,
+  KeyboardTimePicker,
+  KeyboardDatePicker,
+} from "@material-ui/pickers";
 import { useAlert } from "react-alert";
 
-import { getAllReservationOneDriver } from "./ReservationService"
+import { getAllReservationOneDriver } from "./ReservationService";
 
 const useStyles = makeStyles({
   addCircle: {
@@ -64,52 +71,96 @@ export default function ReservationList() {
   const classes = useStyles();
   const alert = useAlert();
 
-  const [isAddOpen, setIsAddOpen] = useState(false);
-  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
-  const [deleteElement, setDeleteElement] = useState("");
-  const [reservations, setReservations] = useState([])
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [editElement, setEditElement] = useState("");
+  const [reservations, setReservations] = useState([]);
 
   useEffect(() => {
     getAllReservationOneDriver()
-    .then(listReservation => {
-      
-      if (listReservation.data === 0){
-        alert.info("Reserve to be in this hall of fame")
-      }
-      setReservations(listReservation.data);
-    }).catch(err => {
-      console.log(err)
-    })
+      .then((listReservation) => {
+        if (listReservation.data.length === 0) {
+          alert.info("Make a reservation to bee");
+        }
+        setReservations(listReservation.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
 
-  const handleAddDialog = () => {
-    setIsAddOpen(!isAddOpen);
+  const handleEditDialog = (timeToEdit) => {
+    console.log("Edit dialog");
+    setIsEditOpen(!isEditOpen);
   };
 
-  const handleDeleteDialog = (deleteReservation) => {
-    console.log("Delete dialog");
-    setDeleteElement(deleteReservation)
-    console.log(deleteReservation)
-    setIsDeleteOpen(!isDeleteOpen);
+  const convertStringTimestampToDay = (string) => {
+    const t = new Date(string);
+    return `${t.toLocaleDateString()}`;
   };
 
-  const handleDeleteReservation = () => {
+  const convertStringTimestampToTime = (string) => {
+    const t = new Date(string);
+    return `${t.getHours()}:${t.getMinutes()}`;
   };
 
-  // const reservationsList = reservations.map((reservation) => (
-  //   <TableRow key={reservation.id}>
-  //     <TableCell>{reservation.vehiclePlate}</TableCell>
-  //     <TableCell align="right" component="th" scope="row">
-  //       {reservation.parkingSpot}
-  //     </TableCell>
-  //     <TableCell align="right">{reservation.startingTime}</TableCell>
-  //     <TableCell align="right">
-  //       <Button onClick={() => handleDeleteDialog(reservation.endingTime)} >
-  //         <DeleteIcon />
-  //       </Button>
-  //     </TableCell>  
-  //   </TableRow>
-  // ));
+  const getReservationDuration = (startingTime, endingTime) => {
+    const sTime = new Date(startingTime);
+    const eTime = new Date(endingTime);
+
+    const durationInMillis = eTime.getTime() - sTime.getTime();
+
+    //Hour 3600000
+    const hours = Math.floor(Math.round(durationInMillis / 3600000));
+    // minute 60000
+    const minutes = Math.floor(
+      Math.round((durationInMillis % 3600000) / 60000)
+    );
+
+    // data to print
+    if (hours === 0) {
+      return `${minutes}m`;
+    } else {
+      return `${hours}h ${minutes}m`;
+    }
+  };
+
+  const reservationsList = reservations.map((reservation) => (
+    <TableRow key={reservation.id}>
+      <TableCell>{reservation.vehiclePlate}</TableCell>
+      <TableCell align="right" component="th" scope="row">
+        {reservation.parkingPlaceAddress}
+      </TableCell>
+      <TableCell align="right" component="th" scope="row">
+        {reservation.parkingPlaceSpot}
+      </TableCell>
+      <TableCell align="right" component="th" scope="row">
+        {convertStringTimestampToDay(reservation.startingTime)}
+      </TableCell>
+      <TableCell align="right">
+        {convertStringTimestampToTime(reservation.startingTime)}
+      </TableCell>
+      <TableCell align="right">
+        {getReservationDuration(
+          reservation.startingTime,
+          reservation.endingTime
+        )}
+      </TableCell>
+
+      {
+        // check if you are in time to edit the reservation
+        new Date(reservation.endingTime).getTime() - new Date().getTime() >
+        0 ? (
+          <TableCell align="right">
+            <Button onClick={() => handleEditDialog(reservation.endingTime)}>
+              <EditIcon />
+            </Button>
+          </TableCell>
+        ) : (
+          <TableCell />
+        )
+      }
+    </TableRow>
+  ));
 
   return (
     <Fragment>
@@ -118,26 +169,56 @@ export default function ReservationList() {
           <TableHead>
             <TableRow>
               <TableCell>Vehicle Plate</TableCell>
-              <TableCell align="right">Parking Place</TableCell>
+              <TableCell align="right">Parking Place Address</TableCell>
+              <TableCell align="right">Parking Spot</TableCell>
+              <TableCell align="right">Date</TableCell>
               <TableCell align="right">Time</TableCell>
-              <TableCell align="right"></TableCell>
+              <TableCell align="right">Duration</TableCell>
+              <TableCell></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {console.log(reservations)}
+            {reservations.length > 0 ? reservationsList : null}
           </TableBody>
         </Table>
       </div>
-      <div className={classes.divButtonAdd}>
-        <Button
-          className={classes.buttonAdd}
-          color="primary"
-          onClick={handleAddDialog}
-        >
-          <AddCircle className={classes.addCircle} style={{ fontSize: 50 }} />
-        </Button>
-      </div>
 
+      <Dialog
+        open={isEditOpen}
+        onClose={handleEditDialog}
+        aria-labelledby="form-dialog-title"
+      >
+        <DialogContent>
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <div>
+              <KeyboardDatePicker
+                disableToolbar
+                variant="inline"
+                format="MM/dd/yyyy"
+                minDate={new Date()}
+                margin="normal"
+                id="date-picker-inline"
+                label="Choose your new ending date"
+                //value={endingTime}
+                //onChange={(date) => handleReservationSelected("time", date)}
+                KeyboardButtonProps={{
+                  "aria-label": "change date",
+                }}
+              />
+            </div>
+            <KeyboardTimePicker
+              margin="normal"
+              id="time-picker"
+              label="Choose your new ending time"
+              //value={endingTime}
+              //onChange={(date) => handleReservationSelected("time", date)}
+              KeyboardButtonProps={{
+                "aria-label": "change time",
+              }}
+            />
+          </MuiPickersUtilsProvider>
+        </DialogContent>
+      </Dialog>
     </Fragment>
   );
 }

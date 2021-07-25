@@ -18,7 +18,11 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import { useAlert } from "react-alert";
 
-import { addNewDriverVehicle, deleteDriverVehicle, getAllDriverVehicle } from "./VehicleService";
+import {
+  addNewDriverVehicle,
+  deleteDriverVehicle,
+  getAllDriverVehicle,
+} from "./VehicleService";
 
 const useStyles = makeStyles({
   addCircle: {
@@ -78,9 +82,7 @@ export default function VehicleList() {
   };
 
   const handleDeleteDialog = (deleteVehicle) => {
-    console.log("Delete dialog");
-    setDeleteElement(deleteVehicle)
-    console.log(deleteVehicle)
+    setDeleteElement(deleteVehicle);
     setIsDeleteOpen(!isDeleteOpen);
   };
 
@@ -97,7 +99,6 @@ export default function VehicleList() {
         .then(() => {
           getAllDriverVehicle()
             .then((response) => {
-              console.log(response.data);
               setVehicles(response.data);
             })
             .catch((err) => {
@@ -113,19 +114,20 @@ export default function VehicleList() {
   const handleDeleteVehicle = () => {
     deleteDriverVehicle({
       vehiclePlate: deleteElement,
-    }).then(() => {
-      setIsDeleteOpen(false)
-      getAllDriverVehicle()
-      .then((response) => {
-        console.log(response.data);
-        setVehicles(response.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    }).catch(() => {
-      setIsDeleteOpen(false)
     })
+      .then(() => {
+        setIsDeleteOpen(false);
+        getAllDriverVehicle()
+          .then((response) => {
+            setVehicles(response.data);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      })
+      .catch(() => {
+        setIsDeleteOpen(false);
+      });
   };
 
   const handleType = (event) => {
@@ -154,7 +156,7 @@ export default function VehicleList() {
       </TableCell>
       <TableCell align="right">{vehicle.type}</TableCell>
       <TableCell align="right">
-        <Button onClick={() => handleDeleteDialog(vehicle.vehiclePlate)} >
+        <Button onClick={() => handleDeleteDialog(vehicle.vehiclePlate)}>
           <DeleteIcon />
         </Button>
       </TableCell>
@@ -173,9 +175,7 @@ export default function VehicleList() {
               <TableCell align="right"></TableCell>
             </TableRow>
           </TableHead>
-          <TableBody>
-            {vehiclesList}
-          </TableBody>
+          <TableBody>{vehiclesList}</TableBody>
         </Table>
       </div>
       <div className={classes.divButtonAdd}>
@@ -196,12 +196,12 @@ export default function VehicleList() {
         <DialogTitle>Are you sure you want to delete this?</DialogTitle>
         <DialogContent>
           <DialogActions>
-          <Button onClick={handleDeleteDialog} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={handleDeleteVehicle} color="primary">
-            Yes
-          </Button>
+            <Button onClick={handleDeleteDialog} color="primary">
+              Cancel
+            </Button>
+            <Button onClick={handleDeleteVehicle} color="primary">
+              Yes
+            </Button>
           </DialogActions>
         </DialogContent>
       </Dialog>

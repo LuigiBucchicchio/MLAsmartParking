@@ -15,6 +15,6 @@ public class ReservationResponse {
     private String vehiclePlate;
     private Timestamp startingTime;
     private Timestamp endingTime;
-    private String parkingPlaceName;
+    private String parkingPlaceAddress;
     private long parkingPlaceSpot;
 }
