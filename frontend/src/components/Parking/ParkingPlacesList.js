@@ -1,6 +1,7 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { FormLabel } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import "date-fns";
 import DateFnsUtils from "@date-io/date-fns";
@@ -38,19 +39,17 @@ const useStyles = makeStyles({
 
 export default function ParkingPlacesList() {
   const alert = useAlert();
-  
+
   const [parkingPlaces, setParkingPlaces] = useState([]);
   const [isReservationOpen, setIsReservationOpen] = useState(false);
   const [vehicles, setVehicles] = useState([]);
   const [selectedParkingPlace, setSelectedParkingPlace] = useState("");
   const [selectedVehiclePlate, setSelectedVehiclePlate] = useState("");
-  const [endingTime, setEndingTime] = React.useState(new Date());
+  const [endingTime, setEndingTime] = useState({});
 
   useEffect(() => {
     ParkingService.getParkingPlaces().then((response) => {
       setParkingPlaces(response.data);
-      // minimum parking time
-      setEndingTime(endingTime.setMinutes(endingTime.getMinutes() + 10));
     });
   }, []);
 
@@ -75,9 +74,10 @@ export default function ParkingPlacesList() {
 
       getAllDriverVehicle()
         .then((v) => {
-          console.log(v);
           if (v.data.length > 0) {
             setVehicles(v.data);
+            // minimum parking time is 10 minutes
+            setEndingTime(new Date().setMinutes(new Date().getMinutes() + 10));
             setIsReservationOpen(!isReservationOpen);
           } else alert.show("You need to add a vehicle");
         })
@@ -94,39 +94,39 @@ export default function ParkingPlacesList() {
     var startingTime = new Date();
     // check if the date and time are valid
 
-    if (endingTime <= startingTime)
-      alert.error("Select a valid time")
-    else if (endingTime> startingTime) {
+    if (endingTime <= startingTime) alert.error("Select a valid time");
+    else if (endingTime > startingTime) {
       const data = {
         parkingPlaceId: selectedParkingPlace,
         vehiclePlate: selectedVehiclePlate,
         startingTime: startingTime,
         endingTime: endingTime,
       };
-      reserveParkingSpot(data);
-      handleReservtionDialog()
+      reserveParkingSpot(data).then(() => {
+        handleReservtionDialog();
+        ParkingService.getParkingPlaces().then((response) => {
+          setParkingPlaces(response.data);
+        });
+        //  create a random success sentence
+        const rand = Math.floor(Math.random() * 4) + 1;
 
-      //  create a random success sentence
-      const rand = Math.floor(Math.random() * 4) + 1 ;
-      
-      switch(rand){
-        case 1:
-          alert.success("You have a special place now")
-          break;
-        case 2:
-          alert.success("We were only waiting for you!")
-          break;
-        case 3:
-          alert.success("Park here your car and your bad feelings")
-          break;
-        case 4:
-          alert.success(`${selectedVehiclePlate} is so happy now!`)
-          break;
-        default:
-          alert.success(`${selectedVehiclePlate} reserved!`)
-      }
-        
-      
+        switch (rand) {
+          case 1:
+            alert.success("You have a special place now");
+            break;
+          case 2:
+            alert.success("We were only waiting for you!");
+            break;
+          case 3:
+            alert.success("Park here your car and your bad feelings");
+            break;
+          case 4:
+            alert.success(`${selectedVehiclePlate} is so happy now!`);
+            break;
+          default:
+            alert.success(`${selectedVehiclePlate} reserved!`);
+        }
+      });
     }
   };
 
@@ -134,92 +134,96 @@ export default function ParkingPlacesList() {
 
   return (
     <Fragment>
-      <TableContainer component={Paper}>
-        <Table className={classes.table} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell>ParkingPlace address</TableCell>
-              <TableCell align="right">Free Spots</TableCell>
-              <TableCell align="right">Book it?</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {parkingPlaces.map((parkingPlace) => (
-              <TableRow key={parkingPlace.parkingPlaceID}>
-                <TableCell>{parkingPlace.address}</TableCell>
-                <TableCell align="right" component="th" scope="row">
-                  {parkingPlace.spotsNumber}
-                </TableCell>
-                <TableCell align="right">
-                  <IconButton
-                    onClick={() =>
-                      handleReservtionDialog(parkingPlace.parkingPlaceID)
-                    }
-                    color="primary"
-                    aria-label="upload picture"
-                    component="span"
-                  >
-                    <ReservationIcon />
-                  </IconButton>
-                </TableCell>
+      <Box m="2rem">
+        <TableContainer component={Paper}>
+          <Table className={classes.table} aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell>Address</TableCell>
+                <TableCell align="right">Free Spots</TableCell>
+                <TableCell align="right">Book it?</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <Dialog
-        open={isReservationOpen}
-        onClose={handleReservtionDialog}
-        aria-labelledby="form-dialog-title"
-      >
-        <DialogTitle id="form-dialog-title">Book your spot</DialogTitle>
-        <DialogContent>
-          <FormLabel component="legend">Vehicle</FormLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            style={{ width: 200 }}
-            value={selectedVehiclePlate}
-            onChange={(e) => handleReservationSelected("vehiclePlate", e)}
-          >
-            {listVehicles}
-          </Select>
-          <div>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <div>
-                <KeyboardDatePicker
-                  disableToolbar
-                  variant="inline"
-                  format="MM/dd/yyyy"
-                  minDate={new Date()}
+            </TableHead>
+            <TableBody>
+              {parkingPlaces.map((parkingPlace) => (
+                <TableRow key={parkingPlace.id}>
+                  <TableCell>{parkingPlace.address}</TableCell>
+                  <TableCell align="right" component="th" scope="row">
+                    {parkingPlace.freeParkingSpots}
+                  </TableCell>
+                  <TableCell align="right">
+                    <IconButton
+                      onClick={() => handleReservtionDialog(parkingPlace.id)}
+                      color="primary"
+                      aria-label="upload picture"
+                      component="span"
+                    >
+                      <ReservationIcon />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <Dialog
+          open={isReservationOpen}
+          onClose={handleReservtionDialog}
+          aria-labelledby="form-dialog-title"
+        >
+          <DialogTitle id="form-dialog-title">Book your spot</DialogTitle>
+          <DialogContent>
+            <FormLabel component="legend">Vehicle</FormLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              style={{ width: 200 }}
+              value={selectedVehiclePlate}
+              onChange={(e) => handleReservationSelected("vehiclePlate", e)}
+            >
+              {listVehicles}
+            </Select>
+            <div>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <div>
+                  <KeyboardDatePicker
+                    disableToolbar
+                    variant="inline"
+                    format="MM/dd/yyyy"
+                    minDate={new Date()}
+                    margin="normal"
+                    id="date-picker-inline"
+                    label="Choose your ending date"
+                    value={endingTime}
+                    onChange={(date) => handleReservationSelected("time", date)}
+                    KeyboardButtonProps={{
+                      "aria-label": "change date",
+                    }}
+                  />
+                </div>
+                <KeyboardTimePicker
                   margin="normal"
-                  id="date-picker-inline"
-                  label="Choose your ending date"
+                  id="time-picker"
+                  label="Choose your ending time (min 10 minutes)"
                   value={endingTime}
                   onChange={(date) => handleReservationSelected("time", date)}
                   KeyboardButtonProps={{
-                    "aria-label": "change date",
+                    "aria-label": "change time",
                   }}
                 />
-              </div>
-              <KeyboardTimePicker
-                margin="normal"
-                id="time-picker"
-                label="Choose your ending time (min 10 minutes)"
-                value={endingTime}
-                onChange={(date) => handleReservationSelected("time", date)}
-                KeyboardButtonProps={{
-                  "aria-label": "change time",
-                }}
-              />
-            </MuiPickersUtilsProvider>
-          </div>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleReservationCall}>Confirm</Button>
-          <Button onClick={handleReservtionDialog}>Cancel</Button>
-        </DialogActions>
-      </Dialog>
+              </MuiPickersUtilsProvider>
+            </div>
+          </DialogContent>
+          <DialogActions>
+            <Button color="secondary" onClick={handleReservtionDialog}>
+              Cancel
+            </Button>
+            <Button color="primary" onClick={handleReservationCall}>
+              Confirm
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </Box>
     </Fragment>
   );
 }

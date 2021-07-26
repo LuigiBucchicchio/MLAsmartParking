@@ -1,10 +1,15 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
+import {
+  Box,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from "@material-ui/core";
 import { useAlert } from "react-alert";
 
 import { getAllReservationOneDriver } from "./ReservationService";
@@ -125,23 +130,25 @@ export default function ReservationList() {
 
   return (
     <Fragment>
-      <div className={classes.alignItemsAndJustifyContent}>
-        <Table className={classes.table} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell>Vehicle Plate</TableCell>
-              <TableCell align="right">Parking Place Address</TableCell>
-              <TableCell align="right">Parking Spot</TableCell>
-              <TableCell align="right">Date</TableCell>
-              <TableCell align="right">Time</TableCell>
-              <TableCell align="right">Duration</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {reservations.length > 0 ? reservationsList : null}
-          </TableBody>
-        </Table>
-      </div>
+      <Box m="2rem">
+        <TableContainer component={Paper}>
+          <Table className={classes.table} aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell>Vehicle Plate</TableCell>
+                <TableCell align="right">Parking Place Address</TableCell>
+                <TableCell align="right">Parking Spot</TableCell>
+                <TableCell align="right">Date</TableCell>
+                <TableCell align="right">Time</TableCell>
+                <TableCell align="right">Duration</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {reservations.length > 0 ? reservationsList : null}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Box>
     </Fragment>
   );
 }

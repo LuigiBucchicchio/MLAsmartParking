@@ -71,6 +71,13 @@ public class DriverController {
 		return driverService.one(authentication.getName());
 	}
 
+	@PutMapping("/")
+    public Driver putProfile(Authentication authentication) {
+        Driver d = driverService.one(authentication.getName());
+
+        return driverService.update(d);
+    }
+
 	@GetMapping("vehicle/all")
 	public Set<Vehicle> allDriverVehicle(Authentication authentication) {
 		Driver d = driverService.one(authentication.getName());

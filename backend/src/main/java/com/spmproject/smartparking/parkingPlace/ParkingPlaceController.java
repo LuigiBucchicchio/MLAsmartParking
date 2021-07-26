@@ -26,7 +26,9 @@ import com.spmproject.smartparking.parkingspot.ParkingSpotService;
 import com.spmproject.smartparking.reservation.Reservation;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
@@ -49,9 +51,38 @@ public class ParkingPlaceController {
 
     //@PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/all")
-    @ResponseBody
     public List<ParkingPlace> getAllParkingPlaces() {
         return parkingPlaceService.getAllParkingPlaces();
+    }
+
+    @GetMapping("/allFree")
+    public Set<ParkingPlaceResponse> getAllParkingPlacesFreeSpots() {
+        List<ParkingPlace> parkingPlace = parkingPlaceService.getAllParkingPlaces();
+        Set<ParkingPlaceResponse> parkingPlaceResponseSet = new HashSet<>();
+        ParkingPlaceResponse parkingPlaceResponse;
+
+        System.out.println("richiesta da verificare");
+        Iterator<ParkingPlace> iterator = parkingPlace.iterator();
+
+        while (iterator.hasNext())
+        {
+            ParkingPlace p = iterator.next();
+
+            parkingPlaceResponse = new ParkingPlaceResponse();
+
+            List<ParkingSpot> parkingSpot = parkingSpotService.getFreeParkingSpotFromPlace(true, p.getParkingPlaceID());
+
+            parkingPlaceResponse.setFreeParkingSpots(parkingSpot.size());
+            System.out.println("I posti liberi ");
+            System.out.println(parkingSpot.size());
+            System.out.println(parkingSpot);
+            parkingPlaceResponse.setAddress(p.getAddress());
+            parkingPlaceResponse.setId(p.getParkingPlaceID());
+
+            parkingPlaceResponseSet.add(parkingPlaceResponse);
+        }
+
+        return parkingPlaceResponseSet;
     }
 
     //@PreAuthorize("hasAuthority('parkingPlace:write')")

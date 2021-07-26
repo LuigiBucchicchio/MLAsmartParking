@@ -8,8 +8,7 @@ import AddParkingPlaceComponent from "./components/Parking/AddParkingPlaceCompon
 import AdminComponent from "./components/Admin/AdminComponent";
 import AssignPolicemanComponent from "./components/Policeman/AssignPolicemanComponent";
 import Auth from "./components/Auth/Auth";
-import DriverComponent from "./components/Driver/DriverComponent";
-import DriverProfileComponent from "./components/Driver/DriverProfileComponent";
+import DriverProfile from "./components/Driver/DriverProfile";
 import HomeComponent from "./components/Home/HomeComponent";
 import HeaderDriver from "./components/Layout/HeaderDriver";
 import Header from "./components/Layout/Header";
@@ -71,7 +70,7 @@ function App() {
             <MunicipalityComponent />
           </Route>
           <Route exact path="/driver">
-            <DriverComponent />
+            <DriverProfile />
           </Route>
           <Route exact path="/policeman">
             <PolicemanComponent />
@@ -87,9 +86,6 @@ function App() {
           </Route>
           <Route path="/addParkingPlace">
             <AddParkingPlaceComponent />
-          </Route>
-          <Route path="/driverProfile">
-            <DriverProfileComponent />
           </Route>
           <Route path="/assignPoliceman">
             <AssignPolicemanComponent />

@@ -1,5 +1,5 @@
 import React from 'react';
-import DriverService from './DriverService';
+import { getDrivers } from './DriverService';
 
 class ListDriversComponent extends React.Component {
 
@@ -11,7 +11,7 @@ class ListDriversComponent extends React.Component {
     }
 
     componentDidMount() {
-        DriverService.getDrivers().then((response) => {
+        getDrivers().then((response) => {
             this.setState({ drivers : response.data})
         }); 
       }
