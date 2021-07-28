@@ -26,6 +26,7 @@ public class DriverController {
 
     @Autowired
     protected AuthenticationManager authenticationManager;
+    BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     private DriverService driverService;
 
@@ -66,22 +67,50 @@ public class DriverController {
         return driverService.one(id);
     }
 
-	@GetMapping("/")
-	public Driver getProfile(Authentication authentication) {
-		return driverService.one(authentication.getName());
-	}
-
-	@PutMapping("/")
-    public Driver putProfile(Authentication authentication) {
-        Driver d = driverService.one(authentication.getName());
-
-        return driverService.update(d);
+    @GetMapping("/")
+    public ResponseEntity<Driver> getProfile(Authentication authentication) {
+        if (authentication != null) {
+            Driver d = driverService.one(authentication.getName());
+            if (!d.getName().isEmpty()) {
+                System.out.println("Driver get");
+                return new ResponseEntity<>(d, HttpStatus.OK);
+            }
+        }
+        return new ResponseEntity(HttpStatus.CONFLICT);
     }
 
-	@GetMapping("vehicle/all")
-	public Set<Vehicle> allDriverVehicle(Authentication authentication) {
-		Driver d = driverService.one(authentication.getName());
-		Set<Vehicle> allDriverVehicle = d.getVehicle_owned();
-		return allDriverVehicle;
-	}
+    @RequestMapping(value = "/update", method = RequestMethod.PUT)
+    public ResponseEntity<Driver> putProfile(@RequestBody DriverPayload payload, Authentication authentication) {
+        if (authentication != null) {
+            Driver driver = driverService.one(authentication.getName());
+            System.out.println("ECCOSISII");
+            if (!driver.getName().isEmpty()) {
+                System.out.println("SI c");
+                driver.setUsername(driver.getUsername());
+                driver.setEmail(payload.getEmail());
+                driver.setName(payload.getName());
+                driver.setSurname(payload.getSurname());
+                driver.setPhoneNumber(payload.getPhoneNumber());
+
+                // check if password was changed
+                if (driver.getPassword() != payload.getPassword()) {
+                    driver.setPassword(passwordEncoder.encode(payload.getPassword()));
+                }
+                else {
+                    driver.setPassword(driver.getPassword());
+                }
+                System.out.println(driver);
+                return new ResponseEntity<>(driverService.update(driver), HttpStatus.OK);
+            }
+
+        }
+        return new ResponseEntity(HttpStatus.CONFLICT);
+    }
+
+    @GetMapping("vehicle/all")
+    public Set<Vehicle> allDriverVehicle(Authentication authentication) {
+        Driver d = driverService.one(authentication.getName());
+        Set<Vehicle> allDriverVehicle = d.getVehicle_owned();
+        return allDriverVehicle;
+    }
 }

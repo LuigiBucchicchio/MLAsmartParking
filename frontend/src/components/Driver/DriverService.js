@@ -1,15 +1,27 @@
 import axios from "axios";
-const DRIVER_GET_PROFILE_URL = "http://localhost:8080/driver/";
-const DRIVER_GET_ALL_URL = "http://localhost:8080/driver/all";
 
 const config = {
   headers: { Authorization: "Bearer " + localStorage.getItem("token") },
 };
 
 export const getDrivers = () => {
-  return axios.get(DRIVER_GET_ALL_URL, config);
+  return axios.get(process.env.REACT_APP_DRIVER_GET_ALL_URL, config);
 };
 
 export const getProfile = () => {
-  return axios.get(DRIVER_GET_PROFILE_URL, config);
+  console.log(process.env.REACT_APP_DRIVER_PROFILE_URL)
+  return axios.get(process.env.REACT_APP_DRIVER_PROFILE_URL, config);
+};
+
+
+export const updateProfile = (data) => {
+  const json = {
+    email: data.email,
+    username: data.username,
+    password: data.password,
+    name: data.name,
+    surname: data.surname,
+    phoneNumber: data.phoneNumber,
+  };
+  return axios.put(process.env.REACT_APP_DRIVER_UPDATE_PROFILE_URL, json, config);
 };

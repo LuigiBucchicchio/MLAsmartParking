@@ -256,10 +256,10 @@ export default function VehicleList() {
             </Select>
           </DialogContent>
           <DialogActions>
-            <Button color="secondary" onClick={handleAddDialog} color="primary">
+            <Button color="secondary" onClick={handleAddDialog}>
               Cancel
             </Button>
-            <Button color="primary" onClick={handleNewVehicle} color="primary">
+            <Button color="primary" onClick={handleNewVehicle}>
               Add
             </Button>
           </DialogActions>
