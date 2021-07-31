@@ -5,6 +5,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import ParkingPlacesList from "../Parking/ParkingPlacesList.js";
 import Map from "../Layout/Map.js";
 import "./Home.css";
+import MunicipalityComponent from "../Municipality/MunicipalityComponent.js";
+import PolicemanComponent from "../Policeman/PolicemanComponent.js";
 
 const useStyles = makeStyles((theme) => ({
   paddingTD: {
@@ -15,18 +17,30 @@ const useStyles = makeStyles((theme) => ({
 const HomeComponent = (props) => {
   const classes = useStyles();
 
-  function role() {
+  const role = () => {
     if (props.role === process.env.REACT_APP_ROLE_DRIVER) {
-      return <ParkingPlacesList />;
+      return (
+        <Fragment>
+        <Map />
+        <div>
+        <h1 className={clsx(classes.paddingTD)}>Where do you want to go?</h1>
+      </div>
+      <ParkingPlacesList />
+      </Fragment>
+      );
+    }else if(props.role === process.env.REACT_APP_ROLE_MUNICIPALITY){
+      return(
+        <MunicipalityComponent />
+      );
+    }else if(props.role === process.env.REACT_APP_ROLE_POLICEMAN){
+      return(
+        <PolicemanComponent />
+      );
     }
-  }
+  };
 
   return (
     <Fragment>
-      <Map />
-      <div>
-        <h1 className={clsx(classes.paddingTD)}>Where do you want to go?</h1>
-      </div>
       {role()}
     </Fragment>
   );

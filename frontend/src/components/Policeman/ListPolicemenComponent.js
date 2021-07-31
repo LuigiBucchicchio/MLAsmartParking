@@ -15,7 +15,7 @@ class ListPolicemenComponent extends React.Component {
       componentDidMount() {
         PolicemanService.getPolicemenOfAMunicipality().then((response) => {
             this.setState({ policemen : response.data})
-        }); 
+        }).catch(err => (console.log(err))); 
       }
 
     render() {

@@ -55,7 +55,7 @@ function App() {
   }
   else 
   {
-    RoleHeader = Header
+    RoleHeader = Header;
   }
   return (
     

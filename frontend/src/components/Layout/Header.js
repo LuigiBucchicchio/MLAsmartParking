@@ -20,7 +20,7 @@ const Header = (props) => {
           <Row>
             {roleUser}
             <Nav fill className="ml-auto">
-              <Col sm={5}>
+              <Col sm={10}>
                 <Nav.Item>
                   <Nav.Link as={Link} to="/">
                     {" "}
@@ -35,36 +35,7 @@ const Header = (props) => {
                   </Nav.Link>
                 </Nav.Item>
               </Col>
-              <Col sm={4}>
-                <Nav.Item>
-                  <NavDropdown title="Select view" id="collasible-nav-dropdown">
-                    <NavDropdown.Item as={Link} to="/policeman">
-                      Policeman
-                    </NavDropdown.Item>
-                    <NavDropdown.Item as={Link} to="/driver">
-                      Driver
-                    </NavDropdown.Item>
-                    <NavDropdown.Item as={Link} to="/municipality">
-                      Municipality
-                    </NavDropdown.Item>
-                  </NavDropdown>
-                </Nav.Item>
-              </Col>
-              <Col sm={4}>
-                <Nav.Item>
-                  <Nav.Link as={Link} to="/admin">
-                    Admin Page
-                  </Nav.Link>
-                </Nav.Item>
-              </Col>
-              <Col sm={4}>
-                <Nav.Item>
-                  <Nav.Link as={Link} to="/profile">
-                    Profile Page
-                  </Nav.Link>
-                </Nav.Item>
-              </Col>
-              <Col sm={4}>
+              <Col sm={10}>
                 <Nav.Item onClick={props.logout} className={classes.logout_btn}>
                 <Nav.Link >
                     Logout

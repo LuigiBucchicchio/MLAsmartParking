@@ -30,6 +30,7 @@ import {
 import ParkingService from "./ParkingService";
 import { getAllDriverVehicle } from "../Vehicle/VehicleService";
 import { reserveParkingSpot } from "../Reservation/ReservationService";
+import Map from "../Layout/Map";
 
 const useStyles = makeStyles({
   table: {

@@ -34,6 +34,7 @@ public class Policeman extends User {
     Policeman(String name, String surname, String email, String username, String password, String phoneNumber) {
         super(name, email, username, password, phoneNumber, ApplicationUserRole.POLICEMAN);
         this.surname = surname;
+        this.setRole(ApplicationUserRole.POLICEMAN);
     }
 
 }
