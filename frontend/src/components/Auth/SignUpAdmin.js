@@ -15,8 +15,6 @@ const SignUpAdmin = (props) => {
   //state of role
   const [role, setRole] = useState();
 
-  const BASE_URL = "http://localhost:8080";
-
   const alert = useAlert();
 
   const handleRole = (e) => {
