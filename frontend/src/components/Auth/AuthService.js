@@ -36,10 +36,6 @@ export const signUp = (role, data) => {
 };
 
 export const signIn = (data) => {
-  console.log("login")
-  console.log(data)
-  console.log(data.email)
-  console.log(data.password)
   return axios.post(`${process.env.REACT_APP_API_URL}/login`, {
     username: data.email,
     password: data.password,

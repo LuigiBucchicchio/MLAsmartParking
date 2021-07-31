@@ -138,7 +138,6 @@ public class MunicipalityConfig {
                 basso.setPhoneNumber("00992478787");
                 basso.setPassword(passwordEncoder.encode("bassocaruso"));
 
-
                 policemanRepository.save(basso);
 
             }

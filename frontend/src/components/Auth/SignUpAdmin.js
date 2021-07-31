@@ -31,28 +31,28 @@ const SignUpAdmin = (props) => {
   };
 
   const onSubmit = async (data) => {
-    if(role != "hide") {
-      console.log(data)
-    signUp(role, data)
-      .then((user) => {
-        console.log(user)
-        signIn(user.data)
-          .then((user) => {
-            setToken(user.data.token);
-            props.tkn(true, user.data.role);
-          })
-          .catch((err) => {
-            console.log("login error");
-            console.log(err);
-          });
-      })
-      .catch((err) => {
-        if (err.response.status === 409)
-        alert.error("Error during registration");
-      });
+    if (role != "hide") {
+      console.log(data);
+      signUp(role, data)
+        .then((user) => {
+          console.log(user);
+          signIn(user.data)
+            .then((user) => {
+              setToken(user.data.token);
+              props.tkn(true, user.data.role);
+            })
+            .catch((err) => {
+              console.log("login error");
+              console.log(err);
+            });
+        })
+        .catch((err) => {
+          if (err.response.status === 409)
+            alert.error("Error during registration");
+        });
+    } else {
+      alert.error("Select a role");
     }
-    else 
-    alert.error("Select a role")
   };
 
   return (
