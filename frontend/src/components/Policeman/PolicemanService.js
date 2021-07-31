@@ -15,31 +15,31 @@ const config = {
 
 class PolicemanService {
 
-    getPolicemanProfile(){
-        return  axios.get(POLICEMAN_GET_ME_URL,config)
+    async getPolicemanProfile(){
+        return await axios.get(POLICEMAN_GET_ME_URL,config)
 
     }
 
-    getPolicemen(){
-        return  axios.get(POLICEMEN_GET_ALL_URL,config)
+    async getPolicemen(){
+        return await axios.get(POLICEMEN_GET_ALL_URL,config)
      }
 
-     getPolicemenOfAMunicipality(){
-        return  axios.get(POLICEMEN_GET_ALL_MUNICIPALITY_URL,config)
+     async getPolicemenOfAMunicipality(){
+        return await axios.get(POLICEMEN_GET_ALL_MUNICIPALITY_URL,config)
      }
 
-     assignPoliceman(policemanName, spotAddress){
+     async assignPoliceman(policemanName, spotAddress){
         const json = { "policemanName": policemanName,
         "parkingAddress": spotAddress }
  
         console.log(json);
-        return axios.post(POLICEMAN_ASSIGN_URL, json,config)
+        return await axios.post(POLICEMAN_ASSIGN_URL, json,config)
     }
 
-    unassignPoliceman(policemanName){
+    async unassignPoliceman(policemanName){
         const json = { "policemanName": policemanName }
         console.log(json);
-        return axios.post(POLICEMAN_UNASSIGN_URL, json, config)
+        return await axios.post(POLICEMAN_UNASSIGN_URL, json, config)
     }
 
 }

@@ -11,27 +11,27 @@ const config = {
 };
 
 class ParkingService {
-  getParkingPlaces() {
-    return axios.get(PARKINGPLACES_GET_ALL_URL, config);
+  async getParkingPlaces() {
+    return await axios.get(PARKINGPLACES_GET_ALL_URL, config);
   }
 
-  getParkingPlacesOfAMunicipality() {
-    return axios.get(PARKINGPLACES_GET_ALL_MUNICIPALITY_URL, config);
+  async getParkingPlacesOfAMunicipality() {
+    return await axios.get(PARKINGPLACES_GET_ALL_MUNICIPALITY_URL, config);
   }
 
-  parkingPlaceModification(parkingPlaceID, spotsNumber, address) {
+  async parkingPlaceModification(parkingPlaceID, spotsNumber, address) {
     const json = {
       parkingPlaceID: parkingPlaceID,
       spotsNumber: spotsNumber,
       address: address,
     };
-    return axios.post(PARKINGPLACES_MODIFICATION, json, config);
+    return await axios.post(PARKINGPLACES_MODIFICATION, json, config);
   }
 
-  newParkingPlace(spotsNumber, address) {
+  async newParkingPlace(spotsNumber, address) {
     const json = { spotsNumber: spotsNumber, address: address };
 
-    return axios.post(PARKINGPLACES_POST_ONE_URL, json, config);
+    return await axios.post(PARKINGPLACES_POST_ONE_URL, json, config);
   }
 }
 
