@@ -1,5 +1,4 @@
 import { useForm } from "react-hook-form";
-import axios from "axios";
 import { useAlert } from "react-alert";
 
 import classes from "./Login.module.css";
@@ -8,12 +7,10 @@ import { signIn } from "./AuthService";
 const SignIn = (props) => {
   const { register, handleSubmit } = useForm();
 
-  const BASE_URL = "http://localhost:8080";
-
   const alert = useAlert();
 
-  const onSubmit = (data) => {
-    signIn(data)
+  const onSubmit = async (data) => {
+    await signIn(data)
       .then((user) => {
         props.tkn(user.data.token, user.data.role);
       })
