@@ -32,20 +32,29 @@ public class MunicipalityController {
 
     //@PreAuthorize("hasAuthority('municipality:write')")
     @PostMapping("/add")
-    public ResponseEntity registerNewMunicipality(@RequestBody MunicipalityPayload payload) {
-        if (!municipalityService.existingMunicipality(payload.getEmail())) {
-            Municipality m = new Municipality();
-            m.setPolicemenList(new HashSet<Policeman>());
-            m.setName(payload.getName());
-            m.setUsername(payload.getUsername());
-            m.setEmail(payload.getEmail());
-            m.setPhoneNumber(payload.getPhoneNumber());
-            m.setPassword(payload.getPassword());
+    public ResponseEntity<Municipality> registerNewMunicipality(@RequestBody MunicipalityPayload payload) {
+        System.out.println("register new muni");
+        if (payload.getPassword() != null && payload.getEmail() != null && payload.getName() != null && payload.getPhoneNumber() != null && payload.getUsername() != null) {
+            if (!payload.getPhoneNumber().isEmpty() || !payload.getName().isEmpty() || !payload.getEmail().isEmpty() || !payload.getPassword().isEmpty()) {
+                System.out.println(payload);
+                if (!municipalityService.existingMunicipality(payload.getEmail())) {
+                    System.out.println("Dentro al salvataggio");
+                    Municipality m = new Municipality();
+                    m.setPolicemenList(new HashSet<Policeman>());
+                    m.setName(payload.getName());
+                    m.setUsername(payload.getUsername());
+                    m.setEmail(payload.getEmail());
+                    m.setPhoneNumber(payload.getPhoneNumber());
+                    m.setPassword(payload.getPassword());
 
-            municipalityService.addNewMunicipality(m);
-            return new ResponseEntity(HttpStatus.OK);
-        } else {
-            return new ResponseEntity(HttpStatus.CONFLICT);
+                    municipalityService.addNewMunicipality(m);
+                    return new ResponseEntity<>(m, HttpStatus.OK);
+                } else {
+                    System.out.println(("l'eroror"));
+                    return new ResponseEntity(HttpStatus.CONFLICT);
+                }
+            }
         }
+        return new ResponseEntity(HttpStatus.CONFLICT);
     }
 }

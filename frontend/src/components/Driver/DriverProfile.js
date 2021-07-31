@@ -46,6 +46,9 @@ export default function DriverProfile() {
         setProfile(response.data);
       })
       .catch((err) => {
+        console.log(err.response);
+        if (err.response == 409)
+        alert.error("Something went wrong")
         console.log(err);
       });
   }, []);

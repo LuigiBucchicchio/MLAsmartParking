@@ -1,22 +1,15 @@
 package com.spmproject.smartparking.parkingPlace;
 
-import com.spmproject.smartparking.auth.User;
 import com.spmproject.smartparking.auth.UserRepository;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.Point;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.spmproject.smartparking.municipality.Municipality;
@@ -116,10 +109,6 @@ public class ParkingPlaceController {
 
         p.setAddress(address);
 
-        GeometryFactory gf = new GeometryFactory();
-        Point coords = gf.createPoint(new Coordinate(lat, lng));
-        p.setCoords(coords);
-        
         p.setSpotsNumber(spotsNumber);
         p.setMunicipality(m);
         ParkingPlace saved = parkingPlaceService.addNewParkingPlace(p);

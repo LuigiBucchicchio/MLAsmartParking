@@ -30,6 +30,7 @@ import {
 import ParkingService from "./ParkingService";
 import { getAllDriverVehicle } from "../Vehicle/VehicleService";
 import { reserveParkingSpot } from "../Reservation/ReservationService";
+import Map from "../Layout/Map";
 
 const useStyles = makeStyles({
   table: {
@@ -134,6 +135,7 @@ export default function ParkingPlacesList() {
 
   return (
     <Fragment>
+      <Map parkingPlaces={parkingPlaces} />
       <Box m="2rem">
         <TableContainer component={Paper}>
           <Table className={classes.table} aria-label="simple table">

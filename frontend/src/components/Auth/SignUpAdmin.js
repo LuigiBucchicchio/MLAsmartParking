@@ -1,7 +1,8 @@
-import axios from "axios";
 import React, { useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import { useForm } from "react-hook-form";
+import { useAlert } from "react-alert";
+import { signUp, signIn } from "./AuthService";
 
 import useToken from "./useToken";
 import classes from "./Login.module.css";
@@ -16,6 +17,8 @@ const SignUpAdmin = (props) => {
 
   const BASE_URL = "http://localhost:8080";
 
+  const alert = useAlert();
+
   const handleRole = (e) => {
     console.log(e.target.value);
     if (e.target.value === "policeman") {
@@ -28,67 +31,28 @@ const SignUpAdmin = (props) => {
   };
 
   const onSubmit = async (data) => {
-    // if is a policeman we have different parameter: districtCode
-    if (isPoliceman) {
-      await axios
-        .post(`${BASE_URL}/${role}/add`, {
-          email: data.email,
-          username: data.username,
-          password: data.password,
-          name: data.name,
-          surname: data.surname,
-          districtCode: data.districtCode,
-          phoneNumber: data.phoneNumber,
-        })
-        .then((user) => {
-          axios
-            .post(`${BASE_URL}/login`, {
-              username: data.email,
-              password: data.password,
-            })
-            .then((user) => {
-              setToken(user.data.token);
-              props.tkn(true, user.data.role);
-            })
-            .catch((err) => {
-              console.log("login error");
-              console.log(err);
-            });
-        })
-        .catch((err) => {
-          console.log("registration error");
-          console.log(err);
-        });
-    } else {
-      await axios
-        .post(`${BASE_URL}/${role}/add`, {
-          email: data.email,
-          username: data.username,
-          password: data.password,
-          name: data.name,
-          surname: data.surname,
-          phoneNumber: data.phoneNumber,
-        })
-        .then((user) => {
-          axios
-            .post(`${BASE_URL}/login`, {
-              username: data.email,
-              password: data.password,
-            })
-            .then((user) => {
-              setToken(user.data.token);
-              props.tkn(true, user.data.role);
-            })
-            .catch((err) => {
-              console.log("login error");
-              console.log(err);
-            });
-        })
-        .catch((err) => {
-          console.log("registration error");
-          console.log(err);
-        });
+    if(role != "hide") {
+      console.log(data)
+    signUp(role, data)
+      .then((user) => {
+        console.log(user)
+        signIn(user.data)
+          .then((user) => {
+            setToken(user.data.token);
+            props.tkn(true, user.data.role);
+          })
+          .catch((err) => {
+            console.log("login error");
+            console.log(err);
+          });
+      })
+      .catch((err) => {
+        if (err.response.status === 409)
+        alert.error("Error during registration");
+      });
     }
+    else 
+    alert.error("Select a role")
   };
 
   return (
@@ -146,13 +110,9 @@ const SignUpAdmin = (props) => {
           </Col>
           <Col className={classes.group}>
             <label htmlFor="user" className={classes.label}>
-              Surname
+              Phone Number
             </label>
-            <input
-              type="text"
-              className={classes.input}
-              {...register("surname")}
-            />
+            <input type="text" {...register("phoneNumber")} />
           </Col>
         </Row>
 
@@ -168,16 +128,7 @@ const SignUpAdmin = (props) => {
             />
           </div>
         ) : null}
-        <div className={classes.group}>
-          <label htmlFor="user" className={classes.label}>
-            Phone Number
-          </label>
-          <input
-            type="text"
-            className={classes.input}
-            {...register("phoneNumber")}
-          />
-        </div>
+
         <div className={classes.group}>
           <input type="submit" className={classes.button} value="Sign Up" />
         </div>
