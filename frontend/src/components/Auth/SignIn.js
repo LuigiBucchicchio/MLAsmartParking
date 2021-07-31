@@ -3,6 +3,7 @@ import axios from "axios";
 import { useAlert } from "react-alert";
 
 import classes from "./Login.module.css";
+import { signIn } from "./AuthService";
 
 const SignIn = (props) => {
   const { register, handleSubmit } = useForm();
@@ -12,12 +13,7 @@ const SignIn = (props) => {
   const alert = useAlert();
 
   const onSubmit = (data) => {
-    //AuthService.signInCall(data);
-    axios
-      .post(`${BASE_URL}/login`, {
-        username: data.email,
-        password: data.password,
-      })
+    signIn(data)
       .then((user) => {
         props.tkn(user.data.token, user.data.role);
       })
