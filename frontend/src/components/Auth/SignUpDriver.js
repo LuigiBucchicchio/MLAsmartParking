@@ -1,39 +1,25 @@
-import axios from "axios";
 import React from "react";
 import { Col, Row } from "react-bootstrap";
 import { useForm } from "react-hook-form";
+import { useAlert } from "react-alert";
 
 import useToken from "./useToken";
-
+import { signUp, signIn } from "./AuthService";
 import classes from "./Login.module.css";
 
 const SignUpDriver = (props) => {
   const { register, handleSubmit } = useForm();
-
   const { setToken } = useToken();
-
-  const BASE_URL = "http://localhost:8080";
+  const alert = useAlert();
 
   const onSubmit = async (data) => {
-    await axios
-      .post(`${BASE_URL}/driver/add`, {
-        email: data.email,
-        username: data.username,
-        password: data.password,
-        name: data.name,
-        surname: data.surname,
-        phoneNumber: data.phoneNumber,
-      })
-      .then(async (user) => {
-        axios
-          .post(`${BASE_URL}/login`, {
-            username: data.email,
-            password: data.password,
-          })
+    signUp("driver", data)
+      .then((user) => {
+        signIn(user.data)
           .then((user) => {
             console.log("dati login " + user);
             setToken(user.data.token);
-            props.tkn(true, user.data.role);
+            props.tkn(user.data.token, user.data.role);
           })
           .catch((err) => {
             console.log("login error");
@@ -41,8 +27,8 @@ const SignUpDriver = (props) => {
           });
       })
       .catch((err) => {
-        console.log("registration error");
-        console.log(err);
+        if (err.response.status === 409)
+          alert.error("Error during registration");
       });
   };
 

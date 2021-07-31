@@ -36,7 +36,6 @@ function App() {
   };
 
   const logoutHandler = () => {
-    console.log("inside logout handler");
     removeToken();
     removeRole();
   };
@@ -50,7 +49,7 @@ function App() {
   var RoleHeader;
 
   // select which header show based on the role
-  if (role === "ROLE_DRIVER") {
+  if (role === process.env.REACT_APP_ROLE_DRIVER) {
     RoleHeader = HeaderDriver;
   }
   else 
@@ -61,7 +60,6 @@ function App() {
     
       <BrowserRouter>
         <RoleHeader  pageName={pageName} role={role} logout={logoutHandler}  />
-        {/* <HeaderDriver role={role} logout={logoutHandler} /> */}
         <Switch>
           <Route exact path="/">
             <HomeComponent role={role}/>

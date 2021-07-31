@@ -17,6 +17,7 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import AccountIcon from "@material-ui/icons/AccountCircle";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import ReservationIcon from "@material-ui/icons/EventAvailable";
 import CarIcon from "@material-ui/icons/DirectionsCar";
 
@@ -188,25 +189,15 @@ export default function PersistentDrawerLeft(props) {
               </ListItemIcon>
             </ListItem>
           </Link>
-          {/* {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-            <ListItem button key={text}>
+          <Divider />
+  
+            <ListItem button key="Logout" onClick={props.logout}>
               <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                <ExitToAppIcon />
+                <ListItemText primary="Logout" />
               </ListItemIcon>
-              <ListItemText primary={text} />
             </ListItem>
-          ))}
-        </List> */}
-          {/* <List>
-          {["All mail", "Trash", "Spam"].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
-        </List> */}
+          
         </List>
       </Drawer>
       <div className={classes.toolbar} />

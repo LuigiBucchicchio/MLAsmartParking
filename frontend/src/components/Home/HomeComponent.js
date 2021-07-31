@@ -3,7 +3,7 @@ import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 
 import ParkingPlacesList from "../Parking/ParkingPlacesList.js";
-import Map from "../Layout/Map.js";
+
 import "./Home.css";
 import MunicipalityComponent from "../Municipality/MunicipalityComponent.js";
 import PolicemanComponent from "../Policeman/PolicemanComponent.js";

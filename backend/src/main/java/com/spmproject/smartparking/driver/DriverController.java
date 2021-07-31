@@ -37,22 +37,28 @@ public class DriverController {
 
     //@PreAuthorize("hasRole('ROLE_ADMIN','ROLE_DRIVER')")
     @PostMapping("/add")
-    public ResponseEntity addNewDriver(@RequestBody DriverPayload payload) {
+    public ResponseEntity<Driver> addNewDriver(@RequestBody DriverPayload payload) {
+        if (payload.getPassword() != null && payload.getEmail() != null && payload.getSurname() != null && payload.getName() != null && payload.getPhoneNumber() != null) {
+            if (!payload.getPhoneNumber().isEmpty() || !payload.getSurname().isEmpty() || !payload.getName().isEmpty() || !payload.getEmail().isEmpty() || !payload.getPassword().isEmpty()) {
+                if (!driverService.existingDriver(payload.getEmail())) {
+                    Driver n = new Driver();
+                    n.setName(payload.getName());
+                    n.setSurname(payload.getSurname());
+                    n.setEmail(payload.getEmail());
+                    n.setUsername(payload.getUsername());
+                    n.setPhoneNumber(payload.getPhoneNumber());
+                    n.setPassword(payload.getPassword());
 
-        if (!driverService.existingDriver(payload.getEmail())) {
-            Driver n = new Driver();
-            n.setName(payload.getName());
-            n.setSurname(payload.getSurname());
-            n.setEmail(payload.getEmail());
-            n.setUsername(payload.getUsername());
-            n.setPhoneNumber(payload.getPhoneNumber());
-            n.setPassword(payload.getPassword());
-
-            driverService.addNewDriver(n);
-            return new ResponseEntity(HttpStatus.OK);
-        } else {
-            return new ResponseEntity(HttpStatus.CONFLICT);
-        }
+                    driverService.addNewDriver(n);
+                    return new ResponseEntity<>(n, HttpStatus.OK);
+                }
+                else {
+                    System.out.println("QUii");
+                    return new ResponseEntity(HttpStatus.CONFLICT);
+                }
+                }
+            }
+        return new ResponseEntity(HttpStatus.CONFLICT);
     }
 
     //@PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -72,7 +78,6 @@ public class DriverController {
         if (authentication != null) {
             Driver d = driverService.one(authentication.getName());
             if (!d.getName().isEmpty()) {
-                System.out.println("Driver get");
                 return new ResponseEntity<>(d, HttpStatus.OK);
             }
         }
@@ -83,9 +88,7 @@ public class DriverController {
     public ResponseEntity<Driver> putProfile(@RequestBody DriverPayload payload, Authentication authentication) {
         if (authentication != null) {
             Driver driver = driverService.one(authentication.getName());
-            System.out.println("ECCOSISII");
             if (!driver.getName().isEmpty()) {
-                System.out.println("SI c");
                 driver.setUsername(driver.getUsername());
                 driver.setEmail(payload.getEmail());
                 driver.setName(payload.getName());
@@ -95,8 +98,7 @@ public class DriverController {
                 // check if password was changed
                 if (driver.getPassword() != payload.getPassword()) {
                     driver.setPassword(passwordEncoder.encode(payload.getPassword()));
-                }
-                else {
+                } else {
                     driver.setPassword(driver.getPassword());
                 }
                 System.out.println(driver);

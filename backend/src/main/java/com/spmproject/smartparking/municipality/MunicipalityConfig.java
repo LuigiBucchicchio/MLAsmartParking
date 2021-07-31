@@ -1,7 +1,6 @@
 package com.spmproject.smartparking.municipality;
 
 import com.spmproject.smartparking.ItemNotFoundException;
-import com.spmproject.smartparking.auth.User;
 import com.spmproject.smartparking.auth.UserRepository;
 import com.spmproject.smartparking.driver.Driver;
 import com.spmproject.smartparking.driver.DriverRepository;
@@ -12,7 +11,6 @@ import com.spmproject.smartparking.parkingspot.ParkingSpotRepository;
 import com.spmproject.smartparking.policeman.Policeman;
 import com.spmproject.smartparking.policeman.PolicemanRepository;
 import com.spmproject.smartparking.reservation.Reservation;
-import com.spmproject.smartparking.security.ApplicationUserRole;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -86,6 +84,8 @@ public class MunicipalityConfig {
                 ParkingPlace parcheggioTermoli = new ParkingPlace();
                 parcheggioTermoli.setAddress("via saverio cannarsa, 7");
                 parcheggioTermoli.setSpotsNumber(11);
+                parcheggioTermoli.setLat(42.0019316);
+                parcheggioTermoli.setLng(14.9924052);
                 parcheggioTermoli.setMunicipality(municipalityRepository.findById((long) 2).orElseThrow(() -> new ItemNotFoundException((long) 2)));
                 ParkingPlace saved = new ParkingPlace();
                 saved = parkingPlaceRepository.save(parcheggioTermoli);

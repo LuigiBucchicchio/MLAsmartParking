@@ -135,6 +135,7 @@ export default function ParkingPlacesList() {
 
   return (
     <Fragment>
+      <Map parkingPlaces={parkingPlaces} />
       <Box m="2rem">
         <TableContainer component={Paper}>
           <Table className={classes.table} aria-label="simple table">

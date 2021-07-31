@@ -50,21 +50,18 @@ public class PolicemanController {
         return policemanService.getAllPolicemen();
     }
 
-    
-        @GetMapping("/all/municipality")
-    	public List<Policeman> municipalityPolicemen() {
-    		String currentUserName="";
-    		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    		if (!(authentication instanceof AnonymousAuthenticationToken)) {
-    		    currentUserName = authentication.getName();
-    		}
-    		
-    		Municipality m= municipalityService.getMunicipality(currentUserName);
-    		List<Policeman> list = policemanService.getPolicemenFromMunicipalityID(m.getId());
-    		return list;
-    	}
+    @GetMapping("/all/municipality")
+    public List<Policeman> municipalityPolicemen() {
+        String currentUserName="";
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            currentUserName = authentication.getName();
+        }
 
-     
+        Municipality m= municipalityService.getMunicipality(currentUserName);
+        List<Policeman> list = policemanService.getPolicemenFromMunicipalityID(m.getId());
+        return list;
+    }
 
 	//@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/me")
@@ -81,23 +78,26 @@ public class PolicemanController {
 
 
     @PostMapping("/add")
-    public ResponseEntity registerNewPoliceman(@RequestBody PolicemanPayload payload) {
-        if (!policemanService.isEmailUsed(payload.getEmail())) {
-            Policeman p = new Policeman();
-            p.setMunicipality(municipalityService.getMunicipalityByDistrictCode(payload.getDistrictCode()));
-            p.setName(payload.getName());
-            p.setSurname(payload.getSurname());
-            p.setEmail(payload.getEmail());
-            p.setUsername(payload.getUsername());
-            p.setPhoneNumber(payload.getPhoneNumber());
-            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-            p.setPassword(passwordEncoder.encode(payload.getPassword()));
+    public ResponseEntity<Policeman> registerNewPoliceman(@RequestBody PolicemanPayload payload) {
+        if (payload.getPassword() != null && payload.getEmail() != null && payload.getName() != null && payload.getPhoneNumber() != null && payload.getUsername() != null) {
+            if (!payload.getPhoneNumber().isEmpty() || !payload.getName().isEmpty() || !payload.getEmail().isEmpty() || !payload.getPassword().isEmpty()) {
+                if (!policemanService.isEmailUsed(payload.getEmail())) {
+                    Policeman p = new Policeman();
+                    p.setMunicipality(municipalityService.getMunicipalityByDistrictCode(payload.getDistrictCode()));
+                    p.setName(payload.getName());
+                    p.setSurname(payload.getSurname());
+                    p.setEmail(payload.getEmail());
+                    p.setUsername(payload.getUsername());
+                    p.setPhoneNumber(payload.getPhoneNumber());
+                    BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+                    p.setPassword(passwordEncoder.encode(payload.getPassword()));
 
-            policemanService.addNewPoliceman(p);
-            return new ResponseEntity(HttpStatus.OK);
-        } else {
-            return new ResponseEntity(HttpStatus.CONFLICT);
+                    policemanService.addNewPoliceman(p);
+                    return new ResponseEntity<>(p, HttpStatus.OK);
+                }
+            }
         }
+        return new ResponseEntity<>(HttpStatus.CONFLICT);
     }
 
     //@PreAuthorize("hasRole('ROLE_ADMIN')")

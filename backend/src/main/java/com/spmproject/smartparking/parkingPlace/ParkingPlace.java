@@ -3,7 +3,6 @@ package com.spmproject.smartparking.parkingPlace;
 import com.spmproject.smartparking.municipality.Municipality;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.locationtech.jts.geom.Point;
 
 import javax.annotation.Nullable;
 import javax.persistence.*;
@@ -44,7 +43,11 @@ public class ParkingPlace {
 
     @Column
     @Nullable
-    private Point coords;
+    private double lat;
+
+    @Column
+    @Nullable
+    private double lng;
 
     @ManyToOne
     @JoinColumn(name = "municipality_id", referencedColumnName = "id", nullable = false)
