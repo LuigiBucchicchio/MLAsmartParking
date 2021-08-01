@@ -223,7 +223,7 @@ export default function VehicleList() {
             <TextField
               autoFocus
               margin="dense"
-              id="name"
+              id="plate"
               label="Target Plate*"
               type="text"
               fullWidth
@@ -231,7 +231,7 @@ export default function VehicleList() {
             />
             <TextField
               margin="dense"
-              id="name"
+              id="brand"
               label="Brand*"
               type="text"
               fullWidth
@@ -240,8 +240,7 @@ export default function VehicleList() {
 
             <FormLabel component="legend">Type*</FormLabel>
             <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
+              id="vehicleType"
               style={{ width: 70 }}
               value={type}
               onChange={handleType}

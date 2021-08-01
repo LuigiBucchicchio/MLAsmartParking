@@ -29,7 +29,7 @@ const SignUpAdmin = (props) => {
   };
 
   const onSubmit = async (data) => {
-    if (role != "hide") {
+    if (role !== "hide") {
       console.log(data);
       signUp(role, data)
         .then((user) => {

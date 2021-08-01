@@ -47,11 +47,11 @@ export default function DriverProfile() {
       })
       .catch((err) => {
         console.log(err.response);
-        if (err.response == 409)
+        if (err.response === 409)
         alert.error("Something went wrong")
         console.log(err);
       });
-  }, []);
+  }, [alert]);
 
   const handleEdit = (el) => {
     setEdit(!edit);

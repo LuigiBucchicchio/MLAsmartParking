@@ -1,9 +1,5 @@
 import axios from "axios";
 
-const config = {
-  headers: { Authorization: "Bearer " + localStorage.getItem("token") },
-};
-
 export const reserveParkingSpot = (data) => {
   const json = {
     vehiclePlate: data.vehiclePlate,
@@ -14,13 +10,13 @@ export const reserveParkingSpot = (data) => {
     process.env.REACT_APP_PARKINGSPOT_NEW_RESERVATION +
       `${data.parkingPlaceId}/add`,
     json,
-    config
+    { headers: { Authorization: "Bearer " + localStorage.getItem("token") } }
   );
 };
 
 export const getAllReservationOneDriver = () => {
   return axios.get(
     process.env.REACT_APP_PARKINGSPOT_GET_ALL_RESERVATION_DRIVER,
-    config
+    { headers: { Authorization: "Bearer " + localStorage.getItem("token") } }
   );
 };

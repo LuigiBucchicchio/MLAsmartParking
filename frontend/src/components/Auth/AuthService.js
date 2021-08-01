@@ -1,9 +1,5 @@
 import axios from "axios";
 
-const config = {
-  headers: { Authorization: "Bearer " + localStorage.getItem("token") },
-};
-
 export const signUp = (role, data) => {
   if (role === "driver")
     return axios.post(`${process.env.REACT_APP_API_URL}/${role}/add`, {

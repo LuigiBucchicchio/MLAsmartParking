@@ -49,11 +49,17 @@ export default function ParkingPlacesList() {
   const [endingTime, setEndingTime] = useState({});
 
   useEffect(() => {
-    ParkingService.getParkingPlaces().then((response) => {
+    
+    ParkingService.getParkingPlaces("Bearer " + localStorage.getItem("token")).then((response) => {
       setParkingPlaces(response.data);
     });
   }, []);
 
+  const handleListPark = () => {
+    ParkingService.getParkingPlaces().then((response) => {
+      setParkingPlaces(response.data);
+    });
+  }
   const listVehicles = vehicles.map((vehicle) => (
     <MenuItem key={vehicle.vehiclePlate} value={vehicle.vehiclePlate}>
       {vehicle.vehiclePlate}
@@ -136,6 +142,7 @@ export default function ParkingPlacesList() {
   return (
     <Fragment>
       <Map parkingPlaces={parkingPlaces} />
+      <Button onClick={handleListPark}>Show</Button>
       <Box m="2rem">
         <TableContainer component={Paper}>
           <Table className={classes.table} aria-label="simple table">
@@ -171,14 +178,15 @@ export default function ParkingPlacesList() {
         <Dialog
           open={isReservationOpen}
           onClose={handleReservtionDialog}
-          aria-labelledby="form-dialog-title"
+          aria-labelledby="dialog-book-spot"
         >
-          <DialogTitle id="form-dialog-title">Book your spot</DialogTitle>
+          <DialogTitle id="title">Book your spot</DialogTitle>
           <DialogContent>
             <FormLabel component="legend">Vehicle</FormLabel>
             <Select
+            key="vehicle-plate"
               labelId="demo-simple-select-label"
-              id="demo-simple-select"
+              id="vehicle-plate"
               style={{ width: 200 }}
               value={selectedVehiclePlate}
               onChange={(e) => handleReservationSelected("vehiclePlate", e)}
@@ -189,6 +197,7 @@ export default function ParkingPlacesList() {
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <div>
                   <KeyboardDatePicker
+                  key="date-picker-inline"
                     disableToolbar
                     variant="inline"
                     format="MM/dd/yyyy"
@@ -205,6 +214,7 @@ export default function ParkingPlacesList() {
                 </div>
                 <KeyboardTimePicker
                   margin="normal"
+                  key="time-picker"
                   id="time-picker"
                   label="Choose your ending time (min 10 minutes)"
                   value={endingTime}

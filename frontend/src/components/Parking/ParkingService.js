@@ -1,22 +1,16 @@
 import axios from "axios";
 
-const PARKINGPLACES_GET_ALL_URL = "http://localhost:8080/parking-place/allFree";
-const PARKINGPLACES_GET_ALL_MUNICIPALITY_URL =
-  "http://localhost:8080/parking-place/";
-const PARKINGPLACES_POST_ONE_URL = "http://localhost:8080/parking-place/add";
-const PARKINGPLACES_MODIFICATION = "http://localhost:8080/parking-place/modify";
-
-const config = {
-  headers: { Authorization: "Bearer " + localStorage.getItem("token") },
-};
-
 class ParkingService {
-  async getParkingPlaces() {
-    return await axios.get(PARKINGPLACES_GET_ALL_URL, config);
+  getParkingPlaces(tkn) {
+    return axios.get(process.env.REACT_APP_PARKINGPLACES_GET_ALL_URL, {
+      headers: { Authorization: "Bearer " + localStorage.getItem("token") },
+    });
   }
 
   async getParkingPlacesOfAMunicipality() {
-    return await axios.get(PARKINGPLACES_GET_ALL_MUNICIPALITY_URL, config);
+    return await axios.get(process.env.REACT_APP_PARKINGPLACES_GET_ALL_MUNICIPALITY_URL, {
+      headers: { Authorization: "Bearer " + localStorage.getItem("token") },
+    });
   }
 
   async parkingPlaceModification(parkingPlaceID, spotsNumber, address) {
@@ -25,13 +19,17 @@ class ParkingService {
       spotsNumber: spotsNumber,
       address: address,
     };
-    return await axios.post(PARKINGPLACES_MODIFICATION, json, config);
+    return await axios.post(process.env.REACT_APP_PARKINGPLACES_MODIFICATION, json, {
+      headers: { Authorization: "Bearer " + localStorage.getItem("token") },
+    });
   }
 
   async newParkingPlace(spotsNumber, address) {
     const json = { spotsNumber: spotsNumber, address: address };
 
-    return await axios.post(PARKINGPLACES_POST_ONE_URL, json, config);
+    return await axios.post(process.env.REACT_APP_PARKINGPLACES_POST_ONE_URL, json, {
+      headers: { Authorization: "Bearer " + localStorage.getItem("token") },
+    });
   }
 }
 
