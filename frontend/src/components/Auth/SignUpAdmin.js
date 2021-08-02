@@ -105,25 +105,45 @@ const SignUpAdmin = (props) => {
             </label>
             <input type="text" {...register("name")} />
           </Col>
-          <Col className={classes.group}>
-            <label htmlFor="user" className={classes.label}>
-              Phone Number
-            </label>
-            <input type="text" {...register("phoneNumber")} />
-          </Col>
+          {isPoliceman ? (
+            <Col className={classes.group}>
+              <label htmlFor="user" className={classes.label}>
+                Surname
+              </label>
+              <input
+                type="text"
+                className={classes.input}
+                {...register("surname")}
+              />
+            </Col>
+          ) : (
+            <Col className={classes.group}>
+              <label htmlFor="user" className={classes.label}>
+                Phone Number
+              </label>
+              <input type="text" {...register("phoneNumber")} />
+            </Col>
+          )}
         </Row>
-
         {isPoliceman ? (
-          <div className={classes.group}>
-            <label htmlFor="user" className={classes.label}>
-              Discrict Code
-            </label>
-            <input
-              type="text"
-              className={classes.input}
-              {...register("districtCode")}
-            />
-          </div>
+          <Row>
+            <Col className={classes.group}>
+              <label htmlFor="user" className={classes.label}>
+                Phone Number
+              </label>
+              <input type="text" {...register("phoneNumber")} />
+            </Col>
+            <Col className={classes.group}>
+              <label htmlFor="user" className={classes.label}>
+                Discrict Code
+              </label>
+              <input
+                type="text"
+                className={classes.input}
+                {...register("districtCode")}
+              />
+            </Col>
+          </Row>
         ) : null}
 
         <div className={classes.group}>
