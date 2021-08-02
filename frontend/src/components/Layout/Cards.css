@@ -3,7 +3,7 @@
  * {
 	 box-sizing: border-box;
 }
- .page-contain {
+ .pageContain {
 	 display: flex;
 	 min-height: 100vh;
 	 align-items: center;
@@ -13,7 +13,7 @@
 	 padding: 2em;
 	 font-family: "Open Sans", sans-serif;
 }
- .data-card {
+ .dataCard {
 	 max-width: 20.75em;
 	 min-height: 20.75em;
 	 overflow: hidden;
@@ -25,7 +25,7 @@
 	 box-shadow: 0 1.5em 2.5em -0.5em rgba(0, 0, 0, 0.1);
 	 transition: transform 0.45s ease, background 0.45s ease;
 }
- .data-card h3 {
+ .dataCard h3 {
 	 color: #2e3c40;
 	 font-size: 3.5em;
 	 font-weight: 600;
@@ -34,7 +34,7 @@
 	 margin: 0 0 0.142857143em;
 	 transition: color 0.45s ease, border 0.45s ease;
 }
- .data-card h4 {
+ .dataCard h4 {
 	 color: #627084;
 	 text-transform: uppercase;
 	 font-size: 1.125em;
@@ -44,7 +44,7 @@
 	 margin: 0 0 1.777777778em;
 	 transition: color 0.45s ease;
 }
- .data-card p {
+ .dataCard p {
 	 opacity: 0;
 	 color: #fff;
 	 font-weight: 600;
@@ -53,7 +53,7 @@
 	 transform: translateY(-1em);
 	 transition: opacity 0.45s ease, transform 0.5s ease;
 }
- .data-card .link-text {
+ .dataCard .linkText {
 	 display: block;
 	 color: #1916c9;
 	 font-size: 1.125em;
@@ -62,35 +62,35 @@
 	 margin: auto 0 0;
 	 transition: color 0.45s ease;
 }
- .data-card .link-text svg {
+ .dataCard .linkText svg {
 	 margin-left: 0.5em;
 	 transition: transform 0.6s ease;
 }
- .data-card .link-text svg path {
+ .dataCard .linkText svg path {
 	 transition: fill 0.45s ease;
 }
- .data-card:hover {
+ .dataCard:hover {
 	 background: #1916c9;
 	 transform: scale(1.02);
 }
- .data-card:hover h3 {
+ .dataCard:hover h3 {
 	 color: #fff;
 	 border-bottom-color: #fff;
 }
- .data-card:hover h4 {
+ .dataCard:hover h4 {
 	 color: #fff;
 }
- .data-card:hover p {
+ .dataCard:hover p {
 	 opacity: 1;
 	 transform: none;
 }
- .data-card:hover .link-text {
+ .dataCard:hover .linkText {
 	 color: #fff;
 }
- .data-card:hover .link-text svg {
+ .dataCard:hover .linkText svg {
 	 animation: point 1.25s infinite alternate;
 }
- .data-card:hover .link-text svg path {
+ .dataCard:hover .linkText svg path {
 	 fill: #fff;
 }
  @keyframes point {

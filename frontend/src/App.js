@@ -3,9 +3,7 @@ import { Route, Switch } from "react-router";
 import useToken from "./components/Auth/useToken";
 import useRole from "./components/Auth/useRole";
 import "bootstrap/dist/css/bootstrap.min.css";
-
 import AddParkingPlaceComponent from "./components/Parking/AddParkingPlaceComponent";
-import AdminComponent from "./components/Admin/AdminComponent";
 import AssignPolicemanComponent from "./components/Policeman/AssignPolicemanComponent";
 import Auth from "./components/Auth/Auth";
 import DriverProfile from "./components/Driver/DriverProfile";
@@ -72,9 +70,6 @@ function App() {
           </Route>
           <Route exact path="/policeman">
             <PolicemanComponent />
-          </Route>
-          <Route exact path="/admin">
-            <AdminComponent />
           </Route>
           <Route path="/parkingPlaceModification">
             <ParkingPlaceModificationComponent />
