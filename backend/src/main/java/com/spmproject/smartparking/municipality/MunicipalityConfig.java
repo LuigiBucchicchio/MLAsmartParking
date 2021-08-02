@@ -11,6 +11,8 @@ import com.spmproject.smartparking.parkingspot.ParkingSpotRepository;
 import com.spmproject.smartparking.policeman.Policeman;
 import com.spmproject.smartparking.policeman.PolicemanRepository;
 import com.spmproject.smartparking.reservation.Reservation;
+import com.spmproject.smartparking.security.ApplicationUserRole;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -128,6 +130,7 @@ public class MunicipalityConfig {
                 franco.setEmail("franco.verdonzi@gmail.com");
                 franco.setUsername("FrancoIlGrande");
                 franco.setPhoneNumber("00992476456");
+                franco.setRole(ApplicationUserRole.POLICEMAN);
                 franco.setPassword(passwordEncoder.encode("ilmagnificofranco"));
 
 
@@ -140,6 +143,7 @@ public class MunicipalityConfig {
                 basso.setEmail("basso.caruso@gmail.com");
                 basso.setUsername("BassoCaruso");
                 basso.setPhoneNumber("00992478787");
+                basso.setRole(ApplicationUserRole.POLICEMAN);
                 basso.setPassword(passwordEncoder.encode("bassocaruso"));
 
                 policemanRepository.save(basso);

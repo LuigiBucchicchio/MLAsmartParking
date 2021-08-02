@@ -24,15 +24,7 @@ public class PolicemanService {
     }
 
     public Policeman addNewPoliceman(Policeman p) {
-        Policeman policeman = new Policeman(
-                p.getName(),
-                p.getSurname(),
-                p.getEmail(),
-                p.getUsername(),
-                passwordEncoder.encode(p.getPassword()),
-                p.getPhoneNumber()
-        );
-        return this.policemanRepository.save(policeman);
+        return this.policemanRepository.save(p);
     }
 
     // check if email already used in another registration

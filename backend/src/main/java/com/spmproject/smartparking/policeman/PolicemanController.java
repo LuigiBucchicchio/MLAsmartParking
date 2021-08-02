@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.spmproject.smartparking.municipality.MunicipalityService;
 import com.spmproject.smartparking.parkingPlace.ParkingPlace;
 import com.spmproject.smartparking.parkingPlace.ParkingPlaceService;
+import com.spmproject.smartparking.security.ApplicationUserRole;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
@@ -89,6 +90,7 @@ public class PolicemanController {
                     p.setEmail(payload.getEmail());
                     p.setUsername(payload.getUsername());
                     p.setPhoneNumber(payload.getPhoneNumber());
+                    p.setRole(ApplicationUserRole.POLICEMAN);
                     BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
                     p.setPassword(passwordEncoder.encode(payload.getPassword()));
 
@@ -131,6 +133,7 @@ public class PolicemanController {
     public Policeman assignPoliceman(@RequestBody AssignmentPayload payload) {
 
         Policeman p = policemanService.getOneByName(payload.getPolicemanName());
+        System.out.println(payload);
         ParkingPlace pp = parkingPlaceService.getOneByAddress(payload.getParkingAddress());
         p.setAssignedParkingPlace(pp);
         return policemanService.update(p);
