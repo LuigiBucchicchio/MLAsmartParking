@@ -63,7 +63,6 @@ const SignUpAdmin = (props) => {
             onChange={(e) => handleRole(e)}
           >
             <option value="hide">-- Role --</option>
-            <option value="admin">Admin</option>
             <option value="municipality">Municipality</option>
             <option value="policeman">Policeman</option>
           </select>
