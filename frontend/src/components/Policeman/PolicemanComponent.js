@@ -13,6 +13,27 @@ class PolicemanComponent extends React.Component {
         }
     }
 
+    getReservationDuration = (endingTime) => {
+        const sTime = new Date();
+        const eTime = new Date(endingTime);
+    
+        const durationInMillis = eTime.getTime() - sTime.getTime();
+    
+        //Hour 3600000
+        const hours = Math.floor(Math.round(durationInMillis / 3600000));
+        // minute 60000
+        const minutes = Math.floor(
+          Math.round((durationInMillis % 3600000) / 60000)
+        );
+    
+        // data to print
+        if (hours === 0) {
+          return `${minutes}m`;
+        } else {
+          return `${hours}h ${minutes}m`;
+        }
+      };
+
     componentDidMount() {
         PolicemanService.getPolicemanProfile().then((response) => {
             this.setState({ policeman : response.data})
@@ -42,7 +63,6 @@ class PolicemanComponent extends React.Component {
 
 
     render(){
-        
         if(this.state.policeman.assignedParkingPlace === undefined || this.state.policeman.assignedParkingPlace === null ){
             return(
                 <div className= "container">
@@ -126,6 +146,7 @@ class PolicemanComponent extends React.Component {
                                 <th scope="col">Reservation ID</th>
                                 <th scope="col">Reservation Starting Time</th>
                                 <th scope="col">Reservation Ending Time</th>
+                                <th scope="col">Time Remaining</th>
                                 <th scope="col">Reservation Spot progressive Number</th>
                             </tr>
                         </thead>
@@ -137,6 +158,7 @@ class PolicemanComponent extends React.Component {
                                             <td> {reservation.id}</td>
                                             <td> {reservation.startingTime}</td>
                                             <td> {reservation.endingTime}</td>
+                                            <td> {this.getReservationDuration(reservation.endingTime)}</td>
                                             <td> {reservation.parkingSpot.progressiveNumber}</td>
      
                                         </tr>

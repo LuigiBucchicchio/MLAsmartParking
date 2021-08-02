@@ -2,6 +2,7 @@ import axios from 'axios'
 
 class PolicemanService {
 
+ 
     
 async reservationsPlacePlate(address,plate){
     const json = {
@@ -9,7 +10,7 @@ async reservationsPlacePlate(address,plate){
       "plate": plate,
     }
     console.log(json);
-    return await axios.get(process.env.REACT_APP_RESERVATIONS_POLICEMAN_CHECK,json,{
+    return await axios.post(process.env.REACT_APP_RESERVATIONS_POLICEMAN_CHECK,json,{
         headers: {Authorization: "Bearer "+localStorage.getItem("token") }});
   }
 
