@@ -40,6 +40,8 @@ public class ParkingPlace {
 
     @Column(nullable = false)
     private String address;
+    @Column
+    private String city;
 
     @Column
     @Nullable

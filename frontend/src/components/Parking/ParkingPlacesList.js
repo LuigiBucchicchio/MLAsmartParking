@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { FormLabel } from "@material-ui/core";
+import { FormLabel, Typography } from "@material-ui/core";
 import { Box } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import "date-fns";
@@ -49,17 +49,13 @@ export default function ParkingPlacesList() {
   const [endingTime, setEndingTime] = useState({});
 
   useEffect(() => {
-    
-    ParkingService.getParkingPlaces("Bearer " + localStorage.getItem("token")).then((response) => {
+    ParkingService.getParkingPlaces(
+      "Bearer " + localStorage.getItem("token")
+    ).then((response) => {
       setParkingPlaces(response.data);
     });
   }, []);
 
-  const handleListPark = () => {
-    ParkingService.getParkingPlaces().then((response) => {
-      setParkingPlaces(response.data);
-    });
-  }
   const listVehicles = vehicles.map((vehicle) => (
     <MenuItem key={vehicle.vehiclePlate} value={vehicle.vehiclePlate}>
       {vehicle.vehiclePlate}
@@ -142,8 +138,10 @@ export default function ParkingPlacesList() {
   return (
     <Fragment>
       <Map parkingPlaces={parkingPlaces} />
-      <Button onClick={handleListPark}>Show</Button>
       <Box m="2rem">
+        <Typography variant="h3" gutterBottom>
+          Where do you want to go?
+        </Typography>
         <TableContainer component={Paper}>
           <Table className={classes.table} aria-label="simple table">
             <TableHead>
@@ -184,7 +182,7 @@ export default function ParkingPlacesList() {
           <DialogContent>
             <FormLabel component="legend">Vehicle</FormLabel>
             <Select
-            key="vehicle-plate"
+              key="vehicle-plate"
               labelId="demo-simple-select-label"
               id="vehicle-plate"
               style={{ width: 200 }}
@@ -197,7 +195,7 @@ export default function ParkingPlacesList() {
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <div>
                   <KeyboardDatePicker
-                  key="date-picker-inline"
+                    key="date-picker-inline"
                     disableToolbar
                     variant="inline"
                     format="MM/dd/yyyy"

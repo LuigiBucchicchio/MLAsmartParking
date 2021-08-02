@@ -11,12 +11,16 @@ import lombok.ToString;
 @ToString
 public class ParkingPlacePayload {
     int spotsNumber;
+    private String city;
     String address;
     double lat;
     double lng;
 
-    public ParkingPlacePayload(int spotsNumber, String address) {
+    public ParkingPlacePayload(int spotsNumber,String city, String address, double lat, double lng) {
+        this.city = city;
         this.address = address;
         this.spotsNumber = spotsNumber;
+        this.lat = lat;
+        this.lng = lng;
     }
 }

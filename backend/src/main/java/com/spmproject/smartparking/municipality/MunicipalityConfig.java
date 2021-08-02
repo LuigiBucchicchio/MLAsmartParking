@@ -82,6 +82,7 @@ public class MunicipalityConfig {
             }
             if (parkingPlaceRepository.count() == ((long) 0)) {
                 ParkingPlace parcheggioTermoli = new ParkingPlace();
+                parcheggioTermoli.setCity("Termoli");
                 parcheggioTermoli.setAddress("via saverio cannarsa, 7");
                 parcheggioTermoli.setSpotsNumber(11);
                 parcheggioTermoli.setLat(42.0019316);
@@ -100,8 +101,11 @@ public class MunicipalityConfig {
                 }
 
                 ParkingPlace parcheggioTermoli2 = new ParkingPlace();
-                parcheggioTermoli2.setAddress("via mario milano");
+                parcheggioTermoli2.setCity("Termoli");
+                parcheggioTermoli2.setAddress("Via XX Settembre, 79");
                 parcheggioTermoli2.setSpotsNumber(22);
+                parcheggioTermoli2.setLat(42.0025121);
+                parcheggioTermoli2.setLng(14.991163);
                 parcheggioTermoli2.setMunicipality(municipalityRepository.findById((long) 2).orElseThrow(() -> new ItemNotFoundException((long) 2)));
                 saved = new ParkingPlace();
                 saved = parkingPlaceRepository.save(parcheggioTermoli2);

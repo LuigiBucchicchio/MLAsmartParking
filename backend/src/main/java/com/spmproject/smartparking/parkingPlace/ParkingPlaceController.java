@@ -54,7 +54,6 @@ public class ParkingPlaceController {
         Set<ParkingPlaceResponse> parkingPlaceResponseSet = new HashSet<>();
         ParkingPlaceResponse parkingPlaceResponse;
 
-        System.out.println("richiesta da verificare");
         Iterator<ParkingPlace> iterator = parkingPlace.iterator();
 
         while (iterator.hasNext())
@@ -66,12 +65,12 @@ public class ParkingPlaceController {
             List<ParkingSpot> parkingSpot = parkingSpotService.getFreeParkingSpotFromPlace(true, p.getParkingPlaceID());
 
             parkingPlaceResponse.setFreeParkingSpots(parkingSpot.size());
-            System.out.println("I posti liberi ");
-            System.out.println(parkingSpot.size());
-            System.out.println(parkingSpot);
+            parkingPlaceResponse.setCity(p.getCity());
             parkingPlaceResponse.setAddress(p.getAddress());
             parkingPlaceResponse.setId(p.getParkingPlaceID());
-
+            parkingPlaceResponse.setLat(p.getLat());
+            parkingPlaceResponse.setLng(p.getLng());
+            
             parkingPlaceResponseSet.add(parkingPlaceResponse);
         }
 
@@ -83,6 +82,7 @@ public class ParkingPlaceController {
     public ParkingPlace newParkingPlace(@RequestBody ParkingPlacePayload payload) {
 
         int spotsNumber = payload.getSpotsNumber();
+        String city = payload.getCity();
         String address = payload.getAddress();
         double lat = payload.getLat();
         double lng = payload.getLng();
@@ -107,8 +107,10 @@ public class ParkingPlaceController {
 
         Municipality m = municipalityService.getMunicipality(currentUserName);
 
+        p.setCity(city);
         p.setAddress(address);
-
+        p.setLat(lat);
+        p.setLng(lng);
         p.setSpotsNumber(spotsNumber);
         p.setMunicipality(m);
         ParkingPlace saved = parkingPlaceService.addNewParkingPlace(p);

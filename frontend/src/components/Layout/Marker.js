@@ -1,38 +1,19 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import React from "react";
+import { Room } from "@material-ui/icons";
+import { Fragment } from "react";
+import { IconButton } from "@material-ui/core";
 
-const Wrapper = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 18px;
-  height: 18px;
-  background-color: #000;
-  border: 2px solid #fff;
-  border-radius: 100%;
-  user-select: none;
-  transform: translate(-50%, -50%);
-  cursor: ${(props) => (props.onClick ? 'pointer' : 'default')};
-  &:hover {
-    z-index: 1;
-  }
-`;
+export default function Marker(props) {
+  
+  const showAddress = () => {
+    window.open("https://maps.google.com?q="+props.lat+","+props.lng );
+  };
 
-const Marker = ({ text, onClick }) => (
-  <Wrapper
-    alt={text}
-    onClick={onClick}
-  />
-);
-
-Marker.defaultProps = {
-  onClick: null,
-};
-
-Marker.propTypes = {
-  onClick: PropTypes.func,
-  text: PropTypes.string.isRequired,
-};
-
-export default Marker;
+  return (
+    <Fragment>
+      <IconButton onClick={showAddress}>
+        <Room />
+      </IconButton>
+    </Fragment>
+  );
+}
