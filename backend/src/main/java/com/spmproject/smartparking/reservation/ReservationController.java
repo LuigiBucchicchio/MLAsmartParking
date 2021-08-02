@@ -145,4 +145,19 @@ public class ReservationController {
         reservationService.deleteReservation(id);
     }
 
+    @GetMapping("/policemanCheck")
+    public List<Reservation> one(@RequestBody CheckPayload payload) {
+    	List<Reservation> result = new ArrayList<Reservation> ();
+    	ParkingPlace pp = parkingPlaceService.getOneByAddress(payload.getAddress());
+        List<Reservation> reservations = reservationService.getAllReservationsOfOneVehicle(payload.getPlate());
+        Iterator<Reservation> it = reservations.iterator();
+        while(it.hasNext()) {
+        	Reservation rs = it.next();
+        	if(rs.getParkingSpot().getParkingPlaceID()==pp.getParkingPlaceID()) {
+        		result.add(rs);
+        	}
+        }
+        return result;
+    }
+    
 }

@@ -1,12 +1,15 @@
 import React from 'react';
 import PolicemanService from './PolicemanService';
+import {Form, Button} from 'react-bootstrap';
 
 class PolicemanComponent extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            policeman : ''
+            policeman : '',
+            plate : '',
+            reservations : [],
         }
     }
 
@@ -16,9 +19,30 @@ class PolicemanComponent extends React.Component {
         }); 
       }
 
+      plateChange = (event) => {
+        this.setState({plate : event.target.value});
+      }
+
+      handleSubmit= (event) => {
+          PolicemanService.reservationsPlacePlate(this.state.policeman.assignedParkingPlace.address,this.state.plate).then(response => {
+    
+          console.log("response", response.status);
+    
+          if(response.status === 200){
+              this.setState({reservations : response.data});
+          }
+          else
+          alert("Something went wrong, response code: " + response.status);
+
+
+    
+        })
+        event.preventDefault();
+      }
+
+
     render(){
-       
-        var text;
+        
         if(this.state.policeman.assignedParkingPlace === undefined || this.state.policeman.assignedParkingPlace === null ){
             return(
                 <div className= "container">
@@ -53,6 +77,7 @@ class PolicemanComponent extends React.Component {
                )
         }else{
             return(
+                <div>
                 <div className= "container">
                     <br></br>
                     <h2>You are assigned at the parking place: {this.state.policeman.assignedParkingPlace.address}, {this.state.policeman.municipality.name} </h2>
@@ -82,6 +107,47 @@ class PolicemanComponent extends React.Component {
                        </table>
        
                    </div>
+                   <div className="container">
+                   <Form onSubmit={this.handleSubmit}>
+  <Form.Group className="mb-3" controlId="formGridAddress1" onChange={this.plateChange}>
+    <Form.Label>Search a Car Plate</Form.Label>
+    <Form.Control placeholder="car plate" />
+  </Form.Group>
+
+  <Button variant="primary" type="submit">
+    Search
+  </Button>
+</Form>
+                   </div>
+                    <div className= "container">
+                    <table className="table table-hover table-dark">
+                        <thead>
+                            <tr>
+                                <th scope="col">Reservation ID</th>
+                                <th scope="col">Reservation Starting Time</th>
+                                <th scope="col">Reservation Ending Time</th>
+                                <th scope="col">Reservation Spot progressive Number</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {
+                                this.state.reservations.map( 
+                                    reservation  =>
+                                        <tr key={reservation.id}>
+                                            <td> {reservation.id}</td>
+                                            <td> {reservation.startingTime}</td>
+                                            <td> {reservation.endingTime}</td>
+                                            <td> {reservation.parkingSpot.progressiveNumber}</td>
+     
+                                        </tr>
+                                )
+                            }
+                        </tbody>
+     
+                    </table>
+     
+                </div>
+                </div>
                )
  }
         

@@ -1,9 +1,8 @@
 import axios from "axios";
 
-export const getAllDriverVehicle = () => {
-  return axios.get(process.env.REACT_APP_VEHICLEDRIVER_GET, {
-    headers: { Authorization: "Bearer " + localStorage.getItem("token") },
-  });
+export const getAllDriverVehicle = async () => {
+  return await axios.get(`${process.env.REACT_APP_VEHICLEDRIVER_GET}`,
+  { headers: { Authorization: "Bearer " + localStorage.getItem("token") } });
 };
 
 export const deleteDriverVehicle = async (data) => {
