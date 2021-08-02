@@ -31,6 +31,7 @@ import ParkingService from "./ParkingService";
 import { getAllDriverVehicle } from "../Vehicle/VehicleService";
 import { reserveParkingSpot } from "../Reservation/ReservationService";
 import Map from "../Layout/Map";
+import Payment from "../Payment/Payment";
 
 const useStyles = makeStyles({
   table: {
@@ -38,7 +39,10 @@ const useStyles = makeStyles({
   },
 });
 
+
+
 export default function ParkingPlacesList() {
+  const secondsCost = 0.001;
   const alert = useAlert();
 
   const [parkingPlaces, setParkingPlaces] = useState([]);
@@ -47,6 +51,7 @@ export default function ParkingPlacesList() {
   const [selectedParkingPlace, setSelectedParkingPlace] = useState("");
   const [selectedVehiclePlate, setSelectedVehiclePlate] = useState("");
   const [endingTime, setEndingTime] = useState({});
+  const [amount, setAmount] =useState((600 * secondsCost).toFixed(2))
 
   useEffect(() => {
     ParkingService.getParkingPlaces(
@@ -66,6 +71,13 @@ export default function ParkingPlacesList() {
     //setReservationSelected({...reservationSelected, [key]: event.target.value})
     if (key === "time") {
       setEndingTime(event);
+      const sTime = new Date();
+      const eTime = new Date(endingTime);
+  
+      const durationInMillis = eTime.getTime() - sTime.getTime();
+      console.log(durationInMillis)
+      setAmount(((durationInMillis/1000).toFixed(2) * secondsCost))
+      
     } else if (key === "vehiclePlate")
       setSelectedVehiclePlate(event.target.value);
   };
@@ -228,9 +240,7 @@ export default function ParkingPlacesList() {
             <Button color="secondary" onClick={handleReservtionDialog}>
               Cancel
             </Button>
-            <Button color="primary" onClick={handleReservationCall}>
-              Confirm
-            </Button>
+            <Payment amount= {amount} handleReservation={handleReservationCall}/>
           </DialogActions>
         </Dialog>
       </Box>
