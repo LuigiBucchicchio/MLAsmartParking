@@ -37,7 +37,7 @@ const SignUpAdmin = (props) => {
           signIn(user.data)
             .then((user) => {
               setToken(user.data.token);
-              props.tkn(true, user.data.role);
+              props.tkn(user.data.token, user.data.role);
             })
             .catch((err) => {
               console.log("login error");
