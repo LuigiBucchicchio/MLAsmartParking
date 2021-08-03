@@ -168,6 +168,7 @@ public class MunicipalityConfig {
                 d.setVehicle_owned(set);
                 driverRepository.save(d);
                 
+                // TEST PUSH
                 
                 Reservation r= new Reservation();
                 r.setStartingTime(new Timestamp(System.currentTimeMillis()));
