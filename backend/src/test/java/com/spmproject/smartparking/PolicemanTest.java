@@ -7,13 +7,19 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import com.spmproject.smartparking.municipality.Municipality;
+import com.spmproject.smartparking.municipality.MunicipalityRepository;
+import com.spmproject.smartparking.municipality.MunicipalityService;
 import com.spmproject.smartparking.parkingPlace.ParkingPlace;
+import com.spmproject.smartparking.parkingPlace.ParkingPlaceRepository;
 import com.spmproject.smartparking.parkingPlace.ParkingPlaceService;
 import com.spmproject.smartparking.policeman.Policeman;
 import com.spmproject.smartparking.policeman.PolicemanPayload;
 import com.spmproject.smartparking.policeman.PolicemanRepository;
 import com.spmproject.smartparking.policeman.PolicemanService;
+import com.spmproject.smartparking.security.ApplicationUserRole;
 
 
 @SpringBootTest
@@ -24,10 +30,17 @@ public class PolicemanTest {
 		    private PolicemanService policemanService;
 		    
 		    @Autowired
-		    private ParkingPlaceService parkingPlaceService;
+		    private ParkingPlaceRepository parkingPlaceRepository;
 		    
 		    @Autowired
 		    private PolicemanRepository policemanRepository;
+		    
+		    @Autowired
+		    private MunicipalityService municipalityService;
+		    
+		    @Autowired
+		    private MunicipalityRepository municipalityRepository;
+
 
 		    
 		@Test
@@ -44,15 +57,23 @@ public class PolicemanTest {
 			payload.setPhoneNumber("02637845555");
 			payload.setDistrictCode("6563");
 			
+			Municipality m= municipalityService.getMunicipality((long)1);
+			m.setDistrictCode("6563");
+			municipalityRepository.save(m);
+			
 			Policeman n = new Policeman();
-			n.setName(payload.getName());
-			n.setSurname(payload.getSurname());
-			n.setEmail(payload.getEmail());
-			n.setUsername(payload.getUsername());
-			n.setPhoneNumber(payload.getPhoneNumber());
-			n.setPassword(payload.getPassword());
+			n.setMunicipality(m);
+			
+            n.setName(payload.getName());
+            n.setSurname(payload.getSurname());
+            n.setEmail(payload.getEmail());
+            n.setUsername(payload.getUsername());
+            n.setPhoneNumber(payload.getPhoneNumber());
+            n.setRole(ApplicationUserRole.POLICEMAN);
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            n.setPassword(passwordEncoder.encode(payload.getPassword()));
 
-			Policeman saved=  policemanService.addNewPoliceman(n);
+			Policeman saved=  policemanRepository.save(n);
 			
 			assertNotNull(saved.getId());
 			assertNotNull(saved.getEmail());
@@ -64,11 +85,11 @@ public class PolicemanTest {
 			
 			//grow
 			
-			ParkingPlace p= parkingPlaceService.getOneByAddress("via mario milano");
+			ParkingPlace p= parkingPlaceRepository.findById((long)1).orElseThrow(() -> new ItemNotFoundException((long)1));
 			
 			Policeman existingPoliceman = policemanService.One(saved.getId());
 			existingPoliceman.setAssignedParkingPlace(p);
-			policemanService.update(existingPoliceman);
+			policemanRepository.save(existingPoliceman);
 			
 			Policeman newPoliceman = policemanService.One(saved.getId());
 			assertTrue(newPoliceman.getAssignedParkingPlace().getParkingPlaceID().equals(p.getParkingPlaceID()));

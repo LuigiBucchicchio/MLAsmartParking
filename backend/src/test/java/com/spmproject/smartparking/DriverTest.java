@@ -46,7 +46,7 @@ public class DriverTest {
 			n.setPhoneNumber(payload.getPhoneNumber());
 			n.setPassword(payload.getPassword());
 
-			Driver saved= driverService.addNewDriver(n);
+			Driver saved= driverRepository.save(n);
 			
 			assertNotNull(saved.getId());
 			assertNotNull(saved.getEmail());
