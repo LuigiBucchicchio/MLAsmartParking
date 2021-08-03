@@ -25,7 +25,7 @@ class ParkingPlaceModificationComponent extends React.Component {
     }
 
     handleSubmit = (event) => {
-        alert('changing parking place with ID: ' + this.state.parkingPlaceID + ' with values: ' + this.state.parkingAddress + ' and ' + this.state.spotsNumber);
+        alert('changing parking place with values: ' + this.state.parkingAddress + ' and ' + this.state.spotsNumber);
 
         ParkingService.parkingPlaceModification(this.state.parkingPlaceID,  this.state.spotsNumber ,this.state.parkingAddress).then(response => {
 

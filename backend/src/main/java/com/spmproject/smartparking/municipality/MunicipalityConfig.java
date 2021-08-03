@@ -11,15 +11,22 @@ import com.spmproject.smartparking.parkingspot.ParkingSpotRepository;
 import com.spmproject.smartparking.policeman.Policeman;
 import com.spmproject.smartparking.policeman.PolicemanRepository;
 import com.spmproject.smartparking.reservation.Reservation;
+import com.spmproject.smartparking.reservation.ReservationRepository;
 import com.spmproject.smartparking.security.ApplicationUserRole;
+import com.spmproject.smartparking.vehicle.Vehicle;
+import com.spmproject.smartparking.vehicle.VehicleRepository;
+import com.spmproject.smartparking.vehicle.VehicleService;
+import com.spmproject.smartparking.vehicle.VehicleType;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Configuration
 public class MunicipalityConfig {
@@ -27,7 +34,8 @@ public class MunicipalityConfig {
     @Bean
     CommandLineRunner commandLineRunner(MunicipalityRepository municipalityRepository, DriverRepository driverRepository,
                                         UserRepository userRepository, ParkingPlaceRepository parkingPlaceRepository, PolicemanRepository policemanRepository,
-                                        ParkingSpotRepository parkingSpotRepository) {
+                                        ParkingSpotRepository parkingSpotRepository, VehicleRepository vehicleRepository,
+                                        ReservationRepository reservationRepository) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
         return args -> {
@@ -148,6 +156,29 @@ public class MunicipalityConfig {
 
                 policemanRepository.save(basso);
 
+                
+                Vehicle v= new Vehicle();
+                v.setBrand("Fiat Panda");
+                v.setVehiclePlate("BZ555SB");
+                v.setType(VehicleType.CAR);
+                vehicleRepository.save(v);
+                Driver d = driverRepository.findById((long)3).orElseThrow(() -> new ItemNotFoundException((long) 3));
+                Set<Vehicle> set = new HashSet<Vehicle>();
+                set.add(v);
+                d.setVehicle_owned(set);
+                driverRepository.save(d);
+                
+                
+                Reservation r= new Reservation();
+                r.setStartingTime(new Timestamp(System.currentTimeMillis()));
+                r.setEndingTime(new Timestamp((System.currentTimeMillis()+(long)6000000)));
+                ParkingSpot spottino= parkingSpotRepository.findById((long)17).orElseThrow(() -> new ItemNotFoundException((long) 17));
+                r.setParkingSpot(spottino);
+                r.setVehicle(vehicleRepository.findById("BZ555SB").orElseThrow(() -> new ItemNotFoundException("BZ555SB")));
+
+
+                reservationRepository.save(r);
+           
             }
         };
 
